@@ -1,0 +1,27 @@
+.main {
+    width: 100vw;
+    text-align: center;
+}
+
+.mainMenu {
+    margin-top: 10px;
+    border-bottom: 1px solid gray;
+    position: absolute;
+    width: 100%;
+}
+
+.mainMenu ul {
+    list-style: none;
+    padding-bottom: 20px;
+    ;
+}
+
+.mainMenu ul li {
+    float: left;
+    margin-right: 40px;
+}
+
+.mainMenu ul li:hover {
+    color: gray;
+    cursor: pointer;
+}
