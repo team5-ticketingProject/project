@@ -35,7 +35,7 @@ function FAQ() {
   return (
     <div className="FAQ">
       <div style={{ borderBottom: "2px solid #ccc" }}>
-        <h3 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "10px" }}>
+        <h3 style={{ fontSize: "25px", fontWeight: "bold", marginBottom: "10px" }}>
           자주 묻는 질문 (FAQ)
         </h3>
       </div>

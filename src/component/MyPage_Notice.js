@@ -38,7 +38,7 @@ function Notice() {
   return (
     <div className="Notice">
       <div style={{ borderBottom: "2px solid #ccc" }}>
-        <h3 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "10px" }}>
+        <h3 style={{ fontSize: "25px", fontWeight: "bold", marginBottom: "10px" }}>
           공지사항
         </h3>
       </div>

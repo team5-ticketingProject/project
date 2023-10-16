@@ -11,6 +11,7 @@ import UserInfo from "./Mypage_UserInfo";
 import FAQ from "./Faq";
 import Navigation from "./Navigation";
 import Footer from "./Footer";
+import ContactUs from "./Inquiry";
 
 
 const style = {
@@ -26,8 +27,9 @@ function MyPage() {
     setModalType(type);
   };
 
-  const closeModal = () => {
-    setModalType(null);
+  const closeModal = (e) => {
+    e.stopPropagation(); 
+    setModalType();
   };
 
   return (
@@ -44,48 +46,49 @@ function MyPage() {
           <List sx={style} component="nav" aria-label="mailbox folders">
             <br/>
             <ListItem button onClick={() => openModal("UserInfo")}>
-              <ListItemText sx={{ fontWeight: "bold"}} primary="회원정보관리" />
+              <ListItemText   primary={<span style={{ fontSize:"18px", fontWeight: "bold" }}>회원정보관리</span>} />
             </ListItem>
             <br />
             <Divider />
             <br />
             <ListItem button onClick={() => openModal("Check")}>
-              <ListItemText primary="예매확인/취소" />
+              <ListItemText primary={<span style={{ fontSize:"18px", fontWeight: "bold" }}>예매/확인취소</span>} />
             </ListItem>
             <br />
             <Divider />
             <br />
             <ListItem button onClick={() => openModal("Review")}>
-              <ListItemText primary="나의 공연 관람" />
+              <ListItemText  primary={<span style={{ fontSize:"18px", fontWeight: "bold" }}>나의 후기</span>} />
             </ListItem>
             <br />
             <Divider light />
             <br />
             <ListItem button>
-              <ListItemText primary="소유한 인증기기 확인" />
+              <ListItemText  primary={<span style={{ fontSize:"18px", fontWeight: "bold" }}>소유기기 인증확인</span>} />
             </ListItem>
             <br />
             <Divider />
             <ListItem button onClick={() => openModal("Notice")}>
-              <ListItemText primary="공지사항" />
+              <ListItemText  primary={<span style={{ fontSize:"18px", fontWeight: "bold" }}>공지사항</span>} />
             </ListItem>
             <ListItem button  onClick={() => openModal("Faq")} >
-              <ListItemText primary="자주묻는질문" />
+              <ListItemText  primary={<span style={{ fontSize:"18px", fontWeight: "bold" }}>자주묻는질문</span>} />
             </ListItem>
-            <ListItem button>
-              <ListItemText primary="1:1 문의" />
+            <ListItem button onClick={() => openModal("Inquery")}>
+              <ListItemText  primary={<span style={{ fontSize:"18px", fontWeight: "bold" }}>1:1 문의</span>} />
             </ListItem>
           </List>
           <Divider></Divider>
           </div>
         </div>
-        <div className="modal" style={{ display: modalType ? "block" : "none", width:"1000px",height:"880px", margin:"auto",float:"left" }} onClick={closeModal}>
-        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="modal" style={{ display: modalType ? "block" : "none", width:"1000px",height:"100%", margin:"auto",float:"left" }} onClick={closeModal}>
+        <div className="modal-content" style={{height:"100%"}} onClick={(e) => e.stopPropagation()}>
           {modalType === "Check" && <Check />}
           {modalType === "UserInfo" && <UserInfo />}
           {modalType === "Review" && <Review />}
           {modalType === "Notice" && <Notice />}
           {modalType === "Faq" && <FAQ />}
+          {modalType === "Inquery" && <ContactUs />}
         </div>
       </div>
       </div>

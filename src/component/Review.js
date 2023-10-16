@@ -37,7 +37,7 @@ function Review() {
   return (
     <div className="Review">
       <div style={{ borderBottom: "2px solid #ccc" }}>
-        <h3 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "10px" }}>
+        <h3 style={{ fontSize: "25px", fontWeight: "bold", marginBottom: "10px" }}>
           나의 후기 관리
         </h3>
       </div>
