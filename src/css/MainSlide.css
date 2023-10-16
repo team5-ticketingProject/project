@@ -1,0 +1,28 @@
+.mainSlide{
+    float: none;
+    width: 500px;
+  
+    display: inline-block;
+  }
+  
+  .imgDiv{
+    float:left;
+    width:90%;
+    border: 1px solid gray;
+  }
+  
+  .mainSlide img{
+    width: 300px; 
+  }
+  
+  .previousButton{
+    float:left;
+    margin-top: 35%;
+    width:5%;
+  }
+  
+  .nextButton{
+    margin-top: 35%;
+    float:left;
+    width:4%;
+  }
