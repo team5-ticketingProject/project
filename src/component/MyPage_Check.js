@@ -8,51 +8,66 @@ import Stack from "@mui/material/Stack";
 import axios from "axios";
 
 function Check() {
-  const [selectedPeriod, setSelectedPeriod] = useState("");
-  const [selectedYear, setSelectedYear] = useState("");
-  const [selectedMonth, setSelectedMonth] = useState("");
+  const [selectedPeriod, setSelectedPeriod] = useState("15일");
   const [reservationInfo, setReservationInfo] = useState([]);
   const [isActive, setIsActive] = useState("15일");
+  const [isLoading, setIsLoading] = useState(false); // 버튼 로딩 상태
 
-  const handlePeriodClick = async (period) => {
-    setSelectedPeriod(period);
-    setIsActive(period);
+  const handlePeriodClick = (period) => {
+    if (isLoading) {
+      return; // 버튼이 로딩 중이면 중복 클릭 방지
+    }
 
-    
+    setIsLoading(true); // 버튼 로딩 상태로 설정
 
-    // 선택한 기간에 따라 데이터 가져오기
-    // ...
+    if (period === selectedPeriod) {
+      setSelectedPeriod("");
+      setIsActive("");
+      axios
+        .get("http://localhost:5000/getreservation_info")
+        .then((response) => {
+          setReservationInfo(response.data);
+          setIsLoading(false); // 작업 완료 후 버튼 로딩 상태 해제
+        })
+        .catch((error) => {
+          console.error(error);
+          setIsLoading(false); // 작업 완료 후 버튼 로딩 상태 해제
+        });
+    } else {
+      setSelectedPeriod(period);
+      setIsActive(period);
+      const today = new Date();
+      let startDate;
+      let endDate;
+      if (period === "15일") {
+        startDate = new Date(today);
+        startDate.setDate(today.getDate() - 15);
+        endDate = new Date(today);
+      } else if (period === "1개월") {
+        startDate = new Date(today);
+        startDate.setMonth(today.getMonth() - 1);
+        endDate = new Date(today);
+      } else if (period === "3개월") {
+        startDate = new Date(today);
+        startDate.setMonth(today.getMonth() - 3);
+        endDate = new Date(today);
+      }
+      axios
+        .get("http://localhost:5000/getreservation_info")
+        .then((response) => {
+          const filteredData = response.data.filter((item) => {
+            const reDate = new Date(item.Re_Date);
+            return reDate >= startDate && reDate <= endDate;
+          });
+          setReservationInfo(filteredData);
+          setIsLoading(false); // 작업 완료 후 버튼 로딩 상태 해제
+        })
+        .catch((error) => {
+          console.error(error);
+          setIsLoading(false); // 작업 완료 후 버튼 로딩 상태 해제
+        });
+    }
   };
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/getreservation_info")
-      .then((response) => {
-        setReservationInfo(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
-
-  const handleYearChange = (event) => {
-    setSelectedYear(event.target.value);
-  };
-
-  const handleMonthChange = (event) => {
-    setSelectedMonth(event.target.value);
-  };
-
-  const handleMonthClick = async () => {
-    // 선택된 연도와 월을 사용하여 데이터 가져오기
-    // ...
-  };
-  useEffect(() => {
-    // 초기 데이터 가져오기
-    handlePeriodClick("15일");
-  }, []);
-
-
-
   return (
     <div className="Check">
       <h1>예매확인/취소</h1>
@@ -60,7 +75,6 @@ function Check() {
 
       <h3>
         <span>예매번호</span>를 클릭하면 예매 상세 내용을 확인할 수 있습니다.
-        
       </h3>
       <div className="Reservation">
         <div className="select-container">
@@ -82,11 +96,10 @@ function Check() {
                       backgroundColor: "black",
                       color: "white",
                       borderColor: "gray",
-                    }, // 테두리 색상
-                    // 글자 색상
+                    },
                     borderColor: "gray",
-                    backgroundColor: isActive === "15일" ? "black" : "white", // isActive 상태에 따라 배경색 변경
-                    color: isActive === "15일" ? "white" : "black", // isActive 상태에 따라 텍스트색 변경
+                    backgroundColor: isActive === "15일" ? "black" : "white",
+                    color: isActive === "15일" ? "white" : "black",
                     fontWeight: "bold",
                   }}
                   onClick={() => handlePeriodClick("15일")}
@@ -100,10 +113,9 @@ function Check() {
                       color: "white",
                       borderColor: "gray",
                     },
-                    borderColor: "gray", // 테두리 색상
-                    // 글자 색상
-                    backgroundColor: isActive === "1개월" ? "black" : "white", // isActive 상태에 따라 배경색 변경
-                    color: isActive === "1개월" ? "white" : "black", // isActive 상태에 따라 텍스트색 변경
+                    borderColor: "gray",
+                    backgroundColor: isActive === "1개월" ? "black" : "white",
+                    color: isActive === "1개월" ? "white" : "black",
                     fontWeight: "bold",
                   }}
                   onClick={() => handlePeriodClick("1개월")}
@@ -118,9 +130,8 @@ function Check() {
                       borderColor: "gray",
                     },
                     borderColor: "gray",
-                    backgroundColor: isActive === "3개월" ? "black" : "white", // isActive 상태에 따라 배경색 변경
-                    color: isActive === "3개월" ? "white" : "black", // isActive 상태에 따라 텍스트색 변경
-
+                    backgroundColor: isActive === "3개월" ? "black" : "white",
+                    color: isActive === "3개월" ? "white" : "black",
                     fontWeight: "bold",
                   }}
                   onClick={() => handlePeriodClick("3개월")}
@@ -130,56 +141,6 @@ function Check() {
               </ButtonGroup>
             </Box>
           </div>
-          <div
-            className="custom-p"
-            style={{ marginLeft: "100px", marginRight: "5px" }}
-          >
-            월 별 조회
-          </div>
-          <select
-            className="form-select"
-            onChange={handleYearChange}
-            value={selectedYear}
-            style={{ width: "auto", padding: "4px", margin: "5px" }}
-          >
-            <option value="">연도</option>
-            <option value="2021">2021</option>
-            <option value="2022">2022</option>
-            <option value="2023">2023</option>
-          </select>
-          <select
-            className="form-select"
-            onChange={handleMonthChange}
-            value={selectedMonth}
-            style={{ width: "auto", padding: "4px", margin: "5px" }}
-          >
-            <option value="">월</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-          </select>
-          <button
-            style={{
-              border: "2px solid #000",
-              borderRadius: "4px",
-              padding: "4px 10px",
-              fontWeight: "bold",
-              margin: "5px",
-              cursor: "pointer"
-            }}
-            onClick={handleMonthClick}
-          >
-            조회
-          </button>
         </div>
       </div>
       <div>
@@ -191,7 +152,7 @@ function Check() {
               <th>관람일시</th>
               <th>매수</th>
               <th>취소가능일</th>
-              <th>상태</th>
+              <th>예매날짜</th>
             </tr>
           </thead>
           <tbody>
@@ -202,13 +163,21 @@ function Check() {
             ) : (
               reservationInfo.map((item, index) => (
                 <tr key={index}>
-                <td>{item.show_name}</td> {/* 티켓 */}
-                <td>{item.show_Number}</td> {/* 예매번호 */}
-                <td>{item.show_choice}</td> {/* 관람일 */}
-                <td>{item.Re_Number}</td> {/* 매수 */}
-                <td>{item.cancel_date}</td> {/* 취소가능일 (관람일 하루 전) */}
-                <td>{item.status === 1 ? "완료" : "취소"}</td> {/* 상태 (1: 완료, 2: 취소) */}
-              </tr>
+                  <td>{item.show_Number}</td>
+                  <td>{item.show_ID}</td>
+                  <td>
+                    {new Date(item.show_Choice).toISOString().split("T")[0]}
+                  </td>
+                  <td>{item.Re_Number}</td>
+                  <td>
+                    {
+                      new Date(new Date(item.show_Choice) - 24 * 60 * 60 * 1000)
+                        .toISOString()
+                        .split("T")[0]
+                    }
+                  </td>
+                  <td>{new Date(item.Re_Date).toISOString().split("T")[0]}</td>
+                </tr>
               ))
             )}
           </tbody>
