@@ -23,8 +23,11 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // 
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); //
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   next();
 });
 
@@ -34,26 +37,39 @@ app.post("/text", async (req, res) => {
   codes.push(code);
 });
 
-app.get('/getDB', async (req, res) => {
-  const sql = 'SELECT * FROM show_info';
+app.get("/getDB", async (req, res) => {
+  const sql = "SELECT * FROM show_info";
 
   db.query(sql, (err, results) => {
-    if(err){
+    if (err) {
       console.error(err);
-      return res.status(500).json({error: '내부 서버 에러'});
+      return res.status(500).json({ error: "내부 서버 에러" });
     }
     res.json(results);
   });
 });
+app.get("/getreservation_info", async (req, res) => {
+    const sql = "SELECT * FROM reservation_info";
 
-app.get('/getShowInfo', async (req, res) => {
+    db.query(sql, (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: "내부 서버 에러" });
+      }
+      res.json(results);
+      });
+    });
+
+app.get("/getShowInfo", async (req, res) => {
   try {
-    const serviceKey = '8cd44b00e6b7438ebee27dfb9f4cdf16';
-    const response = await axios.get(`http://www.kopis.or.kr/openApi/restful/pblprfr?service=${serviceKey}&stdate=20230901&eddate=20231230&cpage=1&rows=5&prfstate=02&signgucode=11&signgucodesub=&kidstate=N`);
+    const serviceKey = "8cd44b00e6b7438ebee27dfb9f4cdf16";
+    const response = await axios.get(
+      `http://www.kopis.or.kr/openApi/restful/pblprfr?service=${serviceKey}&stdate=20230901&eddate=20231230&cpage=1&rows=5&prfstate=02&signgucode=11&signgucodesub=&kidstate=N`
+    );
     res.json(response.data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -66,7 +82,7 @@ app.get("/getShowList", async (req, res) => {
         `http://www.kopis.or.kr/openApi/restful/pblprfr/${code}?service=${serviceKey}`
       )
     );
-
+  
     const responses = await Promise.all(fetchDataPromises);
     datas.push(...responses.map((response) => response.data));
 
@@ -81,9 +97,10 @@ app.get("/getShowList", async (req, res) => {
           var sql = "SELECT COUNT(*) AS count FROM show_info WHERE show_ID = ?";
           db.query(sql, [result.dbs.db.mt20id], function (err, sql_result) {
             if (err) throw err;
-            console.log('PK 중복검사');
-            if (sql_result[0].count === 0) {   // 이미 존재하는 ID는 차단
-              console.log('데이터 삽입 성공');
+            console.log("PK 중복검사");
+            if (sql_result[0].count === 0) {
+              // 이미 존재하는 ID는 차단
+              console.log("데이터 삽입 성공");
               var sql = "INSERT INTO show_info VALUES (?)";
               var values = [
                 result.dbs.db.mt20id,
@@ -102,11 +119,10 @@ app.get("/getShowList", async (req, res) => {
               db.query(sql, [values], function (err, sql_result2) {
                 if (err) throw err;
               });
+            } else {
+              console.log("PK 중복 에러");
             }
-            else{
-              console.log('PK 중복 에러');
-            }
-            console.log('---------------------');
+            console.log("---------------------");
           });
         } catch (error) {
           console.error("데이터 삽입 실패:", error);

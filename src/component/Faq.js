@@ -41,7 +41,7 @@ function FAQ() {
       </div>
       <div style={{ marginTop: "20px" }}>
         <h4>
-          자주 묻는 질문을 확인하실 수 있습니다.
+        <span style={{color:"red"}}>자주묻는질문</span>을 확인하실 수 있습니다.
           <br />
           궁금한 내용을 클릭하여 답변을 확인하세요.
         </h4>

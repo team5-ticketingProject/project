@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Box from "@mui/material/Box";
 import "../css/MyPage.css";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import axios from "axios";
 
 function Check() {
   const [selectedPeriod, setSelectedPeriod] = useState("");
@@ -17,9 +18,21 @@ function Check() {
     setSelectedPeriod(period);
     setIsActive(period);
 
+    
+
     // 선택한 기간에 따라 데이터 가져오기
     // ...
   };
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/getreservation_info")
+      .then((response) => {
+        setReservationInfo(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   const handleYearChange = (event) => {
     setSelectedYear(event.target.value);
@@ -33,6 +46,12 @@ function Check() {
     // 선택된 연도와 월을 사용하여 데이터 가져오기
     // ...
   };
+  useEffect(() => {
+    // 초기 데이터 가져오기
+    handlePeriodClick("15일");
+  }, []);
+
+
 
   return (
     <div className="Check">
@@ -41,8 +60,7 @@ function Check() {
 
       <h3>
         <span>예매번호</span>를 클릭하면 예매 상세 내용을 확인할 수 있습니다.
-        <br />
-        공연/전시 예매 내역은 하단의 공연/전시 탭을 선택하면 확인할 수 있습니다.
+        
       </h3>
       <div className="Reservation">
         <div className="select-container">
@@ -156,6 +174,7 @@ function Check() {
               padding: "4px 10px",
               fontWeight: "bold",
               margin: "5px",
+              cursor: "pointer"
             }}
             onClick={handleMonthClick}
           >
@@ -183,13 +202,13 @@ function Check() {
             ) : (
               reservationInfo.map((item, index) => (
                 <tr key={index}>
-                  <td>{item.reservationNumber}</td>
-                  <td>{item.ticketName}</td>
-                  <td>{item.showTime}</td>
-                  <td>{item.quantity}</td>
-                  <td>{item.cancellableDate}</td>
-                  <td>{item.status}</td>
-                </tr>
+                <td>{item.show_name}</td> {/* 티켓 */}
+                <td>{item.show_Number}</td> {/* 예매번호 */}
+                <td>{item.show_choice}</td> {/* 관람일 */}
+                <td>{item.Re_Number}</td> {/* 매수 */}
+                <td>{item.cancel_date}</td> {/* 취소가능일 (관람일 하루 전) */}
+                <td>{item.status === 1 ? "완료" : "취소"}</td> {/* 상태 (1: 완료, 2: 취소) */}
+              </tr>
               ))
             )}
           </tbody>

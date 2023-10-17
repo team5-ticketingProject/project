@@ -59,7 +59,7 @@ function ContactUs() {
         <h3 style={{ fontSize: "25px", fontWeight: "bold", marginBottom: "50px" }}>
           1:1 문의
         </h3>
-        <h5> 자세한 문의는 문의하기를 통해 가능합니다. </h5>
+        <h5> 자세한 문의는 <span style={{color:"red"}}>문의하기</span>를 통해 가능합니다. </h5>
         <Stack direction="row" spacing={2} sx={{ marginTop: "40px", marginBottom: "30px" }}>
           <Button
             sx={{ padding: "15px", backgroundColor: "black" }}

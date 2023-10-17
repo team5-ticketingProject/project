@@ -44,7 +44,7 @@ function Notice() {
       </div>
       <div style={{ marginTop: "20px" }}>
         <h4>
-          최신 공지사항을 확인하실 수 있습니다.
+          최신 <span style={{color:"red"}}>공지사항</span>을 확인하실 수 있습니다.
           <br />
           자세한 내용은 해당 공지사항을 클릭하여 확인하세요.
         </h4>
