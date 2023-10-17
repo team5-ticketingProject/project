@@ -46,6 +46,19 @@ app.get('/getDB', async (req, res) => {
   });
 });
 
+app.get('/getDetail/:ID', async (req, res) => {
+  const ID = req.params.ID;
+  const sql = "SELECT * FROM show_info WHERE show_ID = ?";
+  db.query(sql, [ID], (err, results) => {
+    if(err){
+      console.error(err);
+      return res.status(500).json({error: '내부 서버 에러'});
+    }
+    console.log(results);
+    res.json(results);
+  })
+})
+
 app.get('/getShowInfo/:ID', async (req, res) => {
   const location = req.params.ID;
   console.log('getshowinfo location:', location);

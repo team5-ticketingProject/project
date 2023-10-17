@@ -1,10 +1,11 @@
+.showList ul {
+    list-style: none;
+    display: inline-block;
+}
+
 .showList ul li {
     float: left;
     margin-left: 80px;
-}
-
-.showList ul {
-    list-style: none;
 }
 
 .showList img {

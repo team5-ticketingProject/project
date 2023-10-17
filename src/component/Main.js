@@ -5,10 +5,9 @@ import GetShowCode from "../api/GetShowCode";
 import GetShowData from "./ShowList";
 import MainSlide from "./MainSlide";
 import '../css/Main.css';
-import MyPage from './MyPage';
 
 const Main = () => {
-  const [menuNumber, setMenuNumber] = useState(1);
+  const [menuNumber, setMenuNumber] = useState(0);
 
   const handleMenu = (e) => {
     setMenuNumber(e.target.value);
@@ -16,10 +15,10 @@ const Main = () => {
 
   return (
     <div className="main">
-      <div style={{height:'88vh' }}>
+      <div>
         <Navigation />
-        <GetShowCode />
-        
+        <GetShowCode />  
+    
         <div className="mainMenu">
           <ul>
             <li onClick={handleMenu} value="0">메인</li>
