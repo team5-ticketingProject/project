@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Box from "@mui/material/Box";
@@ -12,62 +12,85 @@ function Check() {
   const [reservationInfo, setReservationInfo] = useState([]);
   const [isActive, setIsActive] = useState("15일");
   const [isLoading, setIsLoading] = useState(false); // 버튼 로딩 상태
+  const [selectedYear, setSelectedYear] = useState(""); // 선택한 연도
+  const [selectedMonth, setSelectedMonth] = useState(""); // 선택한 월
 
-  const handlePeriodClick = (period) => {
+  const fetchReservationInfo = useCallback((period, startDate, endDate) => {
+    setIsLoading(true);
+
+    axios
+      .get("http://localhost:5000/getreservation_info")
+      .then((response) => {
+        const filteredData = response.data.filter((item) => {
+          const reDate = new Date(item.Re_Date);
+          return reDate >= startDate && reDate <= endDate;
+        });
+        setReservationInfo(filteredData);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setIsLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    const today = new Date();
+    let startDate;
+    let endDate;
+
+    if (selectedPeriod === "15일") {
+      startDate = new Date(today);
+      startDate.setDate(today.getDate() - 15);
+      endDate = new Date(today);
+    } else if (selectedPeriod === "1개월") {
+      startDate = new Date(today);
+      startDate.setMonth(today.getMonth() - 1);
+      endDate = new Date(today);
+    } else if (selectedPeriod === "3개월") {
+      startDate = new Date(today);
+      startDate.setMonth(today.getMonth() - 3);
+      endDate = new Date(today);
+    }
+
+    fetchReservationInfo(selectedPeriod, startDate, endDate);
+  }, [selectedPeriod, fetchReservationInfo]);
+
+  const handlePeriodClick = useCallback((period) => {
     if (isLoading) {
-      return; // 버튼이 로딩 중이면 중복 클릭 방지
+      return;
     }
-
-    setIsLoading(true); // 버튼 로딩 상태로 설정
-
     if (period === selectedPeriod) {
-      setSelectedPeriod("");
-      setIsActive("");
-      axios
-        .get("http://localhost:5000/getreservation_info")
-        .then((response) => {
-          setReservationInfo(response.data);
-          setIsLoading(false); // 작업 완료 후 버튼 로딩 상태 해제
-        })
-        .catch((error) => {
-          console.error(error);
-          setIsLoading(false); // 작업 완료 후 버튼 로딩 상태 해제
-        });
-    } else {
-      setSelectedPeriod(period);
-      setIsActive(period);
-      const today = new Date();
-      let startDate;
-      let endDate;
-      if (period === "15일") {
-        startDate = new Date(today);
-        startDate.setDate(today.getDate() - 15);
-        endDate = new Date(today);
-      } else if (period === "1개월") {
-        startDate = new Date(today);
-        startDate.setMonth(today.getMonth() - 1);
-        endDate = new Date(today);
-      } else if (period === "3개월") {
-        startDate = new Date(today);
-        startDate.setMonth(today.getMonth() - 3);
-        endDate = new Date(today);
-      }
-      axios
-        .get("http://localhost:5000/getreservation_info")
-        .then((response) => {
-          const filteredData = response.data.filter((item) => {
-            const reDate = new Date(item.Re_Date);
-            return reDate >= startDate && reDate <= endDate;
-          });
-          setReservationInfo(filteredData);
-          setIsLoading(false); // 작업 완료 후 버튼 로딩 상태 해제
-        })
-        .catch((error) => {
-          console.error(error);
-          setIsLoading(false); // 작업 완료 후 버튼 로딩 상태 해제
-        });
+      return;
     }
+
+    setSelectedPeriod(period);
+    setIsActive(period);
+  }, [isLoading, selectedPeriod]);
+
+  const handleYearChange = (event) => {
+    setSelectedYear(event.target.value);
   };
+
+  const handleMonthChange = (event) => {
+    setSelectedMonth(event.target.value);
+  };
+
+  const handleMonthClick = () => {
+    if (selectedYear === "" || selectedMonth === "") {
+      handlePeriodClick("15일");
+      return;
+    }
+
+    const year = parseInt(selectedYear);
+    const month = parseInt(selectedMonth) - 1;
+    const startDate = new Date(year, month, 1);
+    const endDate = new Date(year, month + 1, 0);
+
+    fetchReservationInfo("custom", startDate, endDate);
+  };
+ 
+
   return (
     <div className="Check">
       <h1>예매확인/취소</h1>
@@ -141,6 +164,57 @@ function Check() {
               </ButtonGroup>
             </Box>
           </div>
+          <div
+            className="custom-p"
+            style={{ marginLeft: "100px", marginRight: "5px" }}
+          >
+            월 별 조회
+          </div>
+          <select
+            className="form-select"
+            onChange={handleYearChange}
+            value={selectedYear}
+            style={{ width: "auto", padding: "4px", margin: "5px" }}
+          >
+            <option value="">연도</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+          </select>
+          <select
+            className="form-select"
+            onChange={handleMonthChange}
+            value={selectedMonth}
+            style={{ width: "auto", padding: "4px", margin: "5px" }}
+          >
+            <option value="">월</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
+          <button
+            style={{
+              border: "2px solid #000",
+              borderRadius: "4px",
+              padding: "4px 10px",
+              fontWeight: "bold",
+              margin: "5px",
+              backgroundColor: "white",
+              cursor: "pointer",
+            }}
+            onClick={handleMonthClick}
+          >
+            조회
+          </button>
         </div>
       </div>
       <div>
