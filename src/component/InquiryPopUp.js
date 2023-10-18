@@ -9,34 +9,34 @@ function ContactForm({ onSubmit, onClose }) {
   useEffect(() => {
     // 사용자 로그인 프로세스를 통해 사용자 ID를 얻어옵니다.
     // 이 부분은 사용자 로그인 로직에 따라 달라집니다.
-    const loggedInUserId = "user123"; // 예시 사용자 ID
+    const loggedInUserId = "123"; // 예시 사용자 ID
 
     setUserId(loggedInUserId);
   }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-   
-   const formData = { userId, subject, message, email };
-   try {
-    const response = await fetch("/submit_inquiry", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/Json",
-      },
-      body: JSON.stringify(formData),
-    });
 
-    if (response.status === 200) {
-      console.log("문의가 성공적으로 제출");
-    } else {
-      console.error("문의 제출 실패");
-    } 
-  }
-    catch (error) {
+    const formData = { userId, subject, message, email };
+    try {
+      const response = await fetch("http://localhost:5000/submit_inquiry", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.status === 200) {
+        console.log("문의가 성공적으로 제출");
+        onClose(); // 제출 후 onClose 함수 호출하여 팝업 닫기
+      } else {
+        console.error("문의 제출 실패");
+      }
+    } catch (error) {
       console.error("문의 제출 중 오류:", error);
     }
   };
-  
 
   return (
     <div className="ContactForm">
@@ -48,7 +48,7 @@ function ContactForm({ onSubmit, onClose }) {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="input-field" // 이메일 입력 필드에 스타일 적용
+            className="input-field"
           />
         </div>
         <div>
@@ -58,7 +58,7 @@ function ContactForm({ onSubmit, onClose }) {
             id="subject"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            className="input-field" // 제목 입력 필드에 스타일 적용
+            className="input-field"
           />
         </div>
         <div>
@@ -67,10 +67,12 @@ function ContactForm({ onSubmit, onClose }) {
             id="message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="text-area" // 내용 입력 필드에 스타일 적용
+            className="text-area"
           />
         </div>
-        <button type="submit" className="submit-button">문의 제출</button>
+        <button type="submit" className="submit-button">
+          문의 제출
+        </button>
       </form>
     </div>
   );

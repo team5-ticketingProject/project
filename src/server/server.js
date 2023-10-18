@@ -37,12 +37,12 @@ app.post("/text", async (req, res) => {
   codes.push(code);
 });
 
-app.post('/submit_inquiry', (req, res) => {
-  const { email, subject, message } = req.body;
+app.post("/submit_inquiry", (req, res) => {
+  const { userId, email, subject, message } = req.body;
 
   // 데이터베이스에 데이터 삽입
-  const sql = 'INSERT INTO personal_inquiry (email, inquiry_title, inquiry_content) VALUES (?, ?, ?)';
-  db.query(sql, [email, subject, message], (err, result) => {
+  const sql = 'INSERT INTO personal_inquiry (ID, email, inquiry_title, inquiry_content) VALUES (?, ?, ?)';
+  db.query(sql, [ userId, email, subject, message], (err, result) => {
     if (err) {
       console.error('문의 제출 실패:', err);
       res.status(500).send('문의 제출 실패');
@@ -76,6 +76,17 @@ app.get("/getreservation_info", async (req, res) => {
       res.json(results);
       });
     });
+    app.get("/getpersonal_inquiry", async (req, res) => {
+      const sql = "SELECT * FROM personal_inquiry";
+  
+      db.query(sql, (err, results) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ error: "내부 서버 에러" });
+        }
+        res.json(results);
+        });
+      });   
 
 app.get("/getShowInfo", async (req, res) => {
   try {

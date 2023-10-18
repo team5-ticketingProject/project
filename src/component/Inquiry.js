@@ -10,11 +10,22 @@ function ContactUs() {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const inquiriesPerPage = 10; // 한 페이지에 보여질 1:1 문의 수
 
-  // 예시로 1:1 문의 데이터를 상태에 추가
   useEffect(() => {
-    // 데이터를 가져와서 inquiries 상태 업데이트
-    // 예시로 inquiries를 업데이트하는 코드를 작성하세요
-    // setInquiries([...]);
+    // 서버 API로부터 1:1 문의 데이터를 가져오는 함수 (예: /get_inquiries)
+    async function fetchInquiries() {
+      try {
+        const response = await fetch("http://localhost:5000/getpersonal_inquiry"); // API 엔드포인트에 따라 수정
+        if (response.ok) {
+          const data = await response.json();
+          setInquiries(data);
+        }
+      } catch (error) {
+        console.error("문의 데이터를 가져오는 중 오류 발생:", error);
+      }
+    }
+
+    // 1:1 문의 데이터 가져오기
+    fetchInquiries();
   }, []);
 
   const handlePageChange = (event, page) => {
@@ -80,7 +91,7 @@ function ContactUs() {
     }
   </style>
 `;
-    ReactDOM.render(<ContactForm />, popupWindow.document.getElementById("popup-root"));
+    ReactDOM.render(<ContactForm onClose={popupWindow.close} />, popupWindow.document.getElementById("popup-root"));
   };
 
   return (
