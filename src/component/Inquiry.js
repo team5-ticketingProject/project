@@ -131,9 +131,9 @@ function ContactUs() {
             ) : (
               currentInquiries.map((inquiry, index) => (
                 <tr key={index}>
-                  <td>{inquiry.subject}</td>
-                  <td>{inquiry.message}</td>
-                  <td>{inquiry.date}</td>
+                  <td>{inquiry.inquiry_title}</td>
+                  <td>{inquiry.inquiry_content}</td>
+                  <td> {inquiry.inquiry_date}</td>
                 </tr>
               ))
             )}
