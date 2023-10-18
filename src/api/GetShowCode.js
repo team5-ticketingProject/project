@@ -19,6 +19,11 @@ const GetShowCode = () => {
     // 서버의 /getShowInfo 엔드포인트로 GET 요청 보내기
     axios
       .get(`http://localhost:5000/getShowInfo/${location}`)
+  
+  useEffect(() => {
+    // 서버의 /getShowInfo 엔드포인트로 GET 요청 보내기
+    axios
+      .get('http://localhost:5000/getShowInfo')
       .then((response) => {
         setShowData(response.data);
       })
@@ -47,6 +52,7 @@ const GetShowCode = () => {
   const onClick2 = () => {
     axios
       .get(`http://localhost:5000/getShowList/${location}`)
+      .get("http://localhost:5000/getShowList")
       .then((response) => {
         setShowList(response.data);
         console.log('showList:', showList);
@@ -88,10 +94,14 @@ const GetShowCode = () => {
         <option value="50">제주</option>
       </select>
 
+  
+
+  return (
+    <div>
       <button onClick={onClick}>데이터 받아오기</button>
       <button onClick={onClick2}>DB저장</button>
     </div>
   );
-}
+
 
 export default GetShowCode;

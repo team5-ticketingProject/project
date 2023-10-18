@@ -7,7 +7,7 @@ import MainSlide from "./MainSlide";
 import '../css/Main.css';
 
 const Main = () => {
-  const [menuNumber, setMenuNumber] = useState(0);
+  const [menuNumber, setMenuNumber] = useState(1);
 
   const handleMenu = (e) => {
     setMenuNumber(e.target.value);
@@ -15,10 +15,10 @@ const Main = () => {
 
   return (
     <div className="main">
-      <div>
+      <div style={{height:'88vh' }}>
         <Navigation />
-        <GetShowCode />  
-    
+        <GetShowCode />
+
         <div className="mainMenu">
           <ul>
             <li onClick={handleMenu} value="0">메인</li>

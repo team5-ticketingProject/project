@@ -1,9 +1,21 @@
 import Button from "@mui/material/Button";
-import { color } from "framer-motion";
 import React from "react";
 import "../css/MyPage.css";
+import PwChange from "./Pw_Change";
+import  ReactDOM  from "react-dom";
 
 function UserInfo() {
+  const openPopupPw = () => {
+    const popupWindow = window.open(
+      "",
+      "팝업 제목",
+      "width=600,height=400,menubar=no,location=no,resizable=no,scrollbars=no,status=no"
+    );
+
+    // 팝업 윈도우에 React 컴포넌트 렌더링
+    popupWindow.document.body.innerHTML = "<div id='popuppw-root'></div>";
+    ReactDOM.render(<PwChange />, popupWindow.document.getElementById("popuppw-root"));
+  };
   return (
     <>
       <div className="UserInfodiv">
@@ -51,6 +63,7 @@ function UserInfo() {
                 <th scope="row">비밀번호</th>
                 <td>
                   <Button
+                  onClick={openPopupPw}
                     sx={{
                       border: "1px solid #000",
                       color: "black",
