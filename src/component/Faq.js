@@ -21,6 +21,23 @@ function FAQ() {
   }, []);
 
 
+  // 예시로 FAQ 데이터를 상태에 추가
+  useEffect(() => {
+    // 이 부분에서 FAQ 데이터를 가져오는 API를 호출하여 상태에 설정
+    const sampleFAQs = [
+      {
+        question: "질문 1",
+        answer: "답변 1",
+      },
+      {
+        question: "질문 2",
+        answer: "답변 2",
+      },
+      // 나머지 FAQ 데이터도 추가
+    ];
+    setFAQs(sampleFAQs);
+  }, []);
+
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
@@ -39,6 +56,7 @@ function FAQ() {
       <div style={{ marginTop: "20px" }}>
         <h4>
         <span style={{color:"red"}}>자주묻는질문</span>을 확인하실 수 있습니다.
+          자주 묻는 질문을 확인하실 수 있습니다.
           <br />
           궁금한 내용을 클릭하여 답변을 확인하세요.
         </h4>
