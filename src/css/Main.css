@@ -1,0 +1,28 @@
+.main {
+    width: 1920px;
+    text-align: center;
+}
+
+.mainMenu {
+    margin-top: 10px;
+    border-bottom: 1px solid gray;
+    position: absolute;
+    width: 100%;
+    color: gray;
+}
+
+.mainMenu ul {
+    list-style: none;
+    padding-bottom: 20px;
+    margin-left: 250px;
+}
+
+.mainMenu ul li {
+    float: left;
+    margin-right: 40px;
+}
+
+.mainMenu ul li:hover {
+    color: black;
+    cursor: pointer;
+}
