@@ -1,25 +1,72 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Box from "@mui/material/Box";
 import "../css/MyPage.css";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import axios from "axios";
 
 function Check() {
-  const [selectedPeriod, setSelectedPeriod] = useState("");
-  const [selectedYear, setSelectedYear] = useState("");
-  const [selectedMonth, setSelectedMonth] = useState("");
+  const [selectedPeriod, setSelectedPeriod] = useState("15일");
   const [reservationInfo, setReservationInfo] = useState([]);
   const [isActive, setIsActive] = useState("15일");
+  const [isLoading, setIsLoading] = useState(false); // 버튼 로딩 상태
+  const [selectedYear, setSelectedYear] = useState(""); // 선택한 연도
+  const [selectedMonth, setSelectedMonth] = useState(""); // 선택한 월
 
-  const handlePeriodClick = async (period) => {
+  const fetchReservationInfo = useCallback((period, startDate, endDate) => {
+    setIsLoading(true);
+
+    axios
+      .get("http://localhost:5000/getreservation_info")
+      .then((response) => {
+        const filteredData = response.data.filter((item) => {
+          const reDate = new Date(item.Re_Date);
+          return reDate >= startDate && reDate <= endDate;
+        });
+        setReservationInfo(filteredData);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setIsLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    const today = new Date();
+    let startDate;
+    let endDate;
+
+    if (selectedPeriod === "15일") {
+      startDate = new Date(today);
+      startDate.setDate(today.getDate() - 15);
+      endDate = new Date(today);
+    } else if (selectedPeriod === "1개월") {
+      startDate = new Date(today);
+      startDate.setMonth(today.getMonth() - 1);
+      endDate = new Date(today);
+    } else if (selectedPeriod === "3개월") {
+      startDate = new Date(today);
+      startDate.setMonth(today.getMonth() - 3);
+      endDate = new Date(today);
+    }
+
+    fetchReservationInfo(selectedPeriod, startDate, endDate);
+  }, [selectedPeriod, fetchReservationInfo]);
+
+  const handlePeriodClick = useCallback((period) => {
+    if (isLoading) {
+      return;
+    }
+    if (period === selectedPeriod) {
+      return;
+    }
+
     setSelectedPeriod(period);
     setIsActive(period);
-
-    // 선택한 기간에 따라 데이터 가져오기
-    // ...
-  };
+  }, [isLoading, selectedPeriod]);
 
   const handleYearChange = (event) => {
     setSelectedYear(event.target.value);
@@ -29,10 +76,20 @@ function Check() {
     setSelectedMonth(event.target.value);
   };
 
-  const handleMonthClick = async () => {
-    // 선택된 연도와 월을 사용하여 데이터 가져오기
-    // ...
+  const handleMonthClick = () => {
+    if (selectedYear === "" || selectedMonth === "") {
+      handlePeriodClick("15일");
+      return;
+    }
+
+    const year = parseInt(selectedYear);
+    const month = parseInt(selectedMonth) - 1;
+    const startDate = new Date(year, month, 1);
+    const endDate = new Date(year, month + 1, 0);
+
+    fetchReservationInfo("custom", startDate, endDate);
   };
+ 
 
   return (
     <div className="Check">
@@ -41,8 +98,6 @@ function Check() {
 
       <h3>
         <span>예매번호</span>를 클릭하면 예매 상세 내용을 확인할 수 있습니다.
-        <br />
-        공연/전시 예매 내역은 하단의 공연/전시 탭을 선택하면 확인할 수 있습니다.
       </h3>
       <div className="Reservation">
         <div className="select-container">
@@ -64,11 +119,10 @@ function Check() {
                       backgroundColor: "black",
                       color: "white",
                       borderColor: "gray",
-                    }, // 테두리 색상
-                    // 글자 색상
+                    },
                     borderColor: "gray",
-                    backgroundColor: isActive === "15일" ? "black" : "white", // isActive 상태에 따라 배경색 변경
-                    color: isActive === "15일" ? "white" : "black", // isActive 상태에 따라 텍스트색 변경
+                    backgroundColor: isActive === "15일" ? "black" : "white",
+                    color: isActive === "15일" ? "white" : "black",
                     fontWeight: "bold",
                   }}
                   onClick={() => handlePeriodClick("15일")}
@@ -82,10 +136,9 @@ function Check() {
                       color: "white",
                       borderColor: "gray",
                     },
-                    borderColor: "gray", // 테두리 색상
-                    // 글자 색상
-                    backgroundColor: isActive === "1개월" ? "black" : "white", // isActive 상태에 따라 배경색 변경
-                    color: isActive === "1개월" ? "white" : "black", // isActive 상태에 따라 텍스트색 변경
+                    borderColor: "gray",
+                    backgroundColor: isActive === "1개월" ? "black" : "white",
+                    color: isActive === "1개월" ? "white" : "black",
                     fontWeight: "bold",
                   }}
                   onClick={() => handlePeriodClick("1개월")}
@@ -100,9 +153,8 @@ function Check() {
                       borderColor: "gray",
                     },
                     borderColor: "gray",
-                    backgroundColor: isActive === "3개월" ? "black" : "white", // isActive 상태에 따라 배경색 변경
-                    color: isActive === "3개월" ? "white" : "black", // isActive 상태에 따라 텍스트색 변경
-
+                    backgroundColor: isActive === "3개월" ? "black" : "white",
+                    color: isActive === "3개월" ? "white" : "black",
                     fontWeight: "bold",
                   }}
                   onClick={() => handlePeriodClick("3개월")}
@@ -156,6 +208,8 @@ function Check() {
               padding: "4px 10px",
               fontWeight: "bold",
               margin: "5px",
+              backgroundColor: "white",
+              cursor: "pointer",
             }}
             onClick={handleMonthClick}
           >
@@ -172,7 +226,7 @@ function Check() {
               <th>관람일시</th>
               <th>매수</th>
               <th>취소가능일</th>
-              <th>상태</th>
+              <th>예매날짜</th>
             </tr>
           </thead>
           <tbody>
@@ -183,12 +237,20 @@ function Check() {
             ) : (
               reservationInfo.map((item, index) => (
                 <tr key={index}>
-                  <td>{item.reservationNumber}</td>
-                  <td>{item.ticketName}</td>
-                  <td>{item.showTime}</td>
-                  <td>{item.quantity}</td>
-                  <td>{item.cancellableDate}</td>
-                  <td>{item.status}</td>
+                  <td>{item.show_Number}</td>
+                  <td>{item.show_ID}</td>
+                  <td>
+                    {new Date(item.show_Choice).toISOString().split("T")[0]}
+                  </td>
+                  <td>{item.Re_Number}</td>
+                  <td>
+                    {
+                      new Date(new Date(item.show_Choice) - 24 * 60 * 60 * 1000)
+                        .toISOString()
+                        .split("T")[0]
+                    }
+                  </td>
+                  <td>{new Date(item.Re_Date).toISOString().split("T")[0]}</td>
                 </tr>
               ))
             )}
