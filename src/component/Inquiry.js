@@ -133,7 +133,7 @@ function ContactUs() {
                 <tr key={index}>
                   <td>{inquiry.inquiry_title}</td>
                   <td>{inquiry.inquiry_content}</td>
-                  <td> {inquiry.inquiry_date}</td>
+                  <td>  {new Date(inquiry.inquiry_date).toISOString().split("T")[0]}</td>
                 </tr>
               ))
             )}

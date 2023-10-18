@@ -53,6 +53,29 @@ app.post("/submit_inquiry", (req, res) => {
     }
   });
 });
+app.get('/getFAQ', async (req, res) => {
+  const sql = 'SELECT * FROM faq';
+
+  db.query(sql, (err, results) => {
+    if(err){
+      console.error(err);
+      return res.status(500).json({error: '내부 서버 에러'});
+    }
+    res.json(results);
+  })
+})
+
+app.get('/getNotice', async (req, res) => {
+  const sql = 'SELECT * FROM notice';
+
+  db.query(sql, (err, results) => {
+    if(err){
+      console.error(err);
+      return res.status(500).json({error: '내부 서버 에러'});
+    }
+    res.json(results);
+  })
+})
 
 
 app.get("/getDB", async (req, res) => {
