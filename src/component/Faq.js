@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import axios from "axios";
 
 function FAQ() {
   const [faqs, setFAQs] = useState([]); // FAQ 목록
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const faqsPerPage = 10; // 한 페이지에 보여질 FAQ 수
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/getFAQ")
+      .then((response) => {
+        setFAQs(response.data);
+        console.log("FAQ:", faqs);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
 
   // 예시로 FAQ 데이터를 상태에 추가
   useEffect(() => {
@@ -41,6 +55,7 @@ function FAQ() {
       </div>
       <div style={{ marginTop: "20px" }}>
         <h4>
+        <span style={{color:"red"}}>자주묻는질문</span>을 확인하실 수 있습니다.
           자주 묻는 질문을 확인하실 수 있습니다.
           <br />
           궁금한 내용을 클릭하여 답변을 확인하세요.

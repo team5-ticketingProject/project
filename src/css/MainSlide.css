@@ -1,6 +1,7 @@
 .mainSlide{
-    width: 1500px;
-    height: 500px;
+    float: none;
+    width: 500px;
+  
     display: inline-block;
   }
   
@@ -8,18 +9,8 @@
     float:left;
     width:90%;
     border: 1px solid gray;
-    border-radius: 20px;
-    overflow: hidden;
-   
   }
-  .imgDiv-sub{
-    float: left;
-    width: 400px;
-    margin-top: 100px;
-    margin-left: 50px;
-    position: absolute;
-    font-size: 20px;
-  }
+  
   .mainSlide img{
     width: 300px; 
   }
@@ -28,89 +19,10 @@
     float:left;
     margin-top: 35%;
     width:5%;
-    position: relative;
-    left: 50px;
-    top: -350px;
   }
   
   .nextButton{
     margin-top: 35%;
     float:left;
     width:4%;
-    position: relative;
-    right:50px;
-    top: -350px;
   }
-
-  .mainSlide button{
-    background-color: white;
-    border: none;
-    color: gray;
-    border: 1px solid gray;
-    border-radius: 10px;
-  }
-  .mainSlide button:hover{
-    cursor: pointer;
-  }
-
-  .show-list{
-    padding: 0 200px;
-    margin-top: 100px;
-
-  }
-  .show-main {
-    width: 1520px;
-    padding: 0 10px;
-    border: 2px solid #ccc;
-    padding: 20px;
-    display: flex;
-    flex-wrap: wrap; /* 항목을 여러 행에 걸쳐 배열하도록 수정 */
-    justify-content: flex-start; 
-  }
-
-  .main-list {
-    width: 14.28%; /* 각 항목이 7개씩 나열되도록 너비 조정 */
-  }
-
-  .mainslide-show-info{
-    height: 360px;
-    font-size: 12px;
-    margin-top: 10px;
-    padding: 0 10px;
-  }
-  .mainslide-show-info:hover{
-    background-color: tomato;
-    color: white;
-    font-size: 14px;
-    height: 360px;
-    overflow: hidden;
-  }
-  .mainslide-show-info:hover img{
-    width: 200px;
-    height: 200px;
-  }
-  .mainslide-show-info:hover + hr{
-    position: relative;
-    bottom: -2px;
-  }
-  .mainslide-show-info img{
-    width: 190px;
-    height: 190px;
-    margin-top: 10px;
-  }
-  .info-title{
-    height: 19px;
-    overflow: hidden;
-  }
-  .info-location{
-    height: 19px;
-    overflow: hidden;
-  }
-  .info-time{
-    height: 19px;
-    overflow: hidden;
-  }
-  .hr{
-    position: relative;
-  }
-  
