@@ -41,7 +41,7 @@ app.post("/submit_inquiry", (req, res) => {
   const { userId, email, subject, message } = req.body;
 
   // 데이터베이스에 데이터 삽입
-  const sql = 'INSERT INTO personal_inquiry (ID, email, inquiry_title, inquiry_content, inquiry_date) VALUES (?, ?, ?)';
+  const sql = 'INSERT INTO personal_inquiry (ID, email, inquiry_title, inquiry_content, inquiry_date) VALUES (?, ?, ?, ?, ?)';
   const currentDate = new Date().toISOString().split("T")[0]
   db.query(sql, [ userId, email, subject, message, currentDate], (err, result) => {
     if (err) {
