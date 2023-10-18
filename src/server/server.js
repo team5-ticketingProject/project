@@ -37,6 +37,23 @@ app.post("/text", async (req, res) => {
   codes.push(code);
 });
 
+app.post('/submit_inquiry', (req, res) => {
+  const { email, subject, message } = req.body;
+
+  // 데이터베이스에 데이터 삽입
+  const sql = 'INSERT INTO personal_inquiry (email, inquiry_title, inquiry_content) VALUES (?, ?, ?)';
+  db.query(sql, [email, subject, message], (err, result) => {
+    if (err) {
+      console.error('문의 제출 실패:', err);
+      res.status(500).send('문의 제출 실패');
+    } else {
+      console.log('문의가 성공적으로 제출되었습니다.');
+      res.status(200).send('문의가 성공적으로 제출되었습니다.');
+    }
+  });
+});
+
+
 app.get("/getDB", async (req, res) => {
   const sql = "SELECT * FROM show_info";
 
