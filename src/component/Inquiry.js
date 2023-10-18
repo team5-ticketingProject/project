@@ -11,7 +11,7 @@ function ContactUs() {
   const inquiriesPerPage = 10; // 한 페이지에 보여질 1:1 문의 수
 
   useEffect(() => {
-    // 서버 API로부터 1:1 문의 데이터를 가져오는 함수 (예: /get_inquiries)
+    
     async function fetchInquiries() {
       try {
         const response = await fetch("http://localhost:5000/getpersonal_inquiry"); // API 엔드포인트에 따라 수정
