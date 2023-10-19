@@ -12,6 +12,7 @@ import FAQ from "./Faq";
 import Navigation from "./Navigation";
 import Footer from "./Footer";
 import ContactUs from "./Inquiry";
+import NoticeInfo from "./NoticeInfo";
 
 
 const style = {
@@ -22,21 +23,27 @@ const style = {
 
 function MyPage() {
   const [modalType, setModalType] = useState("Check");
+  const [selectedNotice, setSelectedNotice] = useState(null);
 
-  const openModal = (type) => {
+  const openModal = (type, notice) => {
     setModalType(type);
+    setSelectedNotice(notice);
   };
 
   const closeModal = (e) => {
     e.stopPropagation();
     setModalType();
+    setSelectedNotice(null);
   };
 
   return (
+    
     <div>
       <div className="main">
         <div style={{ height: "88vh" }}>
           <Navigation />
+          
+          
         </div>
       </div>
       <div className="MyPage">
@@ -141,7 +148,8 @@ function MyPage() {
             {modalType === "Check" && <Check />}
             {modalType === "UserInfo" && <UserInfo />}
             {modalType === "Review" && <Review />}
-            {modalType === "Notice" && <Notice />}
+            {modalType === "Notice" &&  <Notice openModal={openModal} />}
+            {modalType === "NoticeInfo" && ( <NoticeInfo selectedNotice={selectedNotice}/>)}
             {modalType === "Faq" && <FAQ />}
             {modalType === "Inquery" && <ContactUs />}
           </div>
