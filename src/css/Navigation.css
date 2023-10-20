@@ -26,13 +26,12 @@ margin-left: 100px;
 padding: 25px 0;
 }
 
-.search div{
+.searchDiv{
 width: 350px;
 height: 50px;
 line-height: 50px;
 border: 1px solid gray;
-background-color: white;
-border-radius: 20px;
+background-color: white;;
 }
 .search input{
 width: 270px;
@@ -47,8 +46,6 @@ outline: none;
 .search button{
 height: 50px;
 background-color: white;
-margin-right: px;
-
 border: none;
 }
 
@@ -68,3 +65,16 @@ color: gray;
 color: black;
 cursor: pointer;
 }
+.output-detail{
+  height: 30px;
+  line-height: 40px;
+  border-bottom: 1px solid black;
+  overflow: hidden;
+}
+.search-output{
+  width: 350px;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  position: relative;
+}
+

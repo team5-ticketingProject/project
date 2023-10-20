@@ -135,6 +135,34 @@ app.get("/getpersonal_inquiry", async (req, res) => {
       });
 });   
 
+app.get('/getSearchList/:title', async (req, res) => {
+  const title = req.params.title;
+  const sql = 'SELECT * from show_info WHERE show_name LIKE ?;'
+  db.query(sql, [`%${title}%`], (err, results) => {
+    if(err){
+      console.error(err);
+      res.status(500).json({error: 'Internal server error'});
+    }
+    else{
+      res.json(results);
+    }
+  })
+})
+
+app.get('/getDateList/:From/:To', async (req, res) => {
+  const From = req.params.From;
+  const To = req.params.To;
+  const sql = "SELECT * FROM show_info WHERE (start_date < ? AND end_date <= ?) OR (start_date >= ? AND start_date <= ?)";
+  db.query(sql, [From, From, From, To], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 
 app.get('/getDetail/:ID', async (req, res) => {
   const ID = req.params.ID;

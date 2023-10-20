@@ -9,9 +9,14 @@ import '../css/Main.css';
 
 const Main = () => {
   const [menuNumber, setMenuNumber] = useState(0);
+  const [clicked, setClicked] = useState("11");
+  const [location, setLocation] = useState(["11"]);
 
   const handleMenu = (e) => {
     setMenuNumber(e.target.value);
+    if(e.target.value === 1){
+      setClicked("11");
+    }
   }
 
   return (
@@ -31,8 +36,8 @@ const Main = () => {
         <div style={{height:'100px' }}></div>
 
         <div className="selectedMenu">
-          {menuNumber === 0 && <MainSlide/>}
-          {menuNumber === 1 && <GetShowData />}
+          {menuNumber === 0 && <MainSlide setMenuNumber={setMenuNumber} setClicked={setClicked} setLocation={setLocation} location={location}/>}
+          {menuNumber === 1 && <GetShowData clicked={clicked} setClicked={setClicked} setLocation={setLocation} location={location}/>}
           {menuNumber === 2 && <div>할인</div>}
         </div>
       </div>

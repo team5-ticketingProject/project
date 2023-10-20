@@ -4,10 +4,10 @@ import "../css/ShowList.css";
 import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
 
-const GetShowData = () => {
+const GetShowData = ({clicked, setClicked, setLocation, location}) => {
   const [showData, setShowData] = useState([]);
-  const [location, setLocation] = useState(["11"]);
-  const [clicked, setClicked] = useState("11");
+  // const [location, setLocation] = useState(["11"]);
+  
   // 11:서울, 26:부산광역시, 27:대구광역시, 28:인천광역시, 29:광주광역시, 41:경기도, 45:전라북도, 46:전라남도, 47:경상북도, 48:경상남도, 50:제주도
 
   useEffect(() => {

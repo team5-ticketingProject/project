@@ -49,7 +49,6 @@ const GetShowCode = () => {
       .get(`http://localhost:5000/getShowList/${location}`)
       .then((response) => {
         setShowList(response.data);
-        console.log('showList:', showList);
       })
       .catch((error) => {
         console.error(error);
@@ -88,8 +87,8 @@ const GetShowCode = () => {
         <option value="50">제주</option>
       </select>
 
-      <button onClick={onClick}>데이터 받아오기</button>
-      <button onClick={onClick2}>DB저장</button>
+      <button onClick={() => onClick()}>데이터 받아오기</button>
+      <button onClick={() => onClick2()}>DB저장</button>
     </div>
   );
 }

@@ -21,7 +21,7 @@ const style = {
 };
 
 function MyPage() {
-  const [modalType, setModalType] = useState("Check");
+  const [modalType, setModalType] = useState("UserInfo");
 
   const openModal = (type) => {
     setModalType(type);
@@ -36,7 +36,7 @@ function MyPage() {
     <div>
       <div className="main">
         <div style={{ height: "88vh" }}>
-          <Navigation />
+          <Navigation openModal={openModal} />
         </div>
       </div>
       <div className="MyPage">

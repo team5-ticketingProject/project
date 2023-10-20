@@ -81,7 +81,7 @@ const SlideShow = ({ images }) => {
   );
 };
 
-const SlideShowContainer = () => {
+const SlideShowContainer = ({setMenuNumber, setClicked, setLocation, location}) => {
   const [showData, setShowData] = useState([]);
   const [showMap, setShowMap] = useState(false);
   const [showDate, setShowDate] = useState(false);
@@ -96,12 +96,19 @@ const SlideShowContainer = () => {
       .get("http://localhost:5000/getDB")
       .then((response) => {
         setShowData(response.data);
-        console.log(showData);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
+
+  const location_button = (e) => {
+    setMenuNumber(1);
+    setClicked(e.target.value);
+    const locationArray = e.target.value.split(",");
+    setLocation(locationArray);
+  }
+
   return (
     <div>
       <SlideShow images={slideImageUrls} />
@@ -110,10 +117,12 @@ const SlideShowContainer = () => {
           <span>
             <strong>연극</strong>
           </span>
-          <span className="select-classify-right-span">{showData.length}개 상영중</span>
+          <span className="select-classify-right-span">
+            {showData.length}개 상영중
+          </span>
           <hr />
           <p>
-            <button>전체</button>
+            <a href="#tag1"><button>전체</button></a>
           </p>
           <div>
             <button
@@ -126,31 +135,52 @@ const SlideShowContainer = () => {
             </button>
           </div>
           <p>
-            <button
-              onClick={() => {
-                setShowDate(!showDate);
-                setShowMap(false);
-              }}
-            >
-              날짜별 예매
-            </button>
+            <Link to ={`/dateList`}>
+              <button>
+                날짜별 예매
+              </button>
+            </Link>
           </p>
         </div>
         <div
           className="mapDiv"
           style={{ visibility: showMap ? "visible" : "hidden" }}
         >
-          지도 영역
-        </div>
-        <div
-          className="dateDiv"
-          style={{ visibility: showDate ? "visible" : "hidden" }}
-        >
-          달력 영역
+          <img id="map_img" src="img/korea_map.jpg" alt="map" />
+          <button id="seoul" value="11" onClick={location_button}>
+            서울
+          </button>
+          <button id="gyeong-gi" value="28,41" onClick={location_button}>
+            경기도
+          </button>
+          <button id="incheon" value="28,41" onClick={location_button}>
+            인천
+          </button>
+          <button id="gyeong-buk" value="27,47" onClick={location_button}>
+            경상북도
+          </button>
+          <button id="gyeong-nam" value="26,48" onClick={location_button}>
+            경상남도
+          </button>
+          <button id="daegu" value="27,47" onClick={location_button}>
+            대구
+          </button>
+          <button id="busan" value="26,48" onClick={location_button}>
+            부산
+          </button>
+          <button id="gwangju" value="29,45,46" onClick={location_button}>
+            광주
+          </button>
+          <button id="jelloa" value="29,45,46" onClick={location_button}>
+            전라도
+          </button>
+          <button id="jeju" value="50" onClick={location_button}>
+            제주
+          </button>
         </div>
       </div>
       <div className="show-list-title">
-        <h1>연극목록</h1>
+        <a id="tag1" href><h1>연극목록</h1></a>
       </div>
       <div className="show-list">
         <div className="show-main">
