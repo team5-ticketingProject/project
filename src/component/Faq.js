@@ -21,7 +21,6 @@ function FAQ() {
   }, []);
 
 
-  // 예시로 FAQ 데이터를 상태에 추가
 
 
   const handlePageChange = (event, page) => {

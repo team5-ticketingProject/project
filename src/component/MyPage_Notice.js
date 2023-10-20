@@ -17,7 +17,6 @@ function Notice(props) {
     props.openModal("NoticeInfo", notice);
   };
 
-  // 예시로 공지사항 데이터를 상태에 추가
   useEffect(() => {
     axios
       .get("http://localhost:5000/getNotice")
