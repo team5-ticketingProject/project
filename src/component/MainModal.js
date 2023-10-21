@@ -26,7 +26,7 @@ const MainModal = (props) => {
             }
           }}
         >
-          <div className={'modal-contents'}>
+          <div className={'modal-content'}>
             <ul>
               <li >
                 <div>

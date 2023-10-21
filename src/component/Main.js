@@ -25,7 +25,7 @@ const Main = () => {
       <div>
         <Navigation />
         <GetShowCode />  
-        <Link to ='/test'>test</Link>
+        <Link to ='/admin'>test</Link>
     
         <div className="mainMenu">
           <ul>

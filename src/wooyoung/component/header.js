@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styles from './header.module.css';
+import styles from './header.module.css'
 
 const Header = () => {
   
@@ -8,7 +8,7 @@ const Header = () => {
     <header className={styles.header}>
       <div className={styles.contents}>
         <h2 className={styles.logo}>
-        <Link to="/member" className={styles.nounderline}>LOGO</Link> {/*로고 누르면 회원관리로 */}
+        <Link to="/admin/member" className={styles.nounderline}>LOGO</Link> {/*로고 누르면 회원관리로 */}
         </h2>
 
 
