@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 function NoticeInfo(props) {
   const [selectedNotice, setSelectedNotice] = useState(null); // 공지사항 목록
-  const [ModalType, setModalType] = useState(null); // 공지사항 목록
   
 
   useEffect(() => {
