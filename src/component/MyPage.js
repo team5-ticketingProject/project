@@ -13,6 +13,7 @@ import Navigation from "./Navigation";
 import Footer from "./Footer";
 import ContactUs from "./Inquiry";
 import NoticeInfo from "./NoticeInfo";
+import FaqInfo from "./FaqInfo";
 
 const style = {
   width: "100%",
@@ -24,17 +25,20 @@ function MyPage() {
   const [modalType, setModalType] = useState("Check");
   const [selectedNotice, setSelectedNotice] = useState(null);
   const [previousModalType, setPreviousModalType] = useState(null);
+  const [selectedFaq, setSelectedFaq] = useState(null);
 
-  const openModal = (type, notice) => {
+  const openModal = (type, notice, faq) => {
     setPreviousModalType(modalType);
     setModalType(type);
     setSelectedNotice(notice);
+    setSelectedFaq(faq);
   };
 
   const closeModal = (e) => {
     e.stopPropagation();
     setModalType();
     setSelectedNotice(null);
+    setSelectedFaq(null);
   };
 
   useEffect(() => {
@@ -43,6 +47,7 @@ function MyPage() {
       if (event.state && event.state.modalType) {
         setModalType(event.state.modalType);
         setSelectedNotice(null);
+        setSelectedFaq(null);
       }
     };
 
@@ -56,6 +61,7 @@ function MyPage() {
   const navigateToModal = (type) => {
     setModalType(type);
     setSelectedNotice(null);
+    setSelectedFaq(null);
     window.history.pushState({ modalType: type }, document.title);
   };
 
@@ -132,7 +138,8 @@ function MyPage() {
                   primary={
                     <span style={{ fontSize: "18px", fontWeight: "bold" }}>
                       자주묻는질문
-                    </span>}
+                    </span>
+                  }
                 />
               </ListItem>
               <ListItem button onClick={() => navigateToModal("Inquery")}>
@@ -169,9 +176,20 @@ function MyPage() {
             {modalType === "Review" && <Review />}
             {modalType === "Notice" && <Notice openModal={openModal} />}
             {modalType === "NoticeInfo" && (
-              <NoticeInfo selectedNotice={selectedNotice} goBackToNotice={closeModal} openModal={openModal} />
+              <NoticeInfo
+                selectedNotice={selectedNotice}
+                goBackToNotice={closeModal}
+                openModal={openModal}
+              />
             )}
-            {modalType === "Faq" && <FAQ />}
+            {modalType === "Faq" && <FAQ openModal={openModal} />}
+            {modalType === "FaqInfo" && (
+              <FaqInfo
+                selectedFaq={selectedFaq}
+                goBackToFaq={closeModal}
+                openModal={openModal}
+              />
+            )}
             {modalType === "Inquery" && <ContactUs />}
           </div>
         </div>

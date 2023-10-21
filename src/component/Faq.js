@@ -3,25 +3,27 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
 
-function FAQ() {
+function FAQ(props) {
   const [faqs, setFAQs] = useState([]); // FAQ 목록
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const faqsPerPage = 10; // 한 페이지에 보여질 FAQ 수
+  const [selectedFaq, setSelectedFaq] = useState(null); 
+
+  const openFaqModal = (faq) => {
+    setSelectedFaq(faq);
+    props.openModal("FaqInfo", faq);
+  };
 
   useEffect(() => {
     axios
       .get("http://localhost:5000/getFAQ")
       .then((response) => {
         setFAQs(response.data);
-        console.log("FAQ:", faqs);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
-
-
-
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
@@ -40,8 +42,7 @@ function FAQ() {
       </div>
       <div style={{ marginTop: "20px" }}>
         <h4>
-        <span style={{color:"red"}}>자주묻는질문</span>을 확인하실 수 있습니다.
-          자주 묻는 질문을 확인하실 수 있습니다.
+          <span style={{color:"red"}}>자주묻는질문</span>을 확인하실 수 있습니다.
           <br />
           궁금한 내용을 클릭하여 답변을 확인하세요.
         </h4>
@@ -57,8 +58,14 @@ function FAQ() {
           <tbody>
             {currentFAQs.map((faq, index) => (
               <tr key={index}>
-                <td>{faq.question}</td>
-                <td>{faq.answer}</td>
+                <td>
+                  <span style={{cursor:"pointer"}} onClick={() => openFaqModal(faq)}>
+                    {faq.question}
+                  </span>
+                </td>
+                <td style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", maxHeight:"200px", maxWidth:"200px"}}>
+                  {faq.answer}
+                </td>
               </tr>
             ))}
           </tbody>
