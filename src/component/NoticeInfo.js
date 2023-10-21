@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 function NoticeInfo(props) {
   const [selectedNotice, setSelectedNotice] = useState(null); // 공지사항 목록
+  const [ModalType, setModalType] = useState(null); // 공지사항 목록
+  
 
   useEffect(() => {
     if (props.selectedNotice) {
@@ -9,6 +11,10 @@ function NoticeInfo(props) {
       setSelectedNotice(props.selectedNotice);
     }
   }, [props.selectedNotice]);
+  const goBackToNotice = () => {
+    props.openModal("Notice"); // 
+  setSelectedNotice(null);
+  };
 
   return (
     <div className="Notice">
@@ -42,6 +48,8 @@ function NoticeInfo(props) {
           {selectedNotice ? selectedNotice.content : "No notice selected"}
         </h4>
       </div>
+
+      <button onClick={goBackToNotice}>목록으로</button>
     </div>
   );
 }

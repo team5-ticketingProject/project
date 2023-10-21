@@ -12,7 +12,8 @@ function Notice(props) {
   
 
 
-  const openModal = (notice) => {
+  const openNoticeModal = (notice) => {
+    // Notice 모달을 열 때 선택된 공지사항을 설정
     setSelectedNotice(notice);
     props.openModal("NoticeInfo", notice);
   };
@@ -65,7 +66,7 @@ function Notice(props) {
             {currentNotices.map((notice, index) => (
               <tr key={index}>
                 <td>
-                  <span style={{cursor:"pointer"}} onClick={() => openModal(notice)}>
+                  <span style={{cursor:"pointer"}} onClick={() => openNoticeModal(notice)}>
                     {notice.title}
                   </span>
                 </td>

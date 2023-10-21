@@ -169,7 +169,7 @@ function MyPage() {
             {modalType === "Review" && <Review />}
             {modalType === "Notice" && <Notice openModal={openModal} />}
             {modalType === "NoticeInfo" && (
-              <NoticeInfo selectedNotice={selectedNotice} />
+              <NoticeInfo selectedNotice={selectedNotice} goBackToNotice={closeModal} openModal={openModal} />
             )}
             {modalType === "Faq" && <FAQ />}
             {modalType === "Inquery" && <ContactUs />}
