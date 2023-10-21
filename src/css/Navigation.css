@@ -1,25 +1,80 @@
 .navigation{
-    height: 50px;
-    background-color: white;
-    text-align: center;
-    position: relative;
-    top:-16px;
-    border-bottom: 1px solid gray;
-  }
-  .navigation ul{
-    margin-right: 30px;
-    padding-top: 15px;
-    list-style: none;
-    margin-top: -65px;
-  }
-  .navigation li{
-    float: right;
-    margin-left: 4%;
-  }
-  .navigation a{
-    text-decoration: none;
-    color: gray;
-  }
-  .navigation a:hover{
-    color:black;
-  }
+  height: 100px;
+  background-color: white;
+  text-align: center;
+  top:-16px;
+  border-bottom: 1px solid gray;
+  line-height: 100px;
+  padding: 0 140px ;
+}
+.logo{
+
+float: left;
+margin-left: 160px;
+}
+.logo a{
+  text-decoration: none;
+}
+.logo h2{
+display: inline;
+color: black;
+}
+
+.search{
+float: left;
+margin-left: 100px;
+padding: 25px 0;
+}
+
+.searchDiv{
+width: 350px;
+height: 50px;
+line-height: 50px;
+border: 1px solid gray;
+background-color: white;;
+}
+.search input{
+width: 270px;
+height: 20px;
+margin-left: 5px;
+border: none;
+}
+
+.search input:focus{
+outline: none;
+}
+.search button{
+height: 50px;
+background-color: white;
+border: none;
+}
+
+.menu{
+width: 500px;
+float: right;
+margin-right: 150px;
+}
+.menu span{
+margin-left: 50px;
+}
+.menu a{
+text-decoration: none;
+color: gray;
+}
+.menu a:hover{
+color: black;
+cursor: pointer;
+}
+.output-detail{
+  height: 30px;
+  line-height: 40px;
+  border-bottom: 1px solid black;
+  overflow: hidden;
+}
+.search-output{
+  width: 350px;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  position: relative;
+}
+

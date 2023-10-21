@@ -1,0 +1,16 @@
+.blacknav {
+  background-color : black;
+  width : 100%;
+  color : white;
+  display : flex;
+  padding : 10px;
+  text-align : center;
+  align-items : center;
+
+}
+
+.item {
+  margin-left : 50px;
+  text-decoration: none; /* 밑줄 제거 */
+  color: inherit; /* 기본 텍스트 색상 상속 */
+}

@@ -1,5 +1,5 @@
 .main {
-    width: 100vw;
+    width: 1920px;
     text-align: center;
 }
 
@@ -8,12 +8,13 @@
     border-bottom: 1px solid gray;
     position: absolute;
     width: 100%;
+    color: gray;
 }
 
 .mainMenu ul {
     list-style: none;
     padding-bottom: 20px;
-    ;
+    margin-left: 250px;
 }
 
 .mainMenu ul li {
@@ -22,6 +23,6 @@
 }
 
 .mainMenu ul li:hover {
-    color: gray;
+    color: black;
     cursor: pointer;
 }
