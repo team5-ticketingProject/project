@@ -11,7 +11,6 @@ function ContactForm({ onSubmit, onClose }) {
     const min = 1;
   const max = 100;
 
-  // min과 max 사이의 랜덤한 정수를 생성
   const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
     // 사용자 로그인 프로세스를 통해 사용자 ID를 얻어옵니다.
     // 이 부분은 사용자 로그인 로직에 따라 달라집니다.
