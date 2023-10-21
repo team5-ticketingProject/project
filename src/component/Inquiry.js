@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import ContactForm from "./InquiryPopUp"; // 수정된 파일명 사용
+import ContactForm from "./InquiryPopUp"; 
 import ReactDOM from "react-dom";
 
 function ContactUs() {
@@ -15,7 +15,7 @@ function ContactUs() {
       try {
         const response = await fetch(
           "http://localhost:5000/getpersonal_inquiry"
-        ); // API 엔드포인트에 따라 수정
+        ); 
         if (response.ok) {
           const data = await response.json();
           setInquiries(data);
@@ -25,7 +25,6 @@ function ContactUs() {
       }
     }
 
-    // 1:1 문의 데이터 가져오기
     fetchInquiries();
   }, []);
 

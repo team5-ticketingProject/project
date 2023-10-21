@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -12,7 +12,7 @@ import FAQ from "./Faq";
 import Navigation from "./Navigation";
 import Footer from "./Footer";
 import ContactUs from "./Inquiry";
-
+import NoticeInfo from "./NoticeInfo";
 
 const style = {
   width: "100%",
@@ -21,22 +21,49 @@ const style = {
 };
 
 function MyPage() {
-  const [modalType, setModalType] = useState("UserInfo");
+  const [modalType, setModalType] = useState("Check");
+  const [selectedNotice, setSelectedNotice] = useState(null);
+  const [previousModalType, setPreviousModalType] = useState(null);
 
-  const openModal = (type) => {
+  const openModal = (type, notice) => {
+    setPreviousModalType(modalType);
     setModalType(type);
+    setSelectedNotice(notice);
   };
 
   const closeModal = (e) => {
     e.stopPropagation();
     setModalType();
+    setSelectedNotice(null);
+  };
+
+  useEffect(() => {
+    // 뒤로 가기 버튼을 감지하는 이벤트 리스너
+    const handlePopState = (event) => {
+      if (event.state && event.state.modalType) {
+        setModalType(event.state.modalType);
+        setSelectedNotice(null);
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
+  const navigateToModal = (type) => {
+    setModalType(type);
+    setSelectedNotice(null);
+    window.history.pushState({ modalType: type }, document.title);
   };
 
   return (
     <div>
       <div className="main">
         <div style={{ height: "88vh" }}>
-          <Navigation openModal={openModal} />
+          <Navigation />
         </div>
       </div>
       <div className="MyPage">
@@ -44,7 +71,7 @@ function MyPage() {
           <div className="ListPadding">
             <List sx={style} component="nav" aria-label="mailbox folders">
               <br />
-              <ListItem button onClick={() => openModal("UserInfo")}>
+              <ListItem button onClick={() => navigateToModal("UserInfo")}>
                 <ListItemText
                   primary={
                     <span style={{ fontSize: "18px", fontWeight: "bold" }}>
@@ -56,7 +83,7 @@ function MyPage() {
               <br />
               <Divider />
               <br />
-              <ListItem button onClick={() => openModal("Check")}>
+              <ListItem button onClick={() => navigateToModal("Check")}>
                 <ListItemText
                   primary={
                     <span style={{ fontSize: "18px", fontWeight: "bold" }}>
@@ -68,7 +95,7 @@ function MyPage() {
               <br />
               <Divider />
               <br />
-              <ListItem button onClick={() => openModal("Review")}>
+              <ListItem button onClick={() => navigateToModal("Review")}>
                 <ListItemText
                   primary={
                     <span style={{ fontSize: "18px", fontWeight: "bold" }}>
@@ -91,7 +118,7 @@ function MyPage() {
               </ListItem>
               <br />
               <Divider />
-              <ListItem button onClick={() => openModal("Notice")}>
+              <ListItem button onClick={() => navigateToModal("Notice")}>
                 <ListItemText
                   primary={
                     <span style={{ fontSize: "18px", fontWeight: "bold" }}>
@@ -100,16 +127,15 @@ function MyPage() {
                   }
                 />
               </ListItem>
-              <ListItem button onClick={() => openModal("Faq")}>
+              <ListItem button onClick={() => navigateToModal("Faq")}>
                 <ListItemText
                   primary={
                     <span style={{ fontSize: "18px", fontWeight: "bold" }}>
                       자주묻는질문
-                    </span>
-                  }
+                    </span>}
                 />
               </ListItem>
-              <ListItem button onClick={() => openModal("Inquery")}>
+              <ListItem button onClick={() => navigateToModal("Inquery")}>
                 <ListItemText
                   primary={
                     <span style={{ fontSize: "18px", fontWeight: "bold" }}>
@@ -141,13 +167,15 @@ function MyPage() {
             {modalType === "Check" && <Check />}
             {modalType === "UserInfo" && <UserInfo />}
             {modalType === "Review" && <Review />}
-            {modalType === "Notice" && <Notice />}
+            {modalType === "Notice" && <Notice openModal={openModal} />}
+            {modalType === "NoticeInfo" && (
+              <NoticeInfo selectedNotice={selectedNotice} goBackToNotice={closeModal} openModal={openModal} />
+            )}
             {modalType === "Faq" && <FAQ />}
             {modalType === "Inquery" && <ContactUs />}
           </div>
         </div>
       </div>
-      <Footer></Footer>
     </div>
   );
 }
