@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaHome } from 'react-icons/fa'
-import styles from './header.module.css'
+import styles from './header.module.css';
 
 const Header = () => {
   
@@ -19,7 +18,7 @@ const Header = () => {
             <Link to="/login" className={styles.nounderline}>Logout</Link> {/* "Logout"을 클릭하면 "/login"으로 이동 */}
           </li>
           <li>
-            <Link to="/" className={styles.nounderline}><FaHome size={24}/></Link> {/* "Home"을 클릭하면 메인페이지로 이동 */}
+            <Link to="/" className={styles.nounderline}>Home</Link> {/* "Home"을 클릭하면 메인페이지로 이동 */}
           </li>
           </ul>
         </nav>

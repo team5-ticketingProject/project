@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import styles from './faq.module.css'
+import styles from './Faq.module.css'
 
 const Faq = () => {
   const [faqs, setFaqs] = useState([
     { id: 1, question: 'FAQ 1', answer: 'Answer 1' },
     { id: 2, question: 'FAQ 2', answer: 'Answer 2' },
   ]);
-  const [newQuestion, setNewQuestion] = useState(''); // 새로운 질문 상태
-  const [newAnswer, setNewAnswer] = useState(''); // 새로운 답변 상태
+  const [newQuestion, setNewQuestion] = useState(''); 
+  const [newAnswer, setNewAnswer] = useState('');
   const [isFormVisible, setIsFormVisible] = useState(false);
 
   const handleCreateFaq = () => {
@@ -24,6 +24,14 @@ const Faq = () => {
     }
   };
 
+  const handleDeleteFaq = (id) => {
+    const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
+    if (confirmDelete) {
+      // 삭제 동작을 수행
+      setFaqs(faqs.filter((faq) => faq.id !== id));
+    }
+  };
+  
   return (
     <div className={styles.faq}>
       <button className={styles.faqButton} 
@@ -49,11 +57,12 @@ const Faq = () => {
         </div>
       )}
       {faqs.map((faq) => (
-        <div key={faq.id} className={styles.faqItem}>
-          <h3 className={styles.faqQuestion}>{faq.question}</h3>
-          <p className={styles.faqAnswer}>{faq.answer}</p>
-        </div>
-      ))}
+      <div key={faq.id} className={styles.faqItem}>
+        <h3 className={styles.faqQuestion}>{faq.question}</h3>
+        <p className={styles.faqAnswer}>{faq.answer}</p>
+      <button onClick={() => handleDeleteFaq(faq.id)}>삭제</button>
+       </div>
+))}
     </div>
   );
 };

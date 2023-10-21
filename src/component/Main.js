@@ -7,6 +7,7 @@ import MainSlide from "./MainSlide";
 import { Link } from "react-router-dom";
 import '../css/Main.css';
 
+
 const Main = () => {
   const [menuNumber, setMenuNumber] = useState(0);
   const [clicked, setClicked] = useState("11");
@@ -24,6 +25,7 @@ const Main = () => {
       <div>
         <Navigation />
         <GetShowCode />  
+        <Link to ='/test'>test</Link>
     
         <div className="mainMenu">
           <ul>
