@@ -7,13 +7,13 @@ function FAQ(props) {
   const [faqs, setFAQs] = useState([]); // FAQ 목록
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const faqsPerPage = 10; // 한 페이지에 보여질 FAQ 수
-  const [selectedFaq, setSelectedFaq] = useState(null); 
-
-  const openFaqModal = (faq) => {
+  const [selectedFaq, setSelectedFaq] = useState(null);
+  
+  const handleFaqClick = (faq) => {
     setSelectedFaq(faq);
-    props.openModal("FaqInfo", faq);
-  };
-
+    props.openModal("FaqInfo", null, faq);
+  }
+  
   useEffect(() => {
     axios
       .get("http://localhost:5000/getFAQ")
@@ -32,6 +32,7 @@ function FAQ(props) {
   const indexOfLastFAQ = currentPage * faqsPerPage;
   const indexOfFirstFAQ = indexOfLastFAQ - faqsPerPage;
   const currentFAQs = faqs.slice(indexOfFirstFAQ, indexOfLastFAQ);
+
 
   return (
     <div className="FAQ">
@@ -59,7 +60,7 @@ function FAQ(props) {
             {currentFAQs.map((faq, index) => (
               <tr key={index}>
                 <td>
-                  <span style={{cursor:"pointer"}} onClick={() => openFaqModal(faq)}>
+                  <span style={{cursor:"pointer"}} onClick={() => handleFaqClick(faq)}>
                     {faq.question}
                   </span>
                 </td>

@@ -7,10 +7,14 @@ function FaqInfo(props) {
     if (props.selectedFaq) {
       setSelectedFaq(props.selectedFaq);
     }
+    
   }, [props.selectedFaq]);
-  const goBackToFaq = () => {
-    props.openModal("Faq");
+
+  const goBacktoFaq = () => {
+   
+    props.openModal("Faq", null);
     setSelectedFaq(null);
+   
   };
 
   return (
@@ -19,7 +23,7 @@ function FaqInfo(props) {
         <h1
           style={{ fontSize: "30px", fontWeight: "bold", marginBottom: "20px" }}
         >
-          {selectedFaq ? selectedFaq.question : "No faq selected"}
+          {selectedFaq ? selectedFaq.question : "No FAQ selected"}
         </h1>
       </div>
       <div className="text-container">
@@ -31,10 +35,10 @@ function FaqInfo(props) {
             fontSize: "20px",
           }}
         >
-          {selectedFaq ? selectedFaq.answer : "No faq selected"}
+          {selectedFaq ? selectedFaq.answer : "No FAQ selected"}
         </h4>
       </div>
-      <button onClick={goBackToFaq}>목록으로</button>
+      <button onClick={goBacktoFaq}>목록으로</button>
     </div>
   );
 }

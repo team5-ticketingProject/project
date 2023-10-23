@@ -10,6 +10,8 @@ function NoticeInfo(props) {
       setSelectedNotice(props.selectedNotice);
     }
   }, [props.selectedNotice]);
+ 
+  
   const goBackToNotice = () => {
     props.openModal("Notice"); // 
   setSelectedNotice(null);

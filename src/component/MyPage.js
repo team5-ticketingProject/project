@@ -32,6 +32,7 @@ function MyPage() {
     setModalType(type);
     setSelectedNotice(notice);
     setSelectedFaq(faq);
+    
   };
 
   const closeModal = (e) => {
@@ -39,6 +40,7 @@ function MyPage() {
     setModalType();
     setSelectedNotice(null);
     setSelectedFaq(null);
+   
   };
 
   useEffect(() => {
@@ -48,6 +50,7 @@ function MyPage() {
         setModalType(event.state.modalType);
         setSelectedNotice(null);
         setSelectedFaq(null);
+        
       }
     };
 
@@ -62,6 +65,7 @@ function MyPage() {
     setModalType(type);
     setSelectedNotice(null);
     setSelectedFaq(null);
+    
     window.history.pushState({ modalType: type }, document.title);
   };
 
@@ -186,7 +190,7 @@ function MyPage() {
             {modalType === "FaqInfo" && (
               <FaqInfo
                 selectedFaq={selectedFaq}
-                goBackToFaq={closeModal}
+                goBacktoFaq={closeModal}
                 openModal={openModal}
               />
             )}
