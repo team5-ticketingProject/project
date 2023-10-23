@@ -22,7 +22,7 @@ const Main = () => {
   return (
     <div className="main">
       <div>
-        <Navigation />
+        <Navigation  />
         <GetShowCode />  
     
         <div className="mainMenu">

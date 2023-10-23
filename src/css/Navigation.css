@@ -56,6 +56,12 @@ margin-right: 150px;
 }
 .menu span{
 margin-left: 50px;
+color: gray;
+text-decoration: none;
+}
+.menu span:hover {
+  color: black;
+  cursor: pointer;
 }
 .menu a{
 text-decoration: none;
@@ -77,4 +83,10 @@ cursor: pointer;
   border-right: 1px solid black;
   position: relative;
 }
+.navbutton :hover {
+  color: black;
+  cursor: pointer;
+  } 
+  
+
 

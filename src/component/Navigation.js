@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../css/Navigation.css";
 
-const Navigation = ({ openModal }) => {
+const Navigation = ({ navigateToModal }) => {
   const [searchList, SetSearchList] = useState([]);
+  
+  
   const handleOpenCheckModal = (type) => {
-    if (openModal) {
-      openModal(type, null);
+    if (navigateToModal) {
+      navigateToModal(type);
     
     }
     console.log(`handleOpenCheckModal called with type: ${type}`);
@@ -65,9 +67,7 @@ const Navigation = ({ openModal }) => {
             <a href="/mypage">마이페이지</a>
           </span>
           <span>
-            <Link to="/mypage" onClick={() => handleOpenCheckModal("Check")}>
-              예매확인/취소
-            </Link>
+          <a href="/mypage/check">예매확인/취소</a>
           </span>
         </div>
       </div>

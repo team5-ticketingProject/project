@@ -6,6 +6,7 @@ import Main from "./component/Main";
 import MyPage from "./component/MyPage";
 import Reservation from "./component/Reservation";
 import Check from "./component/MyPage_Check";
+import MyPageCheck from "./component/MyPage_default_Check";
 
 const App = () => {
   return (
@@ -15,7 +16,7 @@ const App = () => {
         <Route path="/login" element={<Login/>} />  
         <Route path="/signup" element={<SignUp/>} />  
         <Route path="/mypage" element={<MyPage/>} />
-        <Route path="/Check" element={<Check/>} />
+        <Route path="/mypage/check" element={<MyPageCheck/>} />
         <Route path="/reservation/:show_ID" element={<Reservation/>}/>
       </Routes>
     </div>
