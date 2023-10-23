@@ -5,6 +5,7 @@ import SignUp from "./component/SignUp";
 import Main from "./component/Main";
 import MyPage from "./component/MyPage";
 import Reservation from "./component/Reservation";
+import Check from "./component/MyPage_Check";
 
 const App = () => {
   return (
@@ -13,7 +14,8 @@ const App = () => {
         <Route path="/" element={<Main/>}/>      
         <Route path="/login" element={<Login/>} />  
         <Route path="/signup" element={<SignUp/>} />  
-        <Route path="/mypage" element={<MyPage/>} />  
+        <Route path="/mypage" element={<MyPage/>} />
+        <Route path="/Check" element={<Check/>} />
         <Route path="/reservation/:show_ID" element={<Reservation/>}/>
       </Routes>
     </div>

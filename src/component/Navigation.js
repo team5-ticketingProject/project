@@ -5,11 +5,14 @@ import "../css/Navigation.css";
 
 const Navigation = ({ openModal }) => {
   const [searchList, SetSearchList] = useState([]);
-  const handelOpenModal = (type) => {
+  const handleOpenCheckModal = (type) => {
     if (openModal) {
-      openModal(type);
+      openModal(type, null);
+    
     }
+    console.log(`handleOpenCheckModal called with type: ${type}`);
   };
+  
   const searchTitle = (e) => {
     const title = e.target.value;
     SetSearchList([]);
@@ -62,7 +65,7 @@ const Navigation = ({ openModal }) => {
             <a href="/mypage">마이페이지</a>
           </span>
           <span>
-            <Link to="/mypage" onClick={() => handelOpenModal("Check")}>
+            <Link to="/mypage" onClick={() => handleOpenCheckModal("Check")}>
               예매확인/취소
             </Link>
           </span>
