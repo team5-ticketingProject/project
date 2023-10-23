@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-pascal-case */
 import React, { useState, useEffect } from "react";
 import { Routes, Route, } from "react-router-dom";
 import Login from "./component/Login";
@@ -14,7 +15,7 @@ import DiscountAdjustment from './wooyoung/pages/DiscountAdjustment';
 
 const App = () => {
   return (
-    <div style={{overflowX:'hidden'}}>
+    <div>
       <Routes>
         <Route path="/" element={<Main/>}/>      
         <Route path="/login" element={<Login/>} />  

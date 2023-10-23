@@ -38,7 +38,7 @@
   float:left;
   width:4%;
   position: relative;
-  right:50px;
+  right:43px;
   top: -350px;
 }
 
@@ -54,10 +54,9 @@
 }
 
 .main-box{
-  height: 200px;
-  padding: 0 285px;
+  height: 200px; 
   color: gray;
-  
+
 }
 .select-classify{
   border: 5px solid rgb(228, 228, 171);
@@ -222,4 +221,47 @@
 }
 .hr{
   position: relative;
+}
+.main-container{
+
+  padding: 0 285px;
+}
+.rank-box{
+  border: 5px solid rgb(189, 183, 183);
+  width: 300px;
+  height: 200px;
+  position: absolute;
+  bottom: 35px;
+  right: 265px;
+}
+.rank-detail{  
+  width: 50%;
+  height: 20px;
+  padding: 5px;
+  overflow: hidden;
+  float: left;
+  color: gray;
+}
+.rank-detail:hover{
+  cursor: pointer;
+  color: tomato;
+}
+.rank-detail-number{
+  color: white;
+  width: 20px;
+  float: left;
+}
+
+.rank-image img{
+  width: 100px;
+  height: 150px;
+}
+.mainslide-discount{
+  border: 5px solid rgb(228, 228, 171);
+  border-radius: 10px;
+  width: 300px;
+  height: 200px;
+  position: absolute;
+  bottom: 35px; 
+  right: 800px;
 }

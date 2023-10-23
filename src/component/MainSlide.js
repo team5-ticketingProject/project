@@ -82,10 +82,17 @@ const SlideShow = ({ images }) => {
   );
 };
 
-const SlideShowContainer = ({setMenuNumber, setClicked, setLocation, location}) => {
+const SlideShowContainer = ({
+  setMenuNumber,
+  setClicked,
+  setLocation,
+  location,
+}) => {
   const [showData, setShowData] = useState([]);
   const [showMap, setShowMap] = useState(false);
   const [showDate, setShowDate] = useState(false);
+  const [rankList, setRankList] = useState([]);
+  const [selectedRankPoster, setSelectedRankPoster] = useState(0);
   const slideImageUrls = [
     ["http://www.kopis.or.kr/upload/pfmPoster/PF_PF226641_230925_144508.gif"],
     "http://www.kopis.or.kr/upload/pfmPoster/PF_PF227080_231005_144935.gif",
@@ -101,6 +108,12 @@ const SlideShowContainer = ({setMenuNumber, setClicked, setLocation, location}) 
       .catch((error) => {
         console.error(error);
       });
+
+      axios
+      .get('http://localhost:5000/getRank')
+      .then((response) => {
+        setRankList(response.data);
+      })
   }, []);
 
   const location_button = (e) => {
@@ -108,80 +121,110 @@ const SlideShowContainer = ({setMenuNumber, setClicked, setLocation, location}) 
     setClicked(e.target.value);
     const locationArray = e.target.value.split(",");
     setLocation(locationArray);
+  };
+
+  const hover_rank = (index) => {
+    setSelectedRankPoster(index);
   }
 
   return (
     <div>
       <SlideShow images={slideImageUrls} />
-      <div className="main-box">
-        <div className="select-classify">
-          <span>
-            <strong>연극</strong>
-          </span>
-          <span className="select-classify-right-span">
-            {showData.length}개 상영중
-          </span>
-          <hr />
-          <p>
-            <a href="#tag1"><button>전체</button></a>
-          </p>
-          <div>
-            <button
-              onClick={() => {
-                setShowMap(!showMap);
-                setShowDate(false);
-              }}
-            >
-              지역별 예매
+      <div className="main-container">
+        <div className="main-box">
+          <div className="select-classify">
+            <span>
+              <strong>연극</strong>
+            </span>
+            <span className="select-classify-right-span">
+              {showData.length}개 상영중
+            </span>
+            <hr />
+            <p>
+              <a href="#tag1">
+                <button>전체</button>
+              </a>
+            </p>
+            <div>
+              <button
+                onClick={() => {
+                  setShowMap(!showMap);
+                  setShowDate(false);
+                }}
+              >
+                지역별 예매
+              </button>
+            </div>
+            <p>
+              <Link to={`/dateList`}>
+                <button>날짜별 예매</button>
+              </Link>
+            </p>
+          </div>
+          <div
+            className="mapDiv"
+            style={{ visibility: showMap ? "visible" : "hidden" }}
+          >
+            <img id="map_img" src="img/korea_map.jpg" alt="map" />
+            <button id="seoul" value="11" onClick={location_button}>
+              서울
+            </button>
+            <button id="gyeong-gi" value="28,41" onClick={location_button}>
+              경기도
+            </button>
+            <button id="incheon" value="28,41" onClick={location_button}>
+              인천
+            </button>
+            <button id="gyeong-buk" value="27,47" onClick={location_button}>
+              경상북도
+            </button>
+            <button id="gyeong-nam" value="26,48" onClick={location_button}>
+              경상남도
+            </button>
+            <button id="daegu" value="27,47" onClick={location_button}>
+              대구
+            </button>
+            <button id="busan" value="26,48" onClick={location_button}>
+              부산
+            </button>
+            <button id="gwangju" value="29,45,46" onClick={location_button}>
+              광주
+            </button>
+            <button id="jelloa" value="29,45,46" onClick={location_button}>
+              전라도
+            </button>
+            <button id="jeju" value="50" onClick={location_button}>
+              제주
             </button>
           </div>
-          <p>
-            <Link to ={`/dateList`}>
-              <button>
-                날짜별 예매
-              </button>
-            </Link>
-          </p>
         </div>
-        <div
-          className="mapDiv"
-          style={{ visibility: showMap ? "visible" : "hidden" }}
-        >
-          <img id="map_img" src="img/korea_map.jpg" alt="map" />
-          <button id="seoul" value="11" onClick={location_button}>
-            서울
-          </button>
-          <button id="gyeong-gi" value="28,41" onClick={location_button}>
-            경기도
-          </button>
-          <button id="incheon" value="28,41" onClick={location_button}>
-            인천
-          </button>
-          <button id="gyeong-buk" value="27,47" onClick={location_button}>
-            경상북도
-          </button>
-          <button id="gyeong-nam" value="26,48" onClick={location_button}>
-            경상남도
-          </button>
-          <button id="daegu" value="27,47" onClick={location_button}>
-            대구
-          </button>
-          <button id="busan" value="26,48" onClick={location_button}>
-            부산
-          </button>
-          <button id="gwangju" value="29,45,46" onClick={location_button}>
-            광주
-          </button>
-          <button id="jelloa" value="29,45,46" onClick={location_button}>
-            전라도
-          </button>
-          <button id="jeju" value="50" onClick={location_button}>
-            제주
-          </button>
+
+        <div className="mainslide-discount">
+          할인사 정보
+          <hr/>
+        </div>
+        <div className="rank-box">
+          예매 순위
+          <hr/>
+          {rankList.map((data, index) => (
+            <div className="rank-detail" onMouseEnter={() => hover_rank(index)}>
+              <div className="rank-detail-number" style={{backgroundColor: index === 0 ? 'red' : 'gray'}}>{index+1}</div>
+              <div className="test">
+                {data.show_name}
+              </div>
+              
+            </div>
+          ))}
+          <div className="rank-image">
+            {rankList.length > 0 && <img src={rankList[selectedRankPoster].poster_url} alt="공연이미지"></img>}
+          </div>
         </div>
       </div>
+
       <div className="show-list-title">
-        <a id="tag1" href><h1>연극목록</h1></a>
+        <a id="tag1" href>
+          <h1>연극목록</h1>
+        </a>
       </div>
       <div className="show-list">
         <div className="show-main">
@@ -202,7 +245,7 @@ const SlideShowContainer = ({setMenuNumber, setClicked, setLocation, location}) 
                 <div className="info-time">
                   <strong>{datas.show_time}</strong>
                 </div>
-                <div>
+                {/* <div>
                     <MainModal
                         posterUrl={datas.poster_url} 
                         showName={datas.show_name}
@@ -213,7 +256,7 @@ const SlideShowContainer = ({setMenuNumber, setClicked, setLocation, location}) 
                         showTime={datas.show_time}
                         Actor={datas.actor}
                     />
-                  </div>
+                  </div> */}
               </div>
               <hr className="hr" />
             </div>
