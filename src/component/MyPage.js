@@ -22,7 +22,7 @@ const style = {
 };
 
 function MyPage() {
-  const [modalType, setModalType] = useState("Check");
+  const [modalType, setModalType] = useState("UserInfo");
   const [selectedNotice, setSelectedNotice] = useState(null);
   const [previousModalType, setPreviousModalType] = useState(null);
   const [selectedFaq, setSelectedFaq] = useState(null);
