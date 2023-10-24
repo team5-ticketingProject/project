@@ -22,11 +22,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // 
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // 
+//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+//   next();
+// });
 
 app.post("/text", async (req, res) => {
   //데이터 받는 곳
@@ -100,6 +100,18 @@ app.get('/getNotice', async (req, res) => {
   })
 })
 
+app.get('/getRank', async(req, res) => {
+  const sql = 'SELECT show_name, poster_url, ROW_NUMBER() OVER(ORDER BY seat ASC) as show_rank From show_info limit 5';
+
+  db.query(sql, (err, results) => {
+    if(err){
+      console.error(err);
+      return res.status(500).json({error: '내부 서버 에러'});
+    }
+    res.json(results);
+  })
+})
+
 app.get('/getDB', async (req, res) => {
   const sql = 'SELECT * FROM show_info';
 
@@ -152,7 +164,7 @@ app.get('/getSearchList/:title', async (req, res) => {
 app.get('/getDateList/:From/:To', async (req, res) => {
   const From = req.params.From;
   const To = req.params.To;
-  const sql = "SELECT * FROM show_info WHERE (start_date < ? AND end_date <= ?) OR (start_date >= ? AND start_date <= ?)";
+  const sql = "SELECT * FROM show_info WHERE (start_date < ? AND end_date >= ?) OR (start_date >= ? AND start_date <= ?)";
   db.query(sql, [From, From, From, To], (err, results) => {
     if (err) {
       console.error(err);

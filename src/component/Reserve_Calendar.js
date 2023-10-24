@@ -69,7 +69,7 @@ const Reserve_Calendar = () => {
   };
 
   return (
-    <div style={{ width: "1920px" }}>
+    <div style={{ width: "1920px", margin:'auto' }}>
       <Navigation />
       <div className="reserve-calendar">
         <div className="calendar">

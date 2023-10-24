@@ -1,13 +1,13 @@
 .main {
     width: 1920px;
     text-align: center;
+    margin: auto;
 }
-
 .mainMenu {
     margin-top: 10px;
     border-bottom: 1px solid gray;
     position: absolute;
-    width: 100%;
+    width: 1920px;
     color: gray;
 }
 
