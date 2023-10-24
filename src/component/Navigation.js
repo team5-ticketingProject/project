@@ -7,14 +7,6 @@ const Navigation = ({ navigateToModal }) => {
   const [searchList, SetSearchList] = useState([]);
   
   
-  const handleOpenCheckModal = (type) => {
-    if (navigateToModal) {
-      navigateToModal(type);
-    
-    }
-    console.log(`handleOpenCheckModal called with type: ${type}`);
-  };
-  
   const searchTitle = (e) => {
     const title = e.target.value;
     SetSearchList([]);
