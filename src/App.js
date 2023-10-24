@@ -10,7 +10,7 @@ import Reserve_Calendar from "./component/Reserve_Calendar";
 import Test from "./component/Test";
 import MemberManagement from './wooyoung/pages/MemberManagement';
 import Notice from './wooyoung/pages/Notice';
-import Faq from './wooyoung/pages/Faq';
+import Faq from './wooyoung/pages/faq';
 import DiscountAdjustment from './wooyoung/pages/DiscountAdjustment';
 
 const App = () => {
