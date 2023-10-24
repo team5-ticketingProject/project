@@ -2,14 +2,20 @@ import React, { useState, useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import ContactForm from "./InquiryPopUp"; 
+import InquiryContactForm from "./InquiryPopUp"; 
 import ReactDOM from "react-dom";
 
-function ContactUs() {
+function InquiryContactUs(props) {
   const [inquiries, setInquiries] = useState([]); // 1:1 문의 목록
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const inquiriesPerPage = 10; // 한 페이지에 보여질 1:1 문의 수
-
+  const [selectedInquiry, setSelectedInquiry] = useState(null);
+  
+  const openInquiryModal = (inquiry) => {
+    // Notice 모달을 열 때 선택된 공지사항을 설정
+    setSelectedInquiry(inquiry);
+    props.openModal("InquiryAnswer", null, null, inquiry);
+  };
   useEffect(() => {
     async function fetchInquiries() {
       try {
@@ -92,7 +98,7 @@ function ContactUs() {
   </style>
 `;
     ReactDOM.render(
-      <ContactForm onClose={popupWindow.close} />,
+      <InquiryContactForm onClose={popupWindow.close} />,
       popupWindow.document.getElementById("popup-root")
     );
   };
@@ -144,7 +150,7 @@ function ContactUs() {
             ) : (
               currentInquiries.map((inquiry, index) => (
                 <tr key={index}>
-                  <td>{inquiry.inquiry_title}</td>
+                  <td style={{cursor:"pointer"}} onClick={() => openInquiryModal(inquiry)}>{inquiry.inquiry_title}</td>
                   <td>{inquiry.inquiry_content}</td>
                   <td>
                     {new Date(inquiry.inquiry_date).toISOString().split("T")[0]}
@@ -170,4 +176,4 @@ function ContactUs() {
   );
 }
 
-export default ContactUs;
+export default InquiryContactUs;

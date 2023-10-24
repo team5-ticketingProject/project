@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function ContactForm({ onSubmit, onClose }) {
+function InquiryContactForm({ onSubmit, onClose }) {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
@@ -83,4 +83,4 @@ function ContactForm({ onSubmit, onClose }) {
   );
 }
 
-export default ContactForm;
+export default InquiryContactForm;
