@@ -12,6 +12,7 @@ import MemberManagement from './wooyoung/pages/MemberManagement';
 import Notice from './wooyoung/pages/Notice';
 import Faq from './wooyoung/pages/faq';
 import DiscountAdjustment from './wooyoung/pages/DiscountAdjustment';
+import MyPageCheck from "./component/MyPage_default_Check";
 
 const App = () => {
   return (
@@ -27,7 +28,9 @@ const App = () => {
         <Route path="/member" element={<MemberManagement />} />
         <Route path="/notice" element={<Notice />} />
         <Route path="/Faq" element={<Faq />} />
+        <Route path="/mypage/check" element={<MyPageCheck/>} />
         <Route path="/discount" element={<DiscountAdjustment />} />
+        
       </Routes>
     </div>
   );
