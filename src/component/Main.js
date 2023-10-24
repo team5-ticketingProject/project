@@ -23,7 +23,7 @@ const Main = () => {
   return (
     <div className="main">
       <div>
-        <Navigation />
+        <Navigation  />
         <GetShowCode />  
         <Link to ='/test'>임시 어드민페이지</Link>
     

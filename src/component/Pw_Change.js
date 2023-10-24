@@ -3,28 +3,28 @@ import React from "react";
 function PwChange() {
     
   return (
-    <form>
-      {/* 현재 비밀번호 입력란 */}
+    <form className="ContactForm"> 
+      
       <div>
         <label for="currentPassword">현재 비밀번호:</label>
-        <input type="password" id="currentPassword" name="currentPassword" required />
+        <input type="password" id="currentPassword" name="currentPassword" required  className="input-field" />
       </div>
 
-      {/* 새로운 비밀번호 입력란 */}
+    
       <div>
         <label for="newPassword">새로운 비밀번호:</label>
-        <input type="password" id="newPassword" name="newPassword" required />
+        <input type="password" id="newPassword" name="newPassword" required  className="input-field" />
       </div>
 
-      {/* 새로운 비밀번호 재입력란 */}
+     
       <div>
         <label for="confirmNewPassword">새로운 비밀번호 확인:</label>
-        <input type="password" id="confirmNewPassword" name="confirmNewPassword" required />
+        <input type="password" id="confirmNewPassword" name="confirmNewPassword" required  className="input-field" />
       </div>
 
-      {/* 비밀번호 변경 버튼 */}
+      
       <div>
-        <button type="submit">비밀번호 변경</button>
+        <button type="submit"  className="submit-button">비밀번호 변경</button>
       </div>
     </form>
   );

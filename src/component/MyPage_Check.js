@@ -6,6 +6,8 @@ import "../css/MyPage.css";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
+import  ReactDOM  from "react-dom";
+import ReCancle from "./Re_Cancle";
 
 function Check() {
   const [selectedPeriod, setSelectedPeriod] = useState("15일");
@@ -14,6 +16,30 @@ function Check() {
   const [isLoading, setIsLoading] = useState(false); // 버튼 로딩 상태
   const [selectedYear, setSelectedYear] = useState(""); // 선택한 연도
   const [selectedMonth, setSelectedMonth] = useState(""); // 선택한 월
+
+
+  const openPopupReCancle = () => {
+    const popupWindow = window.open(
+      "",
+      "팝업 제목",
+      "width=1000,height=600,menubar=no,location=no,resizable=no,scrollbars=no,status=no"
+    );
+
+    // 팝업 윈도우에 React 컴포넌트 렌더링
+    popupWindow.document.body.innerHTML = "<div id='popuppw-root'></div>";
+    ReactDOM.render(<ReCancle/>, popupWindow.document.getElementById("popuppw-root"));
+    popupWindow.document.head.innerHTML += `
+    <style>
+      .Re_Cancle {
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      height: 800px;
+      width: 800px;
+      }
+    </style>
+  `;
+  };
 
   const fetchReservationInfo = useCallback((period, startDate, endDate) => {
     setIsLoading(true);
@@ -237,18 +263,16 @@ function Check() {
             ) : (
               reservationInfo.map((item, index) => (
                 <tr key={index}>
-                  <td>{item.show_Number}</td>
+                  <td> <button style={{backgroundColor:"white", border:"none", cursor:"pointer"}} onClick={openPopupReCancle}> {item.show_Number}</button></td>
                   <td>{item.show_ID}</td>
                   <td>
-                    {new Date(item.show_Choice).toISOString().split("T")[0]}
+                  {new Date(item.show_Choice).toISOString().slice(0, 16).replace('T', ' ')}
                   </td>
                   <td>{item.Re_Number}</td>
                   <td>
                     {
                       new Date(new Date(item.show_Choice) - 24 * 60 * 60 * 1000)
-                        .toISOString()
-                        .split("T")[0]
-                    }
+                      .toISOString().slice(0, 16).replace('T', ' ')}
                   </td>
                   <td>{new Date(item.Re_Date).toISOString().split("T")[0]}</td>
                 </tr>

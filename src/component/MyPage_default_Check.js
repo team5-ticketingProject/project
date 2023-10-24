@@ -11,11 +11,9 @@ import UserInfo from "./Mypage_UserInfo";
 import FAQ from "./Faq";
 import Navigation from "./Navigation";
 import Footer from "./Footer";
-import InquiryContactUs from "./Inquiry";
+import ContactUs from "./Inquiry";
 import NoticeInfo from "./NoticeInfo";
 import FaqInfo from "./FaqInfo";
-import InquiryAnswer from "./inquiry_answer";
-import SelectInput from "@mui/material/Select/SelectInput";
 
 const style = {
   width: "100%",
@@ -23,20 +21,17 @@ const style = {
   bgcolor: "background.paper",
 };
 
-function MyPage() {
-  const [modalType, setModalType] = useState("UserInfo");
+function MyPageCheck() {
+  const [modalType, setModalType] = useState("Check");
   const [selectedNotice, setSelectedNotice] = useState(null);
   const [previousModalType, setPreviousModalType] = useState(null);
   const [selectedFaq, setSelectedFaq] = useState(null);
-  const [selectedInquiry, setSelectedInquiry] = useState(null); 
 
-
-  const openModal = (type, notice, faq, inquiry) => {
+  const openModal = (type, notice, faq) => {
     setPreviousModalType(modalType);
     setModalType(type);
     setSelectedNotice(notice);
     setSelectedFaq(faq);
-    setSelectedInquiry(inquiry);
     
   };
 
@@ -45,7 +40,6 @@ function MyPage() {
     setModalType();
     setSelectedNotice(null);
     setSelectedFaq(null);
-    setSelectedInquiry(null);
    
   };
   
@@ -57,7 +51,6 @@ function MyPage() {
         setModalType(event.state.modalType);
         setSelectedNotice(null);
         setSelectedFaq(null);
-        setSelectedInquiry(null);
        
         
       }
@@ -80,7 +73,6 @@ function MyPage() {
     }
     setSelectedNotice(null);
     setSelectedFaq(null);
-    setSelectedInquiry(null);
     const modalState = { modalType: type };
     window.history.pushState(modalState, null, null);
   };
@@ -162,7 +154,7 @@ function MyPage() {
                   }
                 />
               </ListItem>
-              <ListItem button onClick={() => navigateToModal("Inquiry")}>
+              <ListItem button onClick={() => navigateToModal("Inquery")}>
                 <ListItemText
                   primary={
                     <span style={{ fontSize: "18px", fontWeight: "bold" }}>
@@ -206,12 +198,11 @@ function MyPage() {
             {modalType === "FaqInfo" && (
               <FaqInfo
                 selectedFaq={selectedFaq}
-                goBackToFaq={closeModal}
+                goBacktoFaq={closeModal}
                 openModal={openModal}
               />
             )}
-            {modalType === "Inquiry" && <InquiryContactUs openModal={openModal} />}
-            {modalType === "InquiryAnswer" && ( <InquiryAnswer selectedInquiry={selectedInquiry} goBackToInquiry={closeModal} openModal={openModal} />)}
+            {modalType === "Inquery" && <ContactUs />}
           </div>
         </div>
       </div>
@@ -219,4 +210,4 @@ function MyPage() {
   );
 }
 
-export default MyPage;
+export default MyPageCheck;

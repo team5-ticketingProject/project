@@ -14,6 +14,49 @@ function UserInfo() {
 
     // 팝업 윈도우에 React 컴포넌트 렌더링
     popupWindow.document.body.innerHTML = "<div id='popuppw-root'></div>";
+    popupWindow.document.head.innerHTML += `
+    <style>
+      .ContactForm {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f7f7f7;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px #888;
+      }
+  
+      .input-field {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+      }
+      .text-area {
+        width: 100%;
+        height: 150px;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+      }
+  
+      .submit-button {
+        background-color: black;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+  
+      .submit-button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+    `;
     ReactDOM.render(<PwChange />, popupWindow.document.getElementById("popuppw-root"));
   };
   return (

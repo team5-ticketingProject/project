@@ -1,21 +1,22 @@
 import { Link } from "react-router-dom";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../css/Navigation.css";
 
-const Navigation = ({ openModal }) => {
+const Navigation = ({ navigateToModal }) => {
   const [searchList, SetSearchList] = useState([]);
-  const [posterIndex, SetPosterIndex] = useState(0);
-  const [showSearchOutput, setShowSearchOutput] = useState(false);
-
-  const handelOpenModal = (type) => {
-    if (openModal) {
-      openModal(type);
+  
+  
+  const handleOpenCheckModal = (type) => {
+    if (navigateToModal) {
+      navigateToModal(type);
+    
     }
+    console.log(`handleOpenCheckModal called with type: ${type}`);
   };
+  
   const searchTitle = (e) => {
     const title = e.target.value;
-    SetPosterIndex(0);
     SetSearchList([]);
     axios
       .get(`http://localhost:5000/getSearchList/${title}`)
@@ -26,26 +27,6 @@ const Navigation = ({ openModal }) => {
         console.error(error);
       });
   };
-  const hoverOutputDetail = (index) => {
-    SetPosterIndex(index);
-  };
-
-  const searchDivRef = useRef(null);
-
-  const handleClickOutside = (event) => {
-    if (searchDivRef.current && !searchDivRef.current.contains(event.target)) {
-      setShowSearchOutput(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
   return (
     <div className="navigation">
       <div className="inside">
@@ -55,11 +36,7 @@ const Navigation = ({ openModal }) => {
           </a>
         </div>
         <div className="search">
-          <div
-            className="searchDiv"
-            ref={searchDivRef}
-            onClick={() => setShowSearchOutput(true)}
-          >
+          <div className="searchDiv">
             <input placeholder=" 공연 검색" onChange={searchTitle} />
             <button>
               <img
@@ -68,52 +45,17 @@ const Navigation = ({ openModal }) => {
               ></img>
             </button>
           </div>
-          <div>
-            {showSearchOutput && searchList.length > 0 && (
-              <div className="search-output" style={{ visibility: "" }}>
-                {searchList.slice(0, 10).map((datas, index) => (
-                  <Link
-                    to={`/reservation/${datas.show_ID}`}
-                    style={{ color: "black", textDecoration: "none" }}
-                  >
-                    <div
-                      className="output-detail"
-                      onMouseEnter={() => hoverOutputDetail(index)}
-                    >
-                      {datas.show_name}
-                    </div>
-                  </Link>
-                ))}
-                {searchList.length > 0 && (
-                  <Link
-                    to={`/reservation/${searchList[posterIndex].show_ID}`}
-                    style={{ color: "black", textDecoration: "none" }}
-                  >
-                    <div className="output-detail-image">
-                      <div>
-                        <img
-                          src={searchList[posterIndex].poster_url}
-                          alt="공연이미지"
-                        ></img>
-                        <div className="output-detail-image-explain">
-                          {searchList[posterIndex].show_name}
-                          <br />
-                          <div style={{ color: "gray", fontSize: "12px" }}>
-                            {searchList[posterIndex].start_date}~
-                            {searchList[posterIndex].end_date}
-                            <br />
-                            {searchList[posterIndex].show_location}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                )}
-              </div>
-            )}
+          <div className="search-output">
+            {searchList.map((datas, index) => (
+              <Link to = {`/reservation/${datas.show_ID}`} style={{color:'black', textDecoration:'none'}}>
+                <div className="output-detail">
+                  {datas.show_name}
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
-
+        
         <div className="menu">
           <span>
             <a href="/login">로그인</a>
@@ -125,12 +67,11 @@ const Navigation = ({ openModal }) => {
             <a href="/mypage">마이페이지</a>
           </span>
           <span>
-            <Link to="/mypage" onClick={() => handelOpenModal("Check")}>
-              예매확인/취소
-            </Link>
+          <a href="/mypage/check">예매확인/취소</a>
           </span>
         </div>
       </div>
+      
     </div>
   );
 };

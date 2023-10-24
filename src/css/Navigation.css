@@ -57,6 +57,12 @@ margin-right: 150px;
 }
 .menu span{
 margin-left: 50px;
+color: gray;
+text-decoration: none;
+}
+.menu span:hover {
+  color: black;
+  cursor: pointer;
 }
 .menu a{
 text-decoration: none;
@@ -103,4 +109,10 @@ cursor: pointer;
   margin-top: -30px;
   line-height: 20px;
 }
+.navbutton :hover {
+  color: black;
+  cursor: pointer;
+  } 
+  
+
 
