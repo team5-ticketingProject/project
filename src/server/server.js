@@ -264,6 +264,34 @@ app.get("/getShowList/:ID", async (req, res) => {
   }
 });
 
+// 로그인
+app.post("/login", (req, res) => {
+  var id = req.body.id;
+  var pw = req.body.pw;
+
+  const sqlQuery =
+    "select count(*) as 'cnt' from User where ID =? and pw =?;";
+  db.query(sqlQuery, [id, pw], (err, result) => {
+    res.send(result);
+  });
+});
+
+// 회원가입시 정보 등록
+app.post("/signup", async (req, res) => {
+  var sql = 'INSERT INTO User (ID,pw,tel,email,rank) VALUES (?)';
+  var values = [
+    req.body.ID,
+    req.body.pw,
+    req.body.tel,
+    req.body.email,
+    1
+  ];
+
+  db.query(sql, [values], function (err, result) {
+    if(err) throw err;
+  });
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
