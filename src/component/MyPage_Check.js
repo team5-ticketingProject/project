@@ -6,7 +6,7 @@ import "../css/MyPage.css";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
-import  ReactDOM  from "react-dom";
+import ReactDOM from "react-dom";
 import ReCancle from "./Re_Cancle";
 
 function Check() {
@@ -16,9 +16,9 @@ function Check() {
   const [isLoading, setIsLoading] = useState(false); // 버튼 로딩 상태
   const [selectedYear, setSelectedYear] = useState(""); // 선택한 연도
   const [selectedMonth, setSelectedMonth] = useState(""); // 선택한 월
+  const [selectedReservationInfo, setSelectedReservationInfo] = useState(null); // 선택된 예매 정보
 
-
-  const openPopupReCancle = () => {
+  const handleReservationInfoClick = (selectedReservationInfo) => {
     const popupWindow = window.open(
       "",
       "팝업 제목",
@@ -27,7 +27,10 @@ function Check() {
 
     // 팝업 윈도우에 React 컴포넌트 렌더링
     popupWindow.document.body.innerHTML = "<div id='popuppw-root'></div>";
-    ReactDOM.render(<ReCancle/>, popupWindow.document.getElementById("popuppw-root"));
+    ReactDOM.render(
+      <ReCancle selectedReservationInfo={selectedReservationInfo} />,
+      popupWindow.document.getElementById("popuppw-root")
+    );
     popupWindow.document.head.innerHTML += `
     <style>
       .Re_Cancle {
@@ -115,7 +118,6 @@ function Check() {
 
     fetchReservationInfo("custom", startDate, endDate);
   };
- 
 
   return (
     <div className="Check">
@@ -263,10 +265,17 @@ function Check() {
             ) : (
               reservationInfo.map((item, index) => (
                 <tr key={index}>
-                  <td> <button style={{backgroundColor:"white", border:"none", cursor:"pointer"}} onClick={openPopupReCancle}> {item.show_Number}</button></td>
+                  <td>
+                    <button
+                      style={{ backgroundColor: "white", border: "none", cursor: "pointer" }}
+                      onClick={() => handleReservationInfoClick(item)}
+                    >
+                      {item.show_Number}
+                    </button>
+                  </td>
                   <td>{item.show_ID}</td>
                   <td>
-                  {new Date(item.show_Choice).toISOString().slice(0, 16).replace('T', ' ')}
+                    {new Date(item.show_Choice).toISOString().slice(0, 16).replace('T', ' ')}
                   </td>
                   <td>{item.Re_Number}</td>
                   <td>
@@ -298,7 +307,7 @@ function Check() {
           <li>
             예매한 티켓 전체 취소, 혹은 신용카드 결제 시 부분 취소가 가능합니다.
             <br />
-            단, 일부 상품의 경우도 부분취소가 불가합니다.
+            단, 일부 상품의 경우도 부분 취소가 불가합니다.
           </li>
           <li>
             티켓이 배송된 이후에는 인터넷이나 고객센터를 통한 취소가 불가하며,
