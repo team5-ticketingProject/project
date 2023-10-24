@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../css/Navigation.css";
 
-const Navigation = () => {
+const Navigation = ({ navigateToModal }) => {
   const [searchList, SetSearchList] = useState([]);
+  
   
   const searchTitle = (e) => {
     const title = e.target.value;
