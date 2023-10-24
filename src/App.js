@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-pascal-case */
-import React, { useState, useEffect } from "react";
 import { Routes, Route, } from "react-router-dom";
 import Login from "./component/Login";
 import SignUp from "./component/SignUp";
@@ -14,6 +13,7 @@ import Faq from './wooyoung/pages/Faq';
 import DiscountAdjustment from './wooyoung/pages/DiscountAdjustment';
 
 const App = () => {
+  //test
   return (
     <div>
       <Routes>
