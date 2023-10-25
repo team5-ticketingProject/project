@@ -1,0 +1,66 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top : 60px;
+  align-items: center;
+}
+
+
+.productGrid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.productContainer {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 5px;
+  width: 300px;
+  padding: 20px;
+  
+}
+
+.productInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.productImage {
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+.productDescription {
+  text-align: center;
+  max-width: 100%; 
+  margin-bottom: 20px;
+}
+
+.discountDropdown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.discountDropdown select {
+  width: 35%;
+  padding: 5px;
+}
+
+.discountDropdown button {
+  margin-top : 5px;
+  background-color: black; /* 배경색 설정 */
+  color: #fff; /* 텍스트 색상 설정 */
+  border: none;
+  padding: 10px 20px; /* 버튼 크기 조정 */
+  border-radius: 4px;
+  cursor: pointer;
+  &:hover {
+    background-color: #0056b3;
+  }
+}
