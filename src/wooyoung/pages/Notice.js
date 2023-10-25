@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Notice.module.css";
+import axios from "axios";
 
 const Notice = () => {
-  const [notices, setNotices] = useState([
-    { id: 2, title: "두 번째 공지", content: "이것은 두 번째 공지입니다." },
-    { id: 1, title: "첫 번째 공지", content: "이것은 첫 번째 공지입니다." },
-  ]);
+  const [notices, setNotices] = useState([]);
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [deleteItemId, setDeleteItemId] = useState(null);
+
+   useEffect(() => {
+    // 서버의 엔드포인트로 공지사항 데이터 요청
+    axios.get('http://localhost:5000/getNotices')
+      .then((response) => {
+        setNotices(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching notices:', error);
+      });
+  }, []);
 
   const handleCreateClick = () => {
     setEditing("add");
@@ -72,7 +81,13 @@ const Notice = () => {
 
       {editing ? (
         <div className={styles.form}>
-          <input className='style-input' type="text" placeholder="제목" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <input
+            className="style-input"
+            type="text"
+            placeholder="제목"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
           <textarea
             placeholder="내용"
             value={content}
@@ -95,12 +110,12 @@ const Notice = () => {
           </thead>
           <tbody>
             {notices.map((notice) => (
-              <tr key={notice.id} className={styles.noticeItem}>
+              <tr key={notice.notification_ID} className={styles.noticeItem}>
                 <td>{notice.title}</td>
                 <td>{notice.content}</td>
                 <td>
                   <button onClick={() => handleEditClick(notice)}>수정</button>
-                  <button onClick={() => handleDeleteClick(notice.id)}>삭제</button>
+                  <button onClick={() => handleDeleteClick(notice.notification_ID)}>삭제</button>
                 </td>
               </tr>
             ))}

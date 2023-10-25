@@ -1,18 +1,19 @@
-// 서버의 app.js 또는 server.js 파일
 const express = require("express");
 const app = express();
 const port = 5000;
 const mysql = require("mysql2");
+const cors = require("cors");
 
-// MySQL 연결 설정
+
 const dbconfig = {
-  host: "localhost",
+  host: "127.0.0.1",
   user: "root",
   password: "123456", // MySQL 비밀번호
   database: "show_data", // 데이터베이스 이름
 };
 
 const db = mysql.createPool(dbconfig);
+app.use(cors());
 
 // 노트 리스트 가져오기
 app.get('/getNotices', (req, res) => {
