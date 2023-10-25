@@ -17,7 +17,13 @@ function Check() {
   const [selectedYear, setSelectedYear] = useState(""); // 선택한 연도
   const [selectedMonth, setSelectedMonth] = useState(""); // 선택한 월
   const [selectedReservationInfo, setSelectedReservationInfo] = useState(null); // 선택된 예매 정보
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const ReservationPerPage = 10; // 한 페이지에 보여질 공지사항 수
 
+  const indexOfLastreservation = currentPage * ReservationPerPage;
+  const indexOfFirstreservation = indexOfLastreservation - ReservationPerPage;
+  const currentreservations = reservationInfo.slice(indexOfFirstreservation, indexOfLastreservation);
+  
   const handleReservationInfoClick = (selectedReservationInfo) => {
     const popupWindow = window.open(
       "",
@@ -70,6 +76,8 @@ function Check() {
   }, []);
 
   useEffect(() => {
+   
+  
     const today = new Date();
     let startDate;
     let endDate;
@@ -90,6 +98,10 @@ function Check() {
 
     fetchReservationInfo(selectedPeriod, startDate, endDate);
   }, [selectedPeriod, fetchReservationInfo]);
+  
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
 
   const handlePeriodClick = useCallback((period) => {
     if (isLoading) {
@@ -269,7 +281,7 @@ function Check() {
                 <td colSpan="6">예매한 내역이 없습니다.</td>
               </tr>
             ) : (
-              reservationInfo.map((item, index) => (
+              currentreservations.map((item, index) => (
                 <tr key={index}>
                   <td>
                     <button
@@ -299,9 +311,9 @@ function Check() {
       <div className="Pagination">
         <Stack spacing={2}>
           <Pagination
-            count={1}
-            defaultPage={1}
-            siblingCount={0}
+            count={Math.ceil(reservationInfo.length / ReservationPerPage)}
+            page={currentPage}
+            onChange={handlePageChange}
             showFirstButton
             showLastButton
           />
