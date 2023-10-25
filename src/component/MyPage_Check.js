@@ -24,11 +24,17 @@ function Check() {
       "팝업 제목",
       "width=1000,height=600,menubar=no,location=no,resizable=no,scrollbars=no,status=no"
     );
+    function closePopupWindow() {
+      if (popupWindow) {
+        popupWindow.close();
+      }
+    }
 
     // 팝업 윈도우에 React 컴포넌트 렌더링
     popupWindow.document.body.innerHTML = "<div id='popuppw-root'></div>";
     ReactDOM.render(
-      <ReCancle selectedReservationInfo={selectedReservationInfo} />,
+      <ReCancle selectedReservationInfo={selectedReservationInfo}
+      closePopupWindow={closePopupWindow} />,
       popupWindow.document.getElementById("popuppw-root")
     );
     popupWindow.document.head.innerHTML += `
