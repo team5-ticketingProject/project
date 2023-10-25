@@ -7,7 +7,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
 import ReactDOM from "react-dom";
-import ReCancle from "./Re_Cancle";
+import ReCancel from "./Re_Cancel";
 
 function Check() {
   const [selectedPeriod, setSelectedPeriod] = useState("15일");
@@ -33,7 +33,7 @@ function Check() {
     // 팝업 윈도우에 React 컴포넌트 렌더링
     popupWindow.document.body.innerHTML = "<div id='popuppw-root'></div>";
     ReactDOM.render(
-      <ReCancle selectedReservationInfo={selectedReservationInfo}
+      <ReCancel selectedReservationInfo={selectedReservationInfo}
       closePopupWindow={closePopupWindow} />,
       popupWindow.document.getElementById("popuppw-root")
     );
@@ -57,7 +57,7 @@ function Check() {
       .get("http://localhost:5000/getreservation_info")
       .then((response) => {
         const filteredData = response.data.filter((item) => {
-          const reDate = new Date(item.Re_Date);
+          const reDate = new Date(item.re_date);
           return reDate >= startDate && reDate <= endDate;
         });
         setReservationInfo(filteredData);
@@ -276,20 +276,20 @@ function Check() {
                       style={{ backgroundColor: "white", border: "none", cursor: "pointer" }}
                       onClick={() => handleReservationInfoClick(item)}
                     >
-                      {item.show_Number}
+                      {item.show_number}
                     </button>
                   </td>
                   <td>{item.show_ID}</td>
                   <td>
-                    {new Date(item.show_Choice).toISOString().slice(0, 16).replace('T', ' ')}
+                    {new Date(item.DATE).toISOString().slice(0, 16).replace('T', ' ')}
                   </td>
                   <td>{item.Re_Number}</td>
                   <td>
                     {
-                      new Date(new Date(item.show_Choice) - 24 * 60 * 60 * 1000)
+                      new Date(new Date(item.DATE) - 24 * 60 * 60 * 1000)
                       .toISOString().slice(0, 16).replace('T', ' ')}
                   </td>
-                  <td>{new Date(item.Re_Date).toISOString().split("T")[0]}</td>
+                  <td>{new Date(item.re_date).toISOString().split("T")[0]}</td>
                 </tr>
               ))
             )}

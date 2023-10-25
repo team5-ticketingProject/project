@@ -34,7 +34,7 @@ app.post("/text", async (req, res) => {
   codes.push(code);
 });
 
-app.post("/reservation", async (req, res) => {
+app.post("/Cancelreservation", async (req, res) => {
   const { reservationId } = req.body;
 
   // Get a connection from the pool
@@ -51,12 +51,11 @@ app.post("/reservation", async (req, res) => {
         return res.status(500).send("Internal server error");
       }
 
-      const deleteReservationSql = "DELETE FROM reservation_info WHERE show_Number = ?;";
+      const deleteReservationSql = "DELETE FROM reservation WHERE show_number = ?;";
       const TransreservationQuery = `
-      
-      INSERT INTO reservation (show_ID, show_Number, price, bank, show_Choice, Re_Number, cancel_Date, user_ID, Re_Date) 
-      SELECT show_ID, show_Number, price, bank, show_Choice, Re_Number, cancel_Date, user_ID, Re_Date
-      FROM reservation_info WHERE show_Number = ?;
+      INSERT INTO cancelreservation (show_number, show_ID, bank, re_number, cancel_date, re_date, user_ID,  DATE,  TIME, seat_num, price ) 
+      SELECT show_number, show_ID, bank, re_number, cancel_date, re_date, user_ID,  DATE,  TIME, seat_num, price
+      FROM reservation WHERE show_number = ?;
       
     `;
     connection.query(TransreservationQuery, [reservationId], function (err, insertResult) {
@@ -195,7 +194,7 @@ app.get('/getDB', async (req, res) => {
 });
 
 app.get("/getreservation_info", async (req, res) => {
-  const sql = "SELECT * FROM reservation_info";
+  const sql = "SELECT * FROM reservation";
 
   db.query(sql, (err, results) => {
     if (err) {

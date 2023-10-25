@@ -24,15 +24,15 @@ const buttonContainerStyle = {
   marginTop: "20px",
 };
 
-function ReCancle({ selectedReservationInfo, closePopupWindow }) {
+function ReCancel({ selectedReservationInfo, closePopupWindow }) {
   const handleCancelReservation = () => {
 
     closePopupWindow();
    
     if (selectedReservationInfo) {
       axios
-        .post("http://localhost:5000/reservation", {
-          reservationId: selectedReservationInfo.show_Number,
+        .post("http://localhost:5000/Cancelreservation", {
+          reservationId: selectedReservationInfo.show_number,
         })
         .then((response) => {
           console.log(response.data);
@@ -63,7 +63,7 @@ function ReCancle({ selectedReservationInfo, closePopupWindow }) {
             <th style={thStyle}>티켓명</th>
             <td style={tdStyle}>
               {selectedReservationInfo
-                ? selectedReservationInfo.show_Number
+                ? selectedReservationInfo.show_ID
                 : "여기에 티켓명을 추가하세요"}
             </td>
           </tr>
@@ -71,7 +71,7 @@ function ReCancle({ selectedReservationInfo, closePopupWindow }) {
             <th style={thStyle}>관람일시</th>
             <td style={tdStyle}>
               {selectedReservationInfo
-                ? new Date(selectedReservationInfo.show_Choice)
+                ? new Date(selectedReservationInfo.DATE)
                     .toISOString()
                     .slice(0, 16)
                     .replace("T", " ")
@@ -80,13 +80,15 @@ function ReCancle({ selectedReservationInfo, closePopupWindow }) {
           </tr>
           <tr>
             <th style={thStyle}>좌석</th>
-            <td style={tdStyle}>여기에 좌석 정보를 추가하세요</td>
+            <td style={tdStyle}> {selectedReservationInfo
+                ? selectedReservationInfo.seat_num
+                : "여기에 티켓명을 추가하세요"}</td>
           </tr>
           <tr>
             <th style={thStyle}>예매일</th>
             <td style={tdStyle}>
               {selectedReservationInfo
-                ? new Date(selectedReservationInfo.Re_Date)
+                ? new Date(selectedReservationInfo.re_date)
                     .toISOString()
                     .slice(0, 16)
                     .replace("T", " ")
@@ -95,7 +97,9 @@ function ReCancle({ selectedReservationInfo, closePopupWindow }) {
           </tr>
           <tr>
             <th style={thStyle}>결제</th>
-            <td style={tdStyle}>여기에 결제 정보를 추가하세요</td>
+            <td style={tdStyle}> {selectedReservationInfo
+                ? selectedReservationInfo.bank
+                : "여기에 티켓명을 추가하세요"}</td>
           </tr>
         </tbody>
       </table>
@@ -112,4 +116,4 @@ function ReCancle({ selectedReservationInfo, closePopupWindow }) {
   );
 }
 
-export default ReCancle;
+export default ReCancel;
