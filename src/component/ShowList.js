@@ -115,7 +115,7 @@ const GetShowData = ({clicked, setClicked, setLocation, location}) => {
               <div className="main-list">
                 <div className="mainslide-show-info">
                   <p>
-                  <Link to={`/reservation/${datas.show_ID}`}>
+                  <Link to={window.sessionStorage.getItem('id') ? `/reservation/${datas.show_ID}/${datas.show_time}`: '/login'}>
                       <img src={datas.poster_url} alt="공연포스터" />
                     </Link>
                   </p>

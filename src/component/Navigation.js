@@ -73,7 +73,7 @@ const Navigation = ({ openModal }) => {
               <div className="search-output" style={{ visibility: "" }}>
                 {searchList.slice(0, 10).map((datas, index) => (
                   <Link
-                    to={`/reservation/${datas.show_ID}`}
+                    to= {window.sessionStorage.getItem('id') ? `/reservation/${datas.show_ID}/${datas.show_time}`: '/login'}
                     style={{ color: "black", textDecoration: "none" }}
                   >
                     <div
@@ -86,7 +86,7 @@ const Navigation = ({ openModal }) => {
                 ))}
                 {searchList.length > 0 && (
                   <Link
-                    to={`/reservation/${searchList[posterIndex].show_ID}`}
+                    to={window.sessionStorage.getItem('id') ? `/reservation/${searchList[posterIndex].show_ID}/${searchList[posterIndex].show_time}` : '/login'}
                     style={{ color: "black", textDecoration: "none" }}
                   >
                     <div className="output-detail-image">
@@ -116,10 +116,11 @@ const Navigation = ({ openModal }) => {
 
         <div className="menu">
           <span>
-            <a href="/login">로그인</a>
+            {window.sessionStorage.getItem('id') ? <a href="/mypage">{window.sessionStorage.getItem('id')}</a>: <a href="/login">로그인</a>}
+            
           </span>
           <span>
-            <a href="/signup">회원가입</a>
+            {window.sessionStorage.getItem('id') ? <a href="/" onClick={() => {window.sessionStorage.setItem('id', "")}}>로그아웃</a> : <a href="/signup">회원가입</a>}
           </span>
           <span>
             <a href="/mypage">마이페이지</a>

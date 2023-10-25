@@ -13,7 +13,6 @@ import Faq from './wooyoung/pages/Faq';
 import DiscountAdjustment from './wooyoung/pages/DiscountAdjustment';
 
 const App = () => {
-  //test
   return (
     <div>
       <Routes>
@@ -21,7 +20,7 @@ const App = () => {
         <Route path="/login" element={<Login/>} />  
         <Route path="/signup" element={<SignUp/>} />  
         <Route path="/mypage" element={<MyPage/>} />  
-        <Route path="/reservation/:show_ID" element={<Reservation/>}/>
+        <Route path="/reservation/:show_ID/:show_time" element={<Reservation/>}/>
         <Route path='/dateList' element={<Reserve_Calendar/>}/>
         <Route path="/test" element={<Test/>}/>
         <Route path="/member" element={<MemberManagement />} />

@@ -101,7 +101,7 @@ app.get('/getNotice', async (req, res) => {
 })
 
 app.get('/getRank', async(req, res) => {
-  const sql = 'SELECT show_name, poster_url, ROW_NUMBER() OVER(ORDER BY seat ASC) as show_rank From show_info limit 5';
+  const sql = 'SELECT show_name, poster_url, show_ID, show_time, ROW_NUMBER() OVER(ORDER BY seat DESC) as show_rank From show_info limit 5';
 
   db.query(sql, (err, results) => {
     if(err){
@@ -263,6 +263,74 @@ app.get("/getShowList/:ID", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+app.post("/login", (req, res) => {
+  var id = req.body.id;
+  var pw = req.body.pw;
+
+  const sqlQuery = "select count(*) as cnt from User where ID =? and pw =?;";
+  db.query(sqlQuery, [id, pw], (err, result) => {
+    res.send(result);
+  });
+});
+
+app.post('/reservation', (req, res) => {
+  var show_id = req.body.ID;
+  var date = req.body.date;
+  var time = req.body.time;
+  var user = req.body.user;
+  var re_number = req.body.re_number;
+  const d = new Date();
+  var today = d.toLocaleDateString("ko-KR");
+  var cancel_date = new Date(d.getFullYear(), d.getMonth(), d.getDate() - 7).toLocaleDateString("ko-KR");
+  
+  var sql = 'SELECT COUNT(*) as CNT FROM reservation WHERE show_ID = ? AND DATE = ? AND TIME = ?';
+  db.query(sql, [show_id, date, time], (err, result) => { 
+    if(result[0].CNT < 10 && result[0].CNT + re_number <= 10){
+      var sql2 = 'UPDATE show_info SET seat = seat + ? WHERE show_ID = ?';
+      db.query(sql2, [re_number, show_id], (err2, result2) => {
+        if(err2){
+          console.error(err2);
+        }
+      });
+
+      var sql3 = 'INSERT INTO reservation (show_ID, bank, re_number, cancel_date, re_date, user_ID, DATE, TIME) VALUES (?)';
+      var values = [
+        show_id,
+        "없음",
+        re_number,
+        cancel_date,
+        today,
+        user,
+        date,
+        time
+      ];
+      db.query(sql3, [values], function(err3, result3){
+        if(err3) throw err3;
+        res.json("1");
+      });
+    }
+    else{
+      res.json("2");
+    }
+  });
+})
+
+// 회원가입시 정보 등록
+app.post("/signup", async (req, res) => {
+  var sql = 'INSERT INTO User (ID,pw,tel,email,rank) VALUES (?)';
+  var values = [
+    req.body.id,
+    req.body.pw,
+    req.body.tel,
+    req.body.email,
+    1
+  ];
+
+  db.query(sql, [values], function (err, result) {
+    if(err) throw err;
+  });
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

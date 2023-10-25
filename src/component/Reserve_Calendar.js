@@ -108,10 +108,10 @@ const Reserve_Calendar = () => {
               <div className="calendar-list-detail">
                 <div className="calendar-list-detail-inside">
                   <div style={{width:'50%'}}>
-                    <Link to={`/reservation/${datas.show_ID}`}>
+                    <Link to={window.sessionStorage.getItem('id') ? `/reservation/${datas.show_ID}/${datas.show_time}`: '/login'}>
                       <img src={datas.poster_url} alt="공연포스터" />
                     </Link>
-                    <Link to={`/reservation/${datas.show_ID}`} style={{textDecoration:'none'}}>
+                    <Link to={window.sessionStorage.getItem('id') ? `/reservation/${datas.show_ID}/${datas.show_time}`: '/login'} style={{textDecoration:'none'}}>
                       <span className="inside-show-name">{datas.show_name}</span>
                     </Link>
                   </div>
