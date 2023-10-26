@@ -9,6 +9,8 @@ import axios from "axios";
 import ReactDOM from "react-dom";
 import ReCancel from "./Re_Cancel";
 import { fetchUserInfo } from "./fetchLoginUser";
+import {useNavigate} from "react-router-dom"; 
+
 
 function Check() {
   const [selectedPeriod, setSelectedPeriod] = useState("15일");
@@ -17,7 +19,6 @@ function Check() {
   const [isLoading, setIsLoading] = useState(false); // 버튼 로딩 상태
   const [selectedYear, setSelectedYear] = useState(""); // 선택한 연도
   const [selectedMonth, setSelectedMonth] = useState(""); // 선택한 월
-  const [selectedReservationInfo, setSelectedReservationInfo] = useState(null); // 선택된 예매 정보
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [userInfo, setUserInfo] = useState(null);
   const [filteredReservationInfo, setFilteredReservationInfo] = useState([]);
@@ -27,8 +28,11 @@ function Check() {
   const indexOfLastreservation = currentPage * ReservationPerPage;
   const indexOfFirstreservation = indexOfLastreservation - ReservationPerPage;
   const currentreservations = filteredReservationInfo.slice(indexOfFirstreservation, indexOfLastreservation);
+
+  const navigate = useNavigate();
   
   const handleReservationInfoClick = (selectedReservationInfo) => {
+    
     const popupWindow = window.open(
       "",
       "팝업 제목",
@@ -167,7 +171,17 @@ function Check() {
   });
   setFilteredReservationInfo(filteredReservationInfo);
 }, [userInfo, reservationInfo]);
-  
+
+
+useEffect(() => {
+  if (!window.sessionStorage.getItem('id')) {
+    // Log out users who are not logged in and navigate to the login page
+    const confirmResult = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+    if (confirmResult) {
+      navigate("/login");
+    }
+  }
+}, [navigate]);
   return (
     <div className="Check">
       <h1>예매확인/취소</h1>
@@ -307,7 +321,7 @@ function Check() {
             </tr>
           </thead>
           <tbody>
-            {currentreservations.length === 0 ? (
+            {currentreservations.length === 0 ?  (
               <tr>
                 <td colSpan="6">예매한 내역이 없습니다.</td>
               </tr>
@@ -378,5 +392,4 @@ function Check() {
     </div>
   );
 }
-
 export default Check;

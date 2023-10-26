@@ -4,10 +4,12 @@ import "../css/MyPage.css";
 import PwChange from "./Pw_Change";
 import ReactDOM from "react-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 function UserInfo() {
   const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     const userId = window.sessionStorage.getItem("id");
 
@@ -85,6 +87,15 @@ function UserInfo() {
       popupWindow.document.getElementById("popuppw-root")
     );
   };
+  useEffect(() => {
+    if (!window.sessionStorage.getItem('id')) {
+      // Log out users who are not logged in and navigate to the login page
+      const confirmResult = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+      if (confirmResult) {
+        navigate("/login");
+      }
+    }
+  }, [navigate]);
   return (
     <>
       <div className="UserInfodiv">
@@ -187,7 +198,7 @@ function UserInfo() {
             </div>
           </>
         ) : (
-          <p>Loading...</p>
+          <p>로그인이 필요합니다!</p>
         )}
       </div>
     </>

@@ -1,13 +1,24 @@
-import { Link } from "react-router-dom";
+import  { Link, useNavigate} from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../css/Navigation.css";
+
 
 const Navigation = () => {
   const [searchList, SetSearchList] = useState([]);
   const [posterIndex, SetPosterIndex] = useState(0);
   const [showSearchOutput, setShowSearchOutput] = useState(false);
-  
+  const history = useNavigate();
+
+  const goToMyPage = () => {
+    if (!window.sessionStorage.getItem('id')) {
+      alert("로그인이 필요합니다.")
+      history.push('/login');
+    } else {
+      history.push('/mypage')
+    }
+  }
+   
   const searchTitle = (e) => {
     const title = e.target.value;
     SetPosterIndex();
