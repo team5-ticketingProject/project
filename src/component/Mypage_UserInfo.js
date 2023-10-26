@@ -5,18 +5,29 @@ import PwChange from "./Pw_Change";
 import ReactDOM from "react-dom";
 import axios from "axios";
 
+
 function UserInfo() {
-  const [userData, setUserData] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/getFAQ")
-      .then((response) => {
-        setUserData(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    const userId = window.sessionStorage.getItem("id");
+
+    console.log("사용자 아이디:", userId);
+    if (userId) {
+      axios
+        .get(`${process.env.REACT_APP_SERVER_URL}/LoginInfo`,{
+          params: {
+            id: userId,
+          }
+        })
+        .then((response) => {
+          setUserInfo(response.data[0]);
+        })
+        .catch((error) => {
+          console.error("사용자 정보를 가져오는 중 오류 발생:", error);
+        });
+    }
   }, []);
+  
   const openPopupPw = () => {
     const popupWindow = window.open(
       "",
@@ -78,11 +89,11 @@ function UserInfo() {
     <>
       <div className="UserInfodiv">
         <h3>회원정보</h3>
-        {userData ? (
+        {userInfo ? (
           <>
             <div className="h4div">
               <h4>
-                회원님은 <span style={{ color: "red" }}>{userData.rank}</span>
+                회원님은 <span style={{ color: "red" }}>"{userInfo.rank}"</span>
                 이십니다.
               </h4>
             </div>
@@ -101,12 +112,12 @@ function UserInfo() {
                       아이디 <br /> <br />
                     </th>
 
-                    <td className="ID">{userData.ID}</td>
+                    <td className="ID">{userInfo.ID}</td>
                     </tr>
                   <tr>
                     <th scope="row">이메일</th>
                     <td>
-                      {userData.email}
+                      {userInfo.email}
                       <p className="fs12_v2 color_gray">
                         <span id="agreeMail" className="checkbox">
                           <input
@@ -132,7 +143,7 @@ function UserInfo() {
                   <tr>
                     <th scope="row">비밀번호</th>
                     <td>
-                      {userData.PW}
+                      {userInfo.PW}
                       <Button
                         onClick={openPopupPw}
                         sx={{
@@ -154,7 +165,7 @@ function UserInfo() {
                       연락처 <br /> <br />
                     </th>
 
-                    <td className="number">{userData.tel}</td>
+                    <td className="number">{userInfo.tel}</td>
                   </tr>
                  
                 </tbody>
@@ -167,7 +178,7 @@ function UserInfo() {
                   border: "1px solid #000",
                   color: "white",
                   backgroundColor: "black",
-                  fontSize: "2opx",
+                  fontSize: "20px",
                   textAlign: "center",
                 }}
               >

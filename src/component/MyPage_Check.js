@@ -8,6 +8,7 @@ import Stack from "@mui/material/Stack";
 import axios from "axios";
 import ReactDOM from "react-dom";
 import ReCancel from "./Re_Cancel";
+import { fetchUserInfo } from "./fetchLoginUser";
 
 function Check() {
   const [selectedPeriod, setSelectedPeriod] = useState("15일");
@@ -18,11 +19,14 @@ function Check() {
   const [selectedMonth, setSelectedMonth] = useState(""); // 선택한 월
   const [selectedReservationInfo, setSelectedReservationInfo] = useState(null); // 선택된 예매 정보
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const [userInfo, setUserInfo] = useState(null);
+  const [filteredReservationInfo, setFilteredReservationInfo] = useState([]);
+
   const ReservationPerPage = 10; // 한 페이지에 보여질 공지사항 수
 
   const indexOfLastreservation = currentPage * ReservationPerPage;
   const indexOfFirstreservation = indexOfLastreservation - ReservationPerPage;
-  const currentreservations = reservationInfo.slice(indexOfFirstreservation, indexOfLastreservation);
+  const currentreservations = filteredReservationInfo.slice(indexOfFirstreservation, indexOfLastreservation);
   
   const handleReservationInfoClick = (selectedReservationInfo) => {
     const popupWindow = window.open(
@@ -135,7 +139,34 @@ function Check() {
     const endDate = new Date(year, month + 1, 0);
 
     fetchReservationInfo("custom", startDate, endDate);
+  }; 
+
+  const loadUserInfo = async () => {
+    // 사용자 정보 가져오기 - fetchUserInfo 함수 내에서 사용자 정보를 가져오는 방법을 구현해야 합니다.
+    const userId = window.sessionStorage.getItem("id");// 실제 사용자 ID 또는 가져올 ID를 설정해야 합니다.
+    if (userId) {
+      try {
+        const user = await fetchUserInfo(userId);
+        setUserInfo(user);
+      } catch (error) {
+        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
   };
+
+  // useEffect를 사용하여 사용자 정보를 가져오도록 설정
+  useEffect(() => {
+    loadUserInfo();
+  }, []); // 처음 한 번만 실행
+
+  // 예매 정보 필터링
+  
+  useEffect(() => {
+  const filteredReservationInfo = reservationInfo.filter((item) => {
+    return userInfo && item.user_ID === userInfo.ID;
+  });
+  setFilteredReservationInfo(filteredReservationInfo);
+}, [userInfo, reservationInfo]);
   
   return (
     <div className="Check">
@@ -276,12 +307,12 @@ function Check() {
             </tr>
           </thead>
           <tbody>
-            {reservationInfo.length === 0 ? (
+            {currentreservations.length === 0 ? (
               <tr>
                 <td colSpan="6">예매한 내역이 없습니다.</td>
               </tr>
             ) : (
-              currentreservations.map((item, index) => (
+              filteredReservationInfo.map((item, index) => (
                 <tr key={index}>
                   <td>
                     <button
@@ -296,7 +327,7 @@ function Check() {
                   {new Date(new Date(item.DATE).getTime() + 9 * 60 * 60 * 1000)
                       .toISOString().split("T")[0]} {item.TIME}
                   </td>
-                  <td>{item.Re_Number}</td>
+                  <td>{item.re_number}</td>
                   <td>
                     {
                       new Date(new Date(item.DATE) - 15 * 60 * 60 * 1000)
@@ -312,7 +343,7 @@ function Check() {
       <div className="Pagination">
         <Stack spacing={2}>
           <Pagination
-            count={Math.ceil(reservationInfo.length / ReservationPerPage)}
+            count={Math.ceil(filteredReservationInfo.length / ReservationPerPage)}
             page={currentPage}
             onChange={handlePageChange}
             showFirstButton

@@ -272,16 +272,17 @@ app.get('/getShowInfo/:ID', async (req, res) => {
 });
 
 app.get("/LoginInfo", async (req, res) => {
-  const sql = "SELECT * FROM user ";
+  const userId = req.query.id; // 로그인한 사용자의 ID를 쿼리 매개변수로부터 가져옴
+  const sql = "SELECT * FROM user WHERE ID = ?"; // 해당 ID에 대한 정보만 가져오도록 쿼리 수정
 
-  db.query(sql, (err, results) => {
+  db.query(sql, [userId], (err, results) => {
     if (err) {
       console.error(err);
       return res.status(500).json({ error: "내부 서버 에러" });
     }
     res.json(results);
-    });
-});   
+  });
+});
 
 app.get("/getShowList/:ID", async (req, res) => {
   const location = req.params.ID;
