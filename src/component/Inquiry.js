@@ -2,14 +2,21 @@ import React, { useState, useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import ContactForm from "./InquiryPopUp"; // 수정된 파일명 사용
+import InquiryContactForm from "./InquiryPopUp"; 
 import ReactDOM from "react-dom";
 
-function ContactUs() {
+function InquiryContactUs(props) {
   const [inquiries, setInquiries] = useState([]); // 1:1 문의 목록
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const inquiriesPerPage = 10; // 한 페이지에 보여질 1:1 문의 수
-
+  const [selectedInquiry, setSelectedInquiry] = useState(null);
+  
+  const openInquiryModal = (inquiry) => {
+    
+    // Notice 모달을 열 때 선택된 공지사항을 설정
+    setSelectedInquiry(inquiry);
+    props.openModal("InquiryAnswer", null, null, inquiry);
+  };
   useEffect(() => {
     async function fetchInquiries() {
       try {
@@ -18,14 +25,15 @@ function ContactUs() {
         ); // API 엔드포인트에 따라 수정
         if (response.ok) {
           const data = await response.json();
-          setInquiries(data);
+
+           data.sort((a, b) => new Date(b.inquiry_date) - new Date(a.inquiry_date));
+        setInquiries(data);
         }
       } catch (error) {
         console.error("문의 데이터를 가져오는 중 오류 발생:", error);
       }
     }
 
-    // 1:1 문의 데이터 가져오기
     fetchInquiries();
   }, []);
 
@@ -93,11 +101,11 @@ function ContactUs() {
   </style>
 `;
     ReactDOM.render(
-      <ContactForm onClose={popupWindow.close} />,
+      <InquiryContactForm onClose={popupWindow.close} />,
       popupWindow.document.getElementById("popup-root")
     );
   };
-
+  
   return (
     <div className="ContactUs">
       <div style={{ borderBottom: "2px solid #ccc" }}>
@@ -145,10 +153,11 @@ function ContactUs() {
             ) : (
               currentInquiries.map((inquiry, index) => (
                 <tr key={index}>
-                  <td>{inquiry.inquiry_title}</td>
-                  <td>{inquiry.inquiry_content}</td>
+                  <td style={{cursor:"pointer"}} onClick={() => openInquiryModal(inquiry)}>{inquiry.inquiry_title}</td>
+                  <td style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", maxHeight:"200px", maxWidth:"200px"}}>{inquiry.inquiry_content}</td>
                   <td>
-                    {new Date(inquiry.inquiry_date).toISOString().split("T")[0]}
+                  {new Date(new Date(inquiry.inquiry_date).getTime() + 9 * 60 * 60 * 1000)
+                      .toISOString().split("T")[0]} 
                   </td>
                 </tr>
               ))
@@ -171,4 +180,4 @@ function ContactUs() {
   );
 }
 
-export default ContactUs;
+export default InquiryContactUs;

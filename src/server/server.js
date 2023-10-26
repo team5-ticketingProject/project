@@ -36,13 +36,82 @@ app.post("/text", async (req, res) => {
   codes.push(code);
 });
 
+app.post("/Cancelreservation", async (req, res) => {
+  const { reservationId } = req.body;
+
+  // Get a connection from the pool
+  db.getConnection(function (err, connection) {
+    if (err) {
+      console.error("Error getting connection:", err);
+      return res.status(500).send("Internal server error");
+    }
+
+    connection.beginTransaction(function (err) {
+      if (err) {
+        connection.release(); // Release the connection if there's an error
+        console.error("Error beginning transaction:", err);
+        return res.status(500).send("Internal server error");
+      }
+
+      const deleteReservationSql = "DELETE FROM reservation WHERE show_number = ?;";
+      const TransreservationQuery = `
+      INSERT INTO cancelreservation (show_number, show_ID, bank, re_number, cancel_date, re_date, user_ID,  DATE,  TIME, seat_num, price ) 
+      SELECT show_number, show_ID, bank, re_number, cancel_date, re_date, user_ID,  DATE,  TIME, seat_num, price
+      FROM reservation WHERE show_number = ?;
+      
+    `;
+    connection.query(TransreservationQuery, [reservationId], function (err, insertResult) {
+      if (err) {
+        connection.rollback(function () {
+          connection.release();
+          console.error("Error rolling back transaction (insertion):", err);
+          return res.status(500).send("Internal server error");
+        });
+      }
+
+      console.log("Inserted into reservation", insertResult);
+
+      connection.query(deleteReservationSql, [reservationId], function (err, deleteResult) {
+        if (err) {
+          connection.rollback(function () {
+            connection.release();
+            console.error("Error rolling back transaction (deletion):", err);
+            return res.status(500).send("Internal server error");
+          });
+        }
+
+        console.log("Deleted reservation", deleteResult);
+        
+       
+        
+         
+          connection.commit(function (err) {
+            if (err) {
+              connection.rollback(function () {
+                connection.release();
+                console.error("Error committing transaction:", err);
+                return res.status(500).send("Error committing transaction");
+              });
+            }
+
+            console.log("예매 정보가 성공적으로 삭제 및 취소 정보로 이동되었습니다.");
+            res.status(200).send("예매 정보가 성공적으로 삭제 및 취소 정보로 이동되었습니다.");
+            connection.release(); // Release the connection when the transaction is complete
+          });
+        });
+      });
+    });
+  });
+});
+
+
 app.post("/submit_inquiry", (req, res) => {
   const { userId, email, subject, message } = req.body;
 
   // 데이터베이스에 데이터 삽입
-  const sql = 'INSERT INTO personal_inquiry (ID, email, inquiry_title, inquiry_content, inquiry_date) VALUES (?, ?, ?, ?, ?)';
+  const inquirysql = 'INSERT INTO personal_inquiry (ID, email, inquiry_title, inquiry_content, inquiry_date) VALUES (?, ?, ?, ?, ?)';
   const currentDate = new Date()
-  db.query(sql, [ userId, email, subject, message, currentDate], (err, result) => {
+  db.query(inquirysql, [ userId, email, subject, message, currentDate], (err, result) => {
     if (err) {
       console.error('문의 제출 실패:', err);
       res.status(500).send('문의 제출 실패');
@@ -127,7 +196,7 @@ app.get('/getDB', async (req, res) => {
 });
 
 app.get("/getreservation_info", async (req, res) => {
-  const sql = "SELECT * FROM reservation_info";
+  const sql = "SELECT * FROM reservation";
 
   db.query(sql, (err, results) => {
     if (err) {
@@ -201,6 +270,18 @@ app.get('/getShowInfo/:ID', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+app.get("/LoginInfo", async (req, res) => {
+  const sql = "SELECT * FROM user ";
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "내부 서버 에러" });
+    }
+    res.json(results);
+    });
+});   
 
 app.get("/getShowList/:ID", async (req, res) => {
   const location = req.params.ID;

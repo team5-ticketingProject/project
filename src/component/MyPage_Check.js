@@ -6,6 +6,8 @@ import "../css/MyPage.css";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
+import ReactDOM from "react-dom";
+import ReCancel from "./Re_Cancel";
 
 function Check() {
   const [selectedPeriod, setSelectedPeriod] = useState("15일");
@@ -14,6 +16,45 @@ function Check() {
   const [isLoading, setIsLoading] = useState(false); // 버튼 로딩 상태
   const [selectedYear, setSelectedYear] = useState(""); // 선택한 연도
   const [selectedMonth, setSelectedMonth] = useState(""); // 선택한 월
+  const [selectedReservationInfo, setSelectedReservationInfo] = useState(null); // 선택된 예매 정보
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const ReservationPerPage = 10; // 한 페이지에 보여질 공지사항 수
+
+  const indexOfLastreservation = currentPage * ReservationPerPage;
+  const indexOfFirstreservation = indexOfLastreservation - ReservationPerPage;
+  const currentreservations = reservationInfo.slice(indexOfFirstreservation, indexOfLastreservation);
+  
+  const handleReservationInfoClick = (selectedReservationInfo) => {
+    const popupWindow = window.open(
+      "",
+      "팝업 제목",
+      "width=1000,height=600,menubar=no,location=no,resizable=no,scrollbars=no,status=no"
+    );
+    function closePopupWindow() {
+      if (popupWindow) {
+        popupWindow.close();
+      }
+    }
+
+    // 팝업 윈도우에 React 컴포넌트 렌더링
+    popupWindow.document.body.innerHTML = "<div id='popuppw-root'></div>";
+    ReactDOM.render(
+      <ReCancel selectedReservationInfo={selectedReservationInfo}
+      closePopupWindow={closePopupWindow} />,
+      popupWindow.document.getElementById("popuppw-root")
+    );
+    popupWindow.document.head.innerHTML += `
+    <style>
+      .Re_Cancle {
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      height: 800px;
+      width: 800px;
+      }
+    </style>
+  `;
+  };
 
   const fetchReservationInfo = useCallback((period, startDate, endDate) => {
     setIsLoading(true);
@@ -22,7 +63,7 @@ function Check() {
       .get(`${process.env.REACT_APP_SERVER_URL}/getreservation_info`)
       .then((response) => {
         const filteredData = response.data.filter((item) => {
-          const reDate = new Date(item.Re_Date);
+          const reDate = new Date(item.re_date);
           return reDate >= startDate && reDate <= endDate;
         });
         setReservationInfo(filteredData);
@@ -35,6 +76,8 @@ function Check() {
   }, []);
 
   useEffect(() => {
+   
+  
     const today = new Date();
     let startDate;
     let endDate;
@@ -55,6 +98,10 @@ function Check() {
 
     fetchReservationInfo(selectedPeriod, startDate, endDate);
   }, [selectedPeriod, fetchReservationInfo]);
+  
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
 
   const handlePeriodClick = useCallback((period) => {
     if (isLoading) {
@@ -89,8 +136,7 @@ function Check() {
 
     fetchReservationInfo("custom", startDate, endDate);
   };
- 
-
+  
   return (
     <div className="Check">
       <h1>예매확인/취소</h1>
@@ -235,22 +281,28 @@ function Check() {
                 <td colSpan="6">예매한 내역이 없습니다.</td>
               </tr>
             ) : (
-              reservationInfo.map((item, index) => (
+              currentreservations.map((item, index) => (
                 <tr key={index}>
-                  <td>{item.show_Number}</td>
+                  <td>
+                    <button
+                      style={{ backgroundColor: "white", border: "none", cursor: "pointer" }}
+                      onClick={() => handleReservationInfoClick(item)}
+                    >
+                      {item.show_number}
+                    </button>
+                  </td>
                   <td>{item.show_ID}</td>
                   <td>
-                    {new Date(item.show_Choice).toISOString().split("T")[0]}
+                  {new Date(new Date(item.DATE).getTime() + 9 * 60 * 60 * 1000)
+                      .toISOString().split("T")[0]} {item.TIME}
                   </td>
                   <td>{item.Re_Number}</td>
                   <td>
                     {
-                      new Date(new Date(item.show_Choice) - 24 * 60 * 60 * 1000)
-                        .toISOString()
-                        .split("T")[0]
-                    }
+                      new Date(new Date(item.DATE) - 15 * 60 * 60 * 1000)
+                      .toISOString().split("T")[0]} {item.TIME}
                   </td>
-                  <td>{new Date(item.Re_Date).toISOString().split("T")[0]}</td>
+                  <td>{new Date(new Date(item.re_date).getTime() + 9 * 60 * 60 * 1000).toISOString().split("T")[0]}</td>
                 </tr>
               ))
             )}
@@ -260,9 +312,9 @@ function Check() {
       <div className="Pagination">
         <Stack spacing={2}>
           <Pagination
-            count={1}
-            defaultPage={1}
-            siblingCount={0}
+            count={Math.ceil(reservationInfo.length / ReservationPerPage)}
+            page={currentPage}
+            onChange={handlePageChange}
             showFirstButton
             showLastButton
           />
@@ -274,7 +326,7 @@ function Check() {
           <li>
             예매한 티켓 전체 취소, 혹은 신용카드 결제 시 부분 취소가 가능합니다.
             <br />
-            단, 일부 상품의 경우도 부분취소가 불가합니다.
+            단, 일부 상품의 경우도 부분 취소가 불가합니다.
           </li>
           <li>
             티켓이 배송된 이후에는 인터넷이나 고객센터를 통한 취소가 불가하며,
