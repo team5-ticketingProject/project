@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../css/Navigation.css";
 
-const Navigation = ({ navigateToModal }) => {
+const Navigation = () => {
   const [searchList, SetSearchList] = useState([]);
-  
+  const [posterIndex, SetPosterIndex] = useState(0);
+  const [showSearchOutput, setShowSearchOutput] = useState(false);
   
   const searchTitle = (e) => {
     const title = e.target.value;
+    SetPosterIndex();
     SetSearchList([]);
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/getSearchList/${title}`)
@@ -18,7 +20,26 @@ const Navigation = ({ navigateToModal }) => {
       .catch((error) => {
         console.error(error);
       });
+      
   };
+  const hoverOutputDetail = (index) => {
+    SetPosterIndex(index);
+  };
+  const searchDivRef = useRef(null);
+  const handleClickOutside = (event) => {
+    if (searchDivRef.current && !searchDivRef.current.contains(event.target)) {
+      setShowSearchOutput(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="navigation">
       <div className="inside">
@@ -28,7 +49,9 @@ const Navigation = ({ navigateToModal }) => {
           </a>
         </div>
         <div className="search">
-          <div className="searchDiv">
+          <div className="searchDiv"
+           ref={searchDivRef}
+           onClick={() => setShowSearchOutput(true)}>
             <input placeholder=" 공연 검색" onChange={searchTitle} />
             <button>
               <img
