@@ -1,8 +1,73 @@
-import React from "react";
+import React, { useRef }from "react";
 import Navigation from "./Navigation";
+import axios from "axios";
 import "../css/signup.css";
 
 const SignUp = () => {
+    const idRef = useRef();
+    const pwRef = useRef();
+    const repwRef = useRef();
+    const telRef = useRef();
+    const fmailRef = useRef();
+    const bmailRef = useRef();
+
+    const email = `${fmailRef}@${bmailRef}`;
+
+    const IDCheck = () => {
+        if (idRef.current.value === "" || idRef.current.value === undefined) {
+            alert("아이디를 입력하세요!!!");
+            idRef.current.focus();
+          } else {
+        axios
+        .post("http://localhost:5000/idcheck", {
+            id: idRef.current.value,
+        })
+        .then((res) => {
+            if (res.data[0].cnt === 1) {
+                alert("중복된 아이디가 존재합니다.")
+                idRef.current.value = "";
+              } else {
+                alert("사용 가능한 아이디입니다.");
+              }
+            })
+            .catch((e) => {
+              console.error(e);
+            });
+          }
+    };
+
+    const submitUser = () => {
+        if (idRef.current.value === "" || idRef.current.value === undefined) {
+            alert("아이디를 입력하세요.");
+          }
+          else if (pwRef.current.value === "" || pwRef.current.value === undefined) {
+            alert("패스워드를 입력하세요.");
+          }
+          else if (pwRef.current.value !== repwRef.current.value) {
+            alert("패스워드가 틀립니다.");
+          }
+          else if (telRef.current.value === "" || telRef.current.value === undefined) {
+            alert("전화번호를 입력하세요.");
+          }
+          else if (fmailRef.current.value === "" || fmailRef.current.value === undefined || bmailRef.current.value === "" || bmailRef.current.value === undefined) {
+            alert("이메일을 입력하세요.");
+          } else {
+      axios
+      .post("http://localhost:5000/signup", {
+        id: idRef.current.value,
+        pw: pwRef.current.value,
+        tel: telRef.current.value,
+        email: email,
+      })
+      .then((res) => {
+        document.location.href("/login");
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+    }
+    };
+    
     return(
         <div>
             <Navigation />
@@ -12,32 +77,32 @@ const SignUp = () => {
                     <tr>
                         <td>아이디</td>
                         <td>
-                            <input type="text" size={32}/>&nbsp; &nbsp; &nbsp; &nbsp;
-                            <button>ID 중복 확인</button>
+                            <input type="text" size={32} ref={idRef}/>&nbsp; &nbsp; &nbsp; &nbsp;
+                            <button class="btn" onClick={IDCheck}>ID 중복 확인</button>
                         </td>
                     </tr>
                     <tr>
                         <td>비밀번호</td>
-                        <td><input type="password" size={50} placeholder="8~16자리 영문, 숫자, 특수문자"/></td>
+                        <td><input type="password" size={50} ref={pwRef} placeholder="8~16자리 영문, 숫자, 특수문자"/></td>
                     </tr>
                     <tr>
                         <td>비밀번호 확인</td>
-                        <td><input type="password" size={50}/></td>
+                        <td><input type="password" size={50} ref={repwRef}/></td>
                     </tr>
                     <tr>
                         <td valign="top">전화번호</td>
                         <td>
-                            <input type="text" size={50}/>
-                            <p class='line'>&#10056; <span>(-)기호</span>를 포함하여 입력해주세요.</p>
+                            <input type="text" size={50} ref={telRef}/>
+                            <p class='line'>&#10056; <span class="red">(-)기호</span>를 포함하여 입력해주세요.</p>
                         </td>
                     </tr>
                     <tr>
                         <td>이메일</td>
-                        <td><input type="text" size={26}/>&nbsp;@&nbsp;<input type="text" size={15} /></td>
+                        <td><input type="text" size={26} ref={fmailRef}/>&nbsp;@&nbsp;<input type="text" size={15} ref={bmailRef}/></td>
                     </tr>
                 </table>
                 <div class='mid'>
-                    <button>가입완료</button>
+                    <button onClick={submitUser}>가입완료</button>
                 </div>
             </div>
         </div>

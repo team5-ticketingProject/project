@@ -10,18 +10,28 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  axios
+    .post("http://localhost:5000/admin", {
+        id: idRef.current.value,
+        pw: pwRef.current.value,
+      })
+    .then((res) => {
+      
+    })
+
+
   const handleLogin = () => {
     if (idRef.current.value === "" || idRef.current.value === undefined) {
       alert("아이디를 입력하세요!!!");
       idRef.current.focus();
       return false;
     }
-    if (pwRef.current.value === "" || pwRef.current.value === undefined) {
+    else if (pwRef.current.value === "" || pwRef.current.value === undefined) {
       alert("패스워드를 입력하세요!!!");
       pwRef.current.focus();
       return false;
     }
-
+    else {
     axios
       .post("http://localhost:5000/login", {
         id: idRef.current.value,
@@ -44,7 +54,7 @@ const Login = () => {
         console.error(e);
       });
     }
-    
+  }
     return(
         <div>
             <Navigation />

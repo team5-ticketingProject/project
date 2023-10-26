@@ -6,13 +6,13 @@
     margin-top: 4%;
 }
 
-button {
+.btn {
     border: 1px solid #6b6969;
     background-color: #f1efef;
     border-radius: 10px;
 }
 
-button:hover {
+.btn:hover {
     cursor: pointer;
 }
 
@@ -34,7 +34,7 @@ td .line {
     font-size: 11px;
 }
 
-span {
+span .red {
     color: red;
 }
 
