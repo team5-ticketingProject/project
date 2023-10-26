@@ -3,6 +3,7 @@ import axios from "axios";
 import "../css/MainSlide.css";
 import { Link } from "react-router-dom";
 
+
 const SlideShow = ({ images }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -100,7 +101,7 @@ const SlideShowContainer = ({
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/getDB")
+      .get(`${process.env.REACT_APP_SERVER_URL}/getDB`)
       .then((response) => {
         setShowData(response.data);
       })
@@ -109,7 +110,7 @@ const SlideShowContainer = ({
       });
 
       axios
-      .get('http://localhost:5000/getRank')
+      .get(`${process.env.REACT_APP_SERVER_URL}/getRank`)
       .then((response) => {
         setRankList(response.data);
       })

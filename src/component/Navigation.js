@@ -18,7 +18,7 @@ const Navigation = ({ openModal }) => {
     SetPosterIndex(0);
     SetSearchList([]);
     axios
-      .get(`http://localhost:5000/getSearchList/${title}`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/getSearchList/${title}`)
       .then((response) => {
         SetSearchList(response.data);
       })

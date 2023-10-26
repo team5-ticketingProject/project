@@ -23,7 +23,7 @@ const Login = () => {
     }
 
     axios
-      .post("http://localhost:5000/login", {
+      .post(`${process.env.REACT_APP_SERVER_URL}/login`, {
         id: idRef.current.value,
         pw: pwRef.current.value,
       })

@@ -1,7 +1,9 @@
+
+require('dotenv').config();
 const express = require("express");
 const axios = require("axios");
 const app = express();
-const port = 5000;
+const port = process.env.SERVER_PORT;
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const xml2js = require("xml2js");
@@ -10,10 +12,10 @@ const codes = [];
 const datas = [];
 
 const dbconfig = {
-  host: "127.0.0.1",
-  user: "root",
-  password: "123456",
-  database: "show_data",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 };
 
 const db = mysql.createPool(dbconfig);
@@ -280,13 +282,14 @@ app.post('/reservation', (req, res) => {
   var time = req.body.time;
   var user = req.body.user;
   var re_number = req.body.re_number;
+  var price = req.body.price;
   const d = new Date();
   var today = d.toLocaleDateString("ko-KR");
   var cancel_date = new Date(d.getFullYear(), d.getMonth(), d.getDate() - 7).toLocaleDateString("ko-KR");
   
-  var sql = 'SELECT COUNT(*) as CNT FROM reservation WHERE show_ID = ? AND DATE = ? AND TIME = ?';
+  var sql = 'SELECT SUM(re_number) as NUM FROM reservation WHERE show_ID = ? AND DATE = ? AND TIME = ?';
   db.query(sql, [show_id, date, time], (err, result) => { 
-    if(result[0].CNT < 10 && result[0].CNT + re_number <= 10){
+    if(result[0].NUM < 10 && Number(result[0].NUM) + re_number <= 10){
       var sql2 = 'UPDATE show_info SET seat = seat + ? WHERE show_ID = ?';
       db.query(sql2, [re_number, show_id], (err2, result2) => {
         if(err2){
@@ -294,7 +297,7 @@ app.post('/reservation', (req, res) => {
         }
       });
 
-      var sql3 = 'INSERT INTO reservation (show_ID, bank, re_number, cancel_date, re_date, user_ID, DATE, TIME) VALUES (?)';
+      var sql3 = 'INSERT INTO reservation (show_ID, bank, re_number, cancel_date, re_date, user_ID, DATE, TIME, price) VALUES (?)';
       var values = [
         show_id,
         "없음",
@@ -303,7 +306,8 @@ app.post('/reservation', (req, res) => {
         today,
         user,
         date,
-        time
+        time,
+        price
       ];
       db.query(sql3, [values], function(err3, result3){
         if(err3) throw err3;

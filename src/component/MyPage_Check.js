@@ -19,7 +19,7 @@ function Check() {
     setIsLoading(true);
 
     axios
-      .get("http://localhost:5000/getreservation_info")
+      .get(`${process.env.REACT_APP_SERVER_URL}/getreservation_info`)
       .then((response) => {
         const filteredData = response.data.filter((item) => {
           const reDate = new Date(item.Re_Date);

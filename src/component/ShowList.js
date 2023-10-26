@@ -12,7 +12,7 @@ const GetShowData = ({clicked, setClicked, setLocation, location}) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/getDB")
+      .get(`${process.env.REACT_APP_SERVER_URL}/getDB`)
       .then((response) => {
         setShowData(response.data);
       })

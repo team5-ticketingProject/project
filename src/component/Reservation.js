@@ -19,13 +19,28 @@ const Reservation = () => {
   const [time3, setTime3] = useState("");
   const [time4, setTime4] = useState("");
   const [reNumber, setReNumber] = useState(1);
+  const [price, setPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   let week = ['월','화','수','목','금','토','일'];
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/getDetail/${id.show_ID}`) 
+      .get(`${process.env.REACT_APP_SERVER_URL}/getDetail/${id.show_ID}`) 
       .then((response) => {
         SetInfo(response.data);
+        let split_price = info[0].price.split(",");
+        let temp_price = '';
+        for(let i = 0 ; i < split_price[0].length ; i++){
+          if(split_price[0][i] >= '0' && split_price[0][i] <= '9'){
+            temp_price += split_price[0][i];
+          }
+        }
+        for(let i = 0 ; i < split_price[1].length ; i++){
+          if(split_price[1][i] >= '0' && split_price[1][i] <= '9'){
+            temp_price += split_price[1][i];
+          }
+        }
+        setPrice(Number(temp_price));
       })
       .catch((error) => {
         console.error(error);
@@ -79,7 +94,7 @@ const Reservation = () => {
           setTime1(times[0]);
           setTime2(times[1]);
           setTime3(times[2]);
-          setTime4(times[3]);
+          setTime4(times[3]);       
           break;
         }
       }
@@ -87,11 +102,13 @@ const Reservation = () => {
         setTime1("가능한 시간대 없음");
       }
     }
-  }, [info, date, schedule]);
+  }, [date]);
 
   const onChange = (selectedDate) => {
     if (moment(selectedDate).isBetween(info[0].start_date, info[0].end_date)) {
       setDate(selectedDate);
+      setTotalPrice(price);
+      setReNumber(1);
     } else {
       alert("유효한 기간 내에서 날짜를 선택해주세요.");
     }
@@ -103,12 +120,13 @@ const Reservation = () => {
       return;
     }
     axios
-    .post("http://localhost:5000/reservation", {
+    .post(`${process.env.REACT_APP_SERVER_URL}/reservation`, {
       ID : id.show_ID,
       date : date.toLocaleDateString("ko-KR"),
       time: selectedTime,
       user: window.sessionStorage.getItem('id'),
-      re_number: reNumber
+      re_number: reNumber,
+      price: totalPrice
     })
     .then((response) => {
       if(response.data === '1'){
@@ -130,9 +148,11 @@ const Reservation = () => {
         return;
       }
       setReNumber(reNumber - 1);
+      setTotalPrice(totalPrice - price);
     }
     else{
       setReNumber(reNumber + 1);
+      setTotalPrice(totalPrice + price);
     }
   }
 
@@ -169,12 +189,12 @@ const Reservation = () => {
               />
               <div className="re_time">
                 <p>시간</p><hr/>
-                <Button onClick={() => setSelectedTime(time1)}>{time1}</Button><br/>
+                <Button onClick={() => {setSelectedTime(time1);setTotalPrice(price);setReNumber(1)}}>{time1}</Button><br/>
                 {time1 !== "가능한 시간대 없음" && (
                   <>
-                    <Button onClick={() => setSelectedTime(time2)}>{time2}</Button><br/>
-                    <Button onClick={() => setSelectedTime(time3)}>{time3}</Button><br/>
-                    <Button onClick={() => setSelectedTime(time4)}>{time4}</Button>
+                    <Button onClick={() => {setSelectedTime(time2);setTotalPrice(price);setReNumber(1)}}>{time2}</Button><br/>
+                    <Button onClick={() => {setSelectedTime(time3);setTotalPrice(price);setReNumber(1)}}>{time3}</Button><br/>
+                    <Button onClick={() => {setSelectedTime(time4);setTotalPrice(price);setReNumber(1)}}>{time4}</Button>
                   </>
 )}
               </div>    
@@ -190,7 +210,7 @@ const Reservation = () => {
                     {reNumber}매
                     <Button variant="contained" disableElevation style={{float:'right'}} onClick={() => number_button(2)}>+</Button>
                   </div>
-                  <p>금액: {}</p>
+                  <p>금액: {totalPrice}원</p>
                 </div>
                 <Button variant="contained" disableElevation onClick={() => reservate()}>
                   <p>결제하기</p>

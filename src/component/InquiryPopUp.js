@@ -25,7 +25,7 @@ function ContactForm({ onSubmit, onClose }) {
 
     const formData = { userId, subject, message, email };
     try {
-      const response = await fetch("http://localhost:5000/submit_inquiry", {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/submit_inquiry`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

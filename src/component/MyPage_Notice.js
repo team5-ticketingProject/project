@@ -12,7 +12,7 @@ function Notice() {
   // 예시로 공지사항 데이터를 상태에 추가
   useEffect(() => {
     axios
-      .get("http://localhost:5000/getNotice")
+      .get(`${process.env.REACT_APP_SERVER_URL}/getNotice`)
       .then((response) => {
         setNotices(response.data);
         console.log("Notices:", notices);

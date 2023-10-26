@@ -59,7 +59,7 @@ const Reserve_Calendar = () => {
     setMarkLeft(left);
     setMarkRight(right);
     axios
-      .get(`http://localhost:5000/getDateList/${left}/${right}`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/getDateList/${left}/${right}`)
       .then((response) => {
         setShowList(response.data);
       })

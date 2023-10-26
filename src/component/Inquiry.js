@@ -14,7 +14,7 @@ function ContactUs() {
     async function fetchInquiries() {
       try {
         const response = await fetch(
-          "http://localhost:5000/getpersonal_inquiry"
+          `${process.env.REACT_APP_SERVER_URL}/getpersonal_inquiry`
         ); // API 엔드포인트에 따라 수정
         if (response.ok) {
           const data = await response.json();
