@@ -12,6 +12,7 @@ function InquiryContactUs(props) {
   const [selectedInquiry, setSelectedInquiry] = useState(null);
   
   const openInquiryModal = (inquiry) => {
+    
     // Notice 모달을 열 때 선택된 공지사항을 설정
     setSelectedInquiry(inquiry);
     props.openModal("InquiryAnswer", null, null, inquiry);
@@ -24,7 +25,9 @@ function InquiryContactUs(props) {
         ); 
         if (response.ok) {
           const data = await response.json();
-          setInquiries(data);
+
+           data.sort((a, b) => new Date(b.inquiry_date) - new Date(a.inquiry_date));
+        setInquiries(data);
         }
       } catch (error) {
         console.error("문의 데이터를 가져오는 중 오류 발생:", error);
@@ -102,7 +105,7 @@ function InquiryContactUs(props) {
       popupWindow.document.getElementById("popup-root")
     );
   };
-
+  
   return (
     <div className="ContactUs">
       <div style={{ borderBottom: "2px solid #ccc" }}>
@@ -151,9 +154,10 @@ function InquiryContactUs(props) {
               currentInquiries.map((inquiry, index) => (
                 <tr key={index}>
                   <td style={{cursor:"pointer"}} onClick={() => openInquiryModal(inquiry)}>{inquiry.inquiry_title}</td>
-                  <td>{inquiry.inquiry_content}</td>
+                  <td style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", maxHeight:"200px", maxWidth:"200px"}}>{inquiry.inquiry_content}</td>
                   <td>
-                    {new Date(inquiry.inquiry_date).toISOString().split("T")[0]}
+                  {new Date(new Date(inquiry.inquiry_date).getTime() + 9 * 60 * 60 * 1000)
+                      .toISOString().split("T")[0]} 
                   </td>
                 </tr>
               ))

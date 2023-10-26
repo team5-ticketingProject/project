@@ -3,14 +3,11 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
 
-
 function Notice(props) {
   const [notices, setNotices] = useState([]); // 공지사항 목록
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const noticesPerPage = 10; // 한 페이지에 보여질 공지사항 수
   const [selectedNotice, setSelectedNotice] = useState(null);
-  
-
 
   const openNoticeModal = (notice) => {
     // Notice 모달을 열 때 선택된 공지사항을 설정
@@ -37,6 +34,7 @@ function Notice(props) {
   const indexOfFirstNotice = indexOfLastNotice - noticesPerPage;
   const currentNotices = notices.slice(indexOfFirstNotice, indexOfLastNotice);
 
+  
   return (
     <div className="Notice">
       <div style={{ borderBottom: "2px solid #ccc" }}>
@@ -66,11 +64,17 @@ function Notice(props) {
             {currentNotices.map((notice, index) => (
               <tr key={index}>
                 <td>
-                  <span style={{cursor:"pointer"}} onClick={() => openNoticeModal(notice)}>
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={() => openNoticeModal(notice)}
+                  >
                     {notice.title}
                   </span>
                 </td>
-                <td> {new Date(notice.date).toISOString().split("T")[0]}</td>
+                <td>
+                {new Date(new Date(notice.date).getTime() + 9 * 60 * 60 * 1000)
+                      .toISOString().split("T")[0]} 
+                </td>
               </tr>
             ))}
           </tbody>

@@ -136,7 +136,7 @@ function Check() {
 
     fetchReservationInfo("custom", startDate, endDate);
   };
-
+  
   return (
     <div className="Check">
       <h1>예매확인/취소</h1>
@@ -293,15 +293,16 @@ function Check() {
                   </td>
                   <td>{item.show_ID}</td>
                   <td>
-                    {new Date(item.DATE).toISOString().slice(0, 16).replace('T', ' ')}
+                  {new Date(new Date(item.DATE).getTime() + 9 * 60 * 60 * 1000)
+                      .toISOString().split("T")[0]} {item.TIME}
                   </td>
                   <td>{item.Re_Number}</td>
                   <td>
                     {
-                      new Date(new Date(item.DATE) - 24 * 60 * 60 * 1000)
-                      .toISOString().slice(0, 16).replace('T', ' ')}
+                      new Date(new Date(item.DATE) - 15 * 60 * 60 * 1000)
+                      .toISOString().split("T")[0]} {item.TIME}
                   </td>
-                  <td>{new Date(item.re_date).toISOString().split("T")[0]}</td>
+                  <td>{new Date(new Date(item.re_date).getTime() + 9 * 60 * 60 * 1000).toISOString().split("T")[0]}</td>
                 </tr>
               ))
             )}

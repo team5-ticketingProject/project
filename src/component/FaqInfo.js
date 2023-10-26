@@ -7,14 +7,11 @@ function FaqInfo(props) {
     if (props.selectedFaq) {
       setSelectedFaq(props.selectedFaq);
     }
-    
   }, [props.selectedFaq]);
 
   const goBacktoFaq = () => {
-   
     props.openModal("Faq", null);
     setSelectedFaq(null);
-   
   };
 
   return (
@@ -32,13 +29,24 @@ function FaqInfo(props) {
             overflowWrap: "break-word",
             padding: "60px",
             margin: "auto",
-            fontSize: "20px",
+            fontSize: "17px",
           }}
         >
           {selectedFaq ? selectedFaq.answer : "No FAQ selected"}
         </h4>
       </div>
-      <button onClick={goBacktoFaq}>목록으로</button>
+      <button
+        style={{
+          position: "absolute",
+          bottom: "100px",
+          right: "500px",
+          fontWeight:"bold",
+          fontSize:"16px"
+        }}
+        onClick={goBacktoFaq}
+      >
+        목록으로
+      </button>
     </div>
   );
 }

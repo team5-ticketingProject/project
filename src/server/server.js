@@ -269,6 +269,18 @@ app.get('/getShowInfo/:ID', async (req, res) => {
   }
 });
 
+app.get("/LoginInfo", async (req, res) => {
+  const sql = "SELECT * FROM user ";
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "내부 서버 에러" });
+    }
+    res.json(results);
+    });
+});   
+
 app.get("/getShowList/:ID", async (req, res) => {
   const location = req.params.ID;
   try {

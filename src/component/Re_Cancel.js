@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 const tableStyle = {
@@ -23,12 +23,30 @@ const buttonContainerStyle = {
   alignItems: "center",
   marginTop: "20px",
 };
+const modalStyle = {
+  position: "fixed",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  backgroundColor: "white",
+  border: "1px solid #ccc",
+  padding: "20px",
+  borderRadius: "5px",
+  boxShadow: "0 0 10px rgba(0, 0, 0, 0.3)",
+  zIndex: "1000",
+  width: "300px",
+};
 
 function ReCancel({ selectedReservationInfo, closePopupWindow }) {
+  const [isConfirmationOpen, setConfirmationOpen] = useState(false);
   const handleCancelReservation = () => {
-
+  
+      setConfirmationOpen(true);
+      
+  };
+   const confirmCancel = () => {
     closePopupWindow();
-   
+
     if (selectedReservationInfo) {
       axios
         .post("http://localhost:5000/Cancelreservation", {
@@ -111,7 +129,18 @@ function ReCancel({ selectedReservationInfo, closePopupWindow }) {
         >
           취소하기
         </button>
+        {isConfirmationOpen && (
+        <div style={modalStyle} className="confirmation-dialog">
+          <p style={{fontWeight:"bold"}}>정말 취소하시겠습니까?</p>
+          <button style={{marginRight:"5px"}} onClick={confirmCancel}>확인</button>
+          <button onClick={() => {
+          setConfirmationOpen(false);
+          closePopupWindow();
+          }}>취소</button>
+        </div>
+      )}
       </div>
+      
     </div>
   );
 }
