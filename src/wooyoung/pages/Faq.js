@@ -8,8 +8,8 @@ const Faq = () => {
   const [newAnswer, setNewAnswer] = useState('');
   const [isFormVisible, setIsFormVisible] = useState(false);
 
+  // FAQ 데이터 가져오는 부분
   useEffect(() => {
-    // 서버에서 FAQ 데이터 가져오기
     axios.get('http://localhost:5000/getFAQs')
       .then((response) => {
         setFaqs(response.data);
@@ -26,26 +26,34 @@ const Faq = () => {
         answer: newAnswer,
       };
 
-      axios.post('/registerFAQ', newFaq)
-      .then((response) => {
-        // 서버에서 새 FAQ를 생성하고 응답을 받아서 faqs 상태를 업데이트합니다.
-        setFaqs([...faqs, response.data]);
-        setNewQuestion('');
-        setNewAnswer('');
-        setIsFormVisible(false);
-      })
-      .catch((error) => {
-        console.error('Error creating FAQ:', error);
-      });
-  }
-};
+      axios
+        .post('http://localhost:5000/registerFAQ', newFaq)
+        .then((response) => {
+          // 서버에서 새 FAQ를 생성하고 응답을 받아서 faqs 상태를 업데이트합니다.
+          setFaqs([...faqs, response.data]);
+          setNewQuestion('');
+          setNewAnswer('');
+          setIsFormVisible(false);
+        })
+        .catch((error) => {
+          console.error('Error creating FAQ:', error);
+        });
+    }
+  };
 
   const handleDeleteFaq = (id) => {
     const confirmDelete = window.confirm('정말로 삭제하시겠습니까?');
     if (confirmDelete) {
-      // 서버에서 FAQ 삭제 요청을 보낼 수도 있습니다.
-      // 아래는 클라이언트에서 삭제하는 예제 코드입니다.
-      setFaqs(faqs.filter((faq) => faq.id !== id));
+      // 서버에서 FAQ 삭제 요청을 보내도록 합니다.
+      axios
+        .delete(`http://localhost:5000/deleteFAQ/${id}`)
+        .then((response) => {
+          // 서버에서 FAQ를 삭제하고 응답을 받아서 faqs 상태를 업데이트합니다.
+          setFaqs(faqs.filter((faq) => faq.ID !== id));
+        })
+        .catch((error) => {
+          console.error('Error deleting FAQ:', error);
+        });
     }
   };
 
@@ -69,9 +77,12 @@ const Faq = () => {
             value={newAnswer}
             onChange={(e) => setNewAnswer(e.target.value)}
           />
-          <button className={styles.saveButton} onClick={handleCreateFaq}>저장</button>
+          <button className={styles.saveButton} onClick={handleCreateFaq}>
+            저장
+          </button>
         </div>
       )}
+
       {faqs.map((faq) => (
         <div key={faq.ID} className={styles.faqItem}>
           <h3 className={styles.faqQuestion}>{faq.question}</h3>
@@ -84,5 +95,3 @@ const Faq = () => {
 };
 
 export default Faq;
-
-

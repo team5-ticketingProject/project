@@ -9,8 +9,7 @@ const Notice = () => {
   const [content, setContent] = useState("");
   const [deleteItemId, setDeleteItemId] = useState(null);
 
-   useEffect(() => {
-    // 서버의 엔드포인트로 공지사항 데이터 요청
+  useEffect(() => {
     axios.get('http://localhost:5000/getNotices')
       .then((response) => {
         setNotices(response.data);
@@ -20,22 +19,30 @@ const Notice = () => {
       });
   }, []);
 
+  const handleDeleteClick = (id) => {
+    const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
+    if (confirmDelete) {
+      axios
+        .delete(`http://localhost:5000/deleteNotice/${id}`)
+        .then((response) => {
+          // 서버에서 공지사항을 삭제하고 응답을 받아서 notices 상태를 업데이트합니다.
+          setDeleteItemId(id); // 삭제할 아이템 ID 설정
+        })
+        .catch((error) => {
+          console.error("Error deleting notice:", error);
+        });
+    }
+  };
+
   const handleCreateClick = () => {
-    setEditing("add");
+    setEditing({ id: "add" }); // 사용자 정의 ID 'add'를 지정해 새로운 글을 구분
     setTitle("");
     setContent("");
   };
 
-  const handleDeleteClick = (id) => {
-    const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
-    if (confirmDelete) {
-      setDeleteItemId(id);
-    }
-  };
-
   useEffect(() => {
     if (deleteItemId !== null) {
-      setNotices(notices.filter((notice) => notice.id !== deleteItemId));
+      setNotices(notices.filter((notice) => notice.notification_ID !== deleteItemId));
       setEditing(false);
       setDeleteItemId(null);
     }
@@ -48,29 +55,62 @@ const Notice = () => {
   };
 
   const handleSaveClick = () => {
-    if (editing === "add") {
-      const newNotice = {
-        id: Math.max(...notices.map((notice) => notice.id), 0) + 1,
-        title,
-        content,
+    if (editing) {
+      const updatedNotice = {
+        notification_ID: editing.id,
+        title, // 추가된 부분: 수정 폼에 입력된 제목을 title 상태로 업데이트
+        content, // 추가된 부분: 수정 폼에 입력된 내용을 content 상태로 업데이트
       };
-      setNotices([newNotice, ...notices]);
-    } else if (editing) {
-      const updatedNotices = notices.map((notice) =>
-        notice.id === editing.id ? { ...notice, title, content } : notice
-      );
-      setNotices(updatedNotices);
+  
+      if (editing.id === "add") {
+        // 새로운 글을 DB에 추가하는 요청
+        axios
+          .post("http://localhost:5000/addNotice", updatedNotice)
+          .then((response) => {
+            axios.get('http://localhost:5000/getNotices')
+              .then((response) => {
+                setNotices(response.data);
+                setTitle("");
+                setContent("");
+                setEditing(false);
+              })
+              .catch((error) => {
+                console.error('Error fetching notices:', error);
+              });
+          })
+          .catch((error) => {
+            console.error("Error creating notice:", error);
+          });
+      } else {
+        // 이미 존재하는 글을 수정하는 요청
+        axios
+          .post("http://localhost:5000/updateNotice", updatedNotice)
+          .then((response) => {
+            axios.get('http://localhost:5000/getNotices')
+              .then((response) => {
+                setNotices(response.data);
+                setTitle("");
+                setContent("");
+                setEditing(false);
+              })
+              .catch((error) => {
+                console.error('Error fetching notices:', error);
+              });
+          })
+          .catch((error) => {
+            console.error("Error updating notice:", error);
+          });
+      }
     }
-
-    setEditing(false);
-    setTitle("");
-    setContent("");
   };
-
+  
+  
   const handleEditClick = (notice) => {
-    setEditing(notice);
-    setTitle(notice.title);
-    setContent(notice.content);
+    setEditing({
+      id: notice.notification_ID,
+      title: notice.title,
+      content: notice.content,
+    });
   };
 
   return (

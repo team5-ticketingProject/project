@@ -3,7 +3,7 @@ const app = express();
 const port = 5000;
 const mysql = require("mysql2");
 const cors = require("cors");
-
+const bodyParser = require("body-parser"); // 요청 본문(body) 파싱을 위한 미들웨어 추가
 
 const dbconfig = {
   host: "127.0.0.1",
@@ -14,8 +14,9 @@ const dbconfig = {
 
 const db = mysql.createPool(dbconfig);
 app.use(cors());
+app.use(bodyParser.json()); // JSON 요청 본문(body) 파싱 설정
 
-// 노트 리스트 가져오기
+///////// Notice
 app.get('/getNotices', (req, res) => {
   const sql = 'SELECT * FROM notice';
   db.query(sql, (err, results) => {
@@ -27,7 +28,51 @@ app.get('/getNotices', (req, res) => {
   });
 });
 
-// FAQ 리스트 가져오기
+app.post('/updateNotice', (req, res) => {
+  const { notification_ID, title, content } = req.body;
+  const sql = 'UPDATE notice SET title = ?, content = ? WHERE notification_ID = ?';
+
+  db.query(sql, [title, content, notification_ID], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json({ message: 'Data updated successfully' });
+  });
+});
+
+app.delete('/deleteNotice/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'DELETE FROM notice WHERE notification_ID = ?';
+
+  db.query(sql, [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json({ message: 'Notice deleted successfully' });
+  });
+});
+
+app.post('/addNotice', (req, res) => {
+  const { title, content } = req.body;
+  const sql = 'INSERT INTO notice (title, content) VALUES (?, ?)';
+
+  db.query(sql, [title, content], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json({ message: 'Data added successfully' });
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+
+/////////// Faq
 app.get('/getFAQs', (req, res) => {
   const sql = 'SELECT * FROM faq';
   db.query(sql, (err, results) => {
@@ -39,6 +84,35 @@ app.get('/getFAQs', (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.post('/registerFAQ', (req, res) => {
+  const { question, answer } = req.body;
+  const sql = 'INSERT INTO faq (question, answer) VALUES (?, ?)';
+
+  db.query(sql, [question, answer], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    const insertedFAQ = {
+      ID: results.insertId,
+      question,
+      answer,
+    };
+
+    res.json(insertedFAQ);
+  });
+});
+
+app.delete('/deleteFAQ/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'DELETE FROM faq WHERE ID = ?';
+
+  db.query(sql, [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json({ message: 'FAQ deleted successfully' });
+  });
 });
