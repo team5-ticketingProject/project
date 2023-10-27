@@ -5,6 +5,7 @@ import PwChange from "./Pw_Change";
 import ReactDOM from "react-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import EmailChange from "./ChangeEmail";
 
 
 function UserInfo() {
@@ -30,7 +31,9 @@ function UserInfo() {
     }
   }, []);
   
-  const openPopupPw = () => {
+  
+  
+  const openPopupPw = (popupName) => {
     const popupWindow = window.open(
       "",
       "팝업 제목",
@@ -39,6 +42,7 @@ function UserInfo() {
 
     // 팝업 윈도우에 React 컴포넌트 렌더링
     popupWindow.document.body.innerHTML = "<div id='popuppw-root'></div>";
+    const contanier = popupWindow.document.getElementById("popuppw-root");
     popupWindow.document.head.innerHTML += `
     <style>
       .ContactForm {
@@ -82,10 +86,11 @@ function UserInfo() {
       }
     </style>
     `;
-    ReactDOM.render(
-      <PwChange />,
-      popupWindow.document.getElementById("popuppw-root")
-    );
+    if (popupName === "PwChange") {
+      ReactDOM.render(<PwChange onClose={popupWindow.close} />, contanier);
+    } else if (popupName === "EmailChange") {
+      ReactDOM.render(<EmailChange onClose={popupWindow.close} />, contanier);
+    }
   };
   useEffect(() => {
     if (!window.sessionStorage.getItem('id')) {
@@ -122,31 +127,25 @@ function UserInfo() {
                       <br />
                       아이디 <br /> <br />
                     </th>
-
                     <td className="ID">{userInfo.ID}</td>
                     </tr>
                   <tr>
                     <th scope="row">이메일</th>
                     <td>
+                      <br/>
                       {userInfo.email}
                       <p className="fs12_v2 color_gray">
-                        <span id="agreeMail" className="checkbox">
-                          <input
-                            type="checkbox"
-                            id="agree_mail"
-                            name="agree_mail"
-                          />
-                        </span>
                         <label htmlFor="agree_mail">
-                          <span
-                            style={{
-                              fontSize: "12px",
-                              letterSpacing: "-.5px",
-                              color: "#62676c",
-                            }}
-                          >
-                            홍보성 정보수신 동의
-                          </span>
+                        <Button
+                        onClick={() => openPopupPw("EmailChange")}
+                        sx={{
+                          border: "1px solid #000",
+                          color: "black",
+                          fontSize: "12px",
+                        }}
+                      >
+                        이메일 변경 
+                      </Button>
                         </label>
                       </p>
                     </td>
@@ -156,7 +155,7 @@ function UserInfo() {
                     <td>
                       {userInfo.PW}
                       <Button
-                        onClick={openPopupPw}
+                        onClick={() => openPopupPw("PwChange")}
                         sx={{
                           border: "1px solid #000",
                           color: "black",
@@ -181,20 +180,6 @@ function UserInfo() {
                  
                 </tbody>
               </table>
-            </div>
-            <div className="U-Button">
-              <Button
-                sx={{
-                  "&:hover": { color: "white", backgroundColor: "black" },
-                  border: "1px solid #000",
-                  color: "white",
-                  backgroundColor: "black",
-                  fontSize: "20px",
-                  textAlign: "center",
-                }}
-              >
-                회원정보 수정
-              </Button>
             </div>
           </>
         ) : (
