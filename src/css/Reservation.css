@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap');
+
+.re_container{
+    display: inline;
+    align-items: center;
+}
+
+.re_top {
+    display: inline-block;
+}
+.re_showname {    
+    font-size: 24px;
+    margin: 30px 10px;
+}
+
+.re_showname > p {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    display: flex;
+}
+
+.re_img {
+    float: left;
+}
+
+.re_img > img {
+    display: flex;
+    width: 350px;
+    height: 450px;
+    border-radius: 10px;
+
+}
+
+.re_info {
+    display: inline-block;
+    margin: 0px 40px;
+    width: 600px;
+    height: 450px;
+}
+
+.re_info > p {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #171717;
+}
+
+.re_info > p > strong {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 16px;
+    color: #090909;
+}
+
+
+.re_down{
+    display: flex;
+    margin: 50px -20px;
+}
+
+.re_calendar {
+    border-radius: 10px;
+    margin: 0px 30px;
+}
+
+.re_time {
+    border: 0.3px solid #a5a3a3;
+    border-radius: 10px;
+    width: 200px;
+    text-align: center;
+    
+
+}
+
+.re_time > p {
+    font-size: 16px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 800;
+}
+
+.re_time > Button {
+    font-size:16px; 
+    color: black;
+}
+.re_time > Button:hover {
+    font-size:16px; 
+    color: rgb(76, 76, 76);
+    border: 0.3px solid #b0b0b0;
+    border-radius: 18px ;
+}
+
+.re_select {
+    margin: 0px 30px;
+}
+
+.re_sel_top {
+    border: 0.3px solid #a5a3a3;
+    border-radius: 10px;
+    width: 220px;
+    height: 150px;
+}
+
+.re_sel_top > p {
+    text-align: center;
+    font-size: 16px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 800;
+}
+
+
+.re_select > button {
+    background-color: rgb(88, 0, 151);
+    width: 220px;
+    height: 50px;
+    margin: 15px auto;
+
+
+}
+
+.re_select > button > p {
+    text-align: center;
+    font-size: 16px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 800;
+}
+
+.re_number {
+    padding-top: 20px;
+    text-align: center;
+}
+
+.re_number > button{
+    background-color: rgb(88, 0, 151);
+    color: white;
+    font-size: 20px;
+    height: 30px;
+}
+
+.re_price {
+    display: flex;
+}
+
+.re_read {
+    border: 0.5px solid #d3cdcd;
+    border-radius: 10px;
+    width: 830px;
+    padding: 5px 10px;
+    margin-top: 60px;
+}
+
+.re_read > p {
+    display: inline-block; 
+    line-height: 2;
+    font-size: 14px;
+}
+
+.paymodal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 800px;
+    border: 0.5px solid #bcbcbc;
+    box-Shadow: 24;
+    background-color: rgb(255, 255, 255);
+    padding: 40px;
+}
+.re_down2{
+    
+    display: flex;
+
+    
+}
+.seat_box{
+    border: 1px solid gray;
+    border-radius: 10px;
+    width: 780px;
+    height: 420px;
+    background-color: white;
+    text-align: center;
+    padding: 0 30px;
+    padding-bottom: 10px;
+}
+.seat_span{
+    margin-top: 13px;
+    margin-left: 5px;
+    width: 68px;
+    height: 20px;
+    float: left;
+    font-size: 13px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+.seat_span:hover{
+    background-color: gray;
+    cursor: pointer;
+}
+.seat_box_alpha{
+    float:left;
+    height:300px; 
+    padding: 10px 0px;
+    font-weight: 500;
+}
+.seat_box_alpha_detail{
+    margin-top: 15px;
+}
+.stage{
+    background-color: gray;
+    color: white;   
+    width: 100px;
+    margin-left: 340px;
+    border-radius: 10px;
+}
+.re_down3{
+    display: flex;
+    margin-top: 60px;
+}
+.select_bank{
+    border: 1px solid gray;
+    border-radius: 10px;
+    width: 550px;
+    height: 250px;
+    text-align: center;
+}
+.select_bank > p{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #171717;
+}
+.bank-box{
+    display: flex;
+}
+.bank-box label{
+    border: 1px solid gray;
+    border-radius: 10px;
+    margin-left: 45px;
+    margin-top: 20px;
+    padding: 10px;
+}
+.bank-box img{
+    width: 100px;
+    height: 50px;
+}
+.final-cost{
+    text-align: center;
+    border: 0.3px solid #a5a3a3;
+    border-radius: 10px;
+    width: 220px;
+    height: 150px;
+}
+.final-cost-button{
+    margin-top: 50px;
+}
+.final-cost-button > button{
+    background-color: rgb(88, 0, 151);
+    width: 220px;
+    height: 50px;  
+}

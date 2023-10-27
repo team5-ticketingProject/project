@@ -6,11 +6,11 @@ import MemberManagement from "../wooyoung/pages/MemberManagement";
 import Notice from "../wooyoung/pages/Notice";
 import Faq from "../wooyoung/pages/Faq";
 import DiscountAdjustment from "../wooyoung/pages/DiscountAdjustment";
-import styles from "../App.module.css";
+
 
 const Test = () => {
   return (
-    <div className={styles.App}>
+    <div style={{paddingTop:'80px'}}>
       <Header />
       <Menu />
       <Routes>

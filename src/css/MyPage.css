@@ -257,6 +257,7 @@
     border-collapse: collapse;
     margin-top: 40px;
     justify-content: center;
+
   }
   .FAQInfo th {
     background-color: #f0f0f0; /* 회색 배경색 적용 */
@@ -269,6 +270,10 @@
     border-bottom: 1px solid #ccc;
     padding: 15px;
     text-align: center;
+    
+    
+    
+    
   }
   .ContactUsInfo {
     width: 100%;

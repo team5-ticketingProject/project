@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../css/MainSlide.css";
 import { Link } from "react-router-dom";
-import MainModal from "./MainModal";
+
 
 const SlideShow = ({ images }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -101,7 +101,7 @@ const SlideShowContainer = ({
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/getDB")
+      .get(`${process.env.REACT_APP_SERVER_URL}/getDB`)
       .then((response) => {
         setShowData(response.data);
       })
@@ -110,7 +110,7 @@ const SlideShowContainer = ({
       });
 
       axios
-      .get('http://localhost:5000/getRank')
+      .get(`${process.env.REACT_APP_SERVER_URL}/getRank`)
       .then((response) => {
         setRankList(response.data);
       })
@@ -134,9 +134,9 @@ const SlideShowContainer = ({
         <div className="main-box">
           <div className="select-classify">
             <span>
-              <strong>연극</strong>
+              <strong style={{color:'gray'}}>연극</strong>
             </span>
-            <span className="select-classify-right-span">
+            <span className="select-classify-right-span" style={{color:'gray'}}>
               {showData.length}개 상영중
             </span>
             <hr />
@@ -209,8 +209,11 @@ const SlideShowContainer = ({
           {rankList.map((data, index) => (
             <div className="rank-detail" onMouseEnter={() => hover_rank(index)}>
               <div className="rank-detail-number" style={{backgroundColor: index === 0 ? 'red' : 'gray'}}>{index+1}</div>
-              <div className="test">
-                {data.show_name}
+              <div>
+                <Link to={window.sessionStorage.getItem('id') ? `/reservation/${data.show_ID}/${data.show_time}`: '/login'} style={{textDecoration:'none', color:'black'}}>
+                  {data.show_name}
+                </Link>
+ 
               </div>
               
             </div>
@@ -220,7 +223,7 @@ const SlideShowContainer = ({
           </div>
         </div>
       </div>
-
+        <br/>
       <div className="show-list-title">
         <a id="tag1" href>
           <h1>연극목록</h1>
@@ -232,7 +235,7 @@ const SlideShowContainer = ({
             <div className="main-list">
               <div className="mainslide-show-info">
                 <p>
-                  <Link to={`/reservation/${datas.show_ID}`}>
+                  <Link to={window.sessionStorage.getItem('id') ? `/reservation/${datas.show_ID}/${datas.show_time}`: '/login'}>
                     <img src={datas.poster_url} alt="공연포스터" />
                   </Link>
                 </p>
@@ -245,18 +248,6 @@ const SlideShowContainer = ({
                 <div className="info-time">
                   <strong>{datas.show_time}</strong>
                 </div>
-                {/* <div>
-                    <MainModal
-                        posterUrl={datas.poster_url} 
-                        showName={datas.show_name}
-                        showLocation={datas.show_location}
-                        startDate={datas.start_date}
-                        endDate={datas.end_date}
-                        Price={datas.price}
-                        showTime={datas.show_time}
-                        Actor={datas.actor}
-                    />
-                  </div> */}
               </div>
               <hr className="hr" />
             </div>

@@ -56,7 +56,7 @@
 .main-box{
   height: 200px; 
   color: gray;
-
+  float: left;
 }
 .select-classify{
   border: 5px solid rgb(228, 228, 171);
@@ -84,7 +84,7 @@
   position: relative;
   width: 200px;
   height: 240px;
-  right: 435px;
+  left: 10px;
   display: inline-block;
   z-index: 9;
 }
@@ -162,10 +162,12 @@
 .show-list-title{
   text-align: left;
   padding-left: 285px;
+
 }
 
 .show-list{
   padding: 0 285px;
+  
 }
 .show-main {
   padding: 0 20px;
@@ -174,7 +176,6 @@
   display: flex;
   flex-wrap: wrap; /* 항목을 여러 행에 걸쳐 배열하도록 수정 */
   justify-content: flex-start; 
-  
 }
 
 .main-list {
@@ -223,16 +224,14 @@
   position: relative;
 }
 .main-container{
-
   padding: 0 285px;
 }
 .rank-box{
   border: 5px solid rgb(189, 183, 183);
   width: 300px;
   height: 200px;
-  position: absolute;
-  bottom: 35px;
-  right: 265px;
+  margin-left: 1040px;
+  
 }
 .rank-detail{  
   width: 50%;
@@ -261,7 +260,6 @@
   border-radius: 10px;
   width: 300px;
   height: 200px;
-  position: absolute;
-  bottom: 35px; 
-  right: 800px;
+  margin-left: 40px;
+  float: left;
 }

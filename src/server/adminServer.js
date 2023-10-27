@@ -16,7 +16,21 @@ const db = mysql.createPool(dbconfig);
 app.use(cors());
 app.use(bodyParser.json()); // JSON 요청 본문(body) 파싱 설정
 
-///////// Notice
+/////////// member /////////////////////////////////////////////////////////////////////
+
+app.get("/getMembers", (req, res) => {
+  const sql = "SELECT ID, tel, email, rank FROM User"; // 테이블명을 변경된 이름으로 복구
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    res.json(results);
+  });
+});
+
+
+///////// Notice /////////////////////////////////////////////////////////////////////
 app.get('/getNotices', (req, res) => {
   const sql = 'SELECT * FROM notice';
   db.query(sql, (err, results) => {
@@ -67,12 +81,10 @@ app.post('/addNotice', (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
 
 
-/////////// Faq
+
+/////////// Faq /////////////////////////////////////////////////////////////////////
 app.get('/getFAQs', (req, res) => {
   const sql = 'SELECT * FROM faq';
   db.query(sql, (err, results) => {
@@ -115,4 +127,9 @@ app.delete('/deleteFAQ/:id', (req, res) => {
     }
     res.json({ message: 'FAQ deleted successfully' });
   });
+});
+
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
