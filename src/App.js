@@ -22,7 +22,7 @@ const App = () => {
         <Route path="/mypage" element={<MyPage/>} />  
         <Route path="/reservation/:show_ID/:show_time" element={<Reservation/>}/>
         <Route path='/dateList' element={<Reserve_Calendar/>}/>
-        <Route path="/test" element={<Test/>}/>
+        <Route path="/admin/*" element={<Test/>}/>
         <Route path="/member" element={<MemberManagement />} />
         <Route path="/notice" element={<Notice />} />
         <Route path="/Faq" element={<Faq />} />

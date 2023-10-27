@@ -123,7 +123,7 @@ const Navigation = ({ openModal }) => {
             {window.sessionStorage.getItem('id') ? <a href="/" onClick={() => {window.sessionStorage.setItem('id', "")}}>로그아웃</a> : <a href="/signup">회원가입</a>}
           </span>
           <span>
-            <a href="/mypage">마이페이지</a>
+            <a href="/mypage">고객센터</a>
           </span>
           <span>
             <Link to="/mypage" onClick={() => handelOpenModal("Check")}>

@@ -36,13 +36,151 @@ app.post("/text", async (req, res) => {
   codes.push(code);
 });
 
+app.post("/Cancelreservation", async (req, res) => {
+  const { reservationId } = req.body;
+
+  // Get a connection from the pool
+  db.getConnection(function (err, connection) {
+    if (err) {
+      console.error("Error getting connection:", err);
+      return res.status(500).send("Internal server error");
+    }
+
+    connection.beginTransaction(function (err) {
+      if (err) {
+        connection.release(); // Release the connection if there's an error
+        console.error("Error beginning transaction:", err);
+        return res.status(500).send("Internal server error");
+      }
+
+      const deleteReservationSql = "DELETE FROM reservation WHERE show_number = ?;";
+      const TransreservationQuery = `
+      INSERT INTO cancelreservation (show_number, show_ID, bank, re_number, cancel_date, re_date, user_ID,  DATE,  TIME, seat_num, price ) 
+      SELECT show_number, show_ID, bank, re_number, cancel_date, re_date, user_ID,  DATE,  TIME, seat_num, price
+      FROM reservation WHERE show_number = ?;
+      
+    `;
+    connection.query(TransreservationQuery, [reservationId], function (err, insertResult) {
+      if (err) {
+        connection.rollback(function () {
+          connection.release();
+          console.error("Error rolling back transaction (insertion):", err);
+          return res.status(500).send("Internal server error");
+        });
+      }
+
+      console.log("Inserted into reservation", insertResult);
+
+      connection.query(deleteReservationSql, [reservationId], function (err, deleteResult) {
+        if (err) {
+          connection.rollback(function () {
+            connection.release();
+            console.error("Error rolling back transaction (deletion):", err);
+            return res.status(500).send("Internal server error");
+          });
+        }
+
+        console.log("Deleted reservation", deleteResult);
+        
+       
+        
+         
+          connection.commit(function (err) {
+            if (err) {
+              connection.rollback(function () {
+                connection.release();
+                console.error("Error committing transaction:", err);
+                return res.status(500).send("Error committing transaction");
+              });
+            }
+
+            console.log("예매 정보가 성공적으로 삭제 및 취소 정보로 이동되었습니다.");
+            res.status(200).send("예매 정보가 성공적으로 삭제 및 취소 정보로 이동되었습니다.");
+            connection.release(); // Release the connection when the transaction is complete
+          });
+        });
+      });
+    });
+  });
+});
+
+app.post("/changePassword", (req, res) => {
+  
+  const { userID, currentPassword, newPassword, confirmNewPassword } = req.body;
+
+  const selectUserQuery = "SELECT pw FROM user WHERE ID = ?";
+  db.query(selectUserQuery, [userID], (selectErr, selectResults) => {
+    if (selectErr) {
+      console.error(selectErr);
+      return res.status(500).json({ error: "내부 서버 에러" });
+    }
+
+    if (selectResults.length === 0) {
+      return res.status(404).json({ error: "사용자를 찾을 수 없습니다." });
+    }
+
+    const userPassword = selectResults[0].pw;
+
+    if (currentPassword !== userPassword) {
+      return res.status(400).json({ error: "비밀번호가 틀립니다." });
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      return res.status(400).json({ error: "새로운 비밀번호 확인이 일치하지 않습니다." });
+    }
+
+    // 2. 비밀번호 업데이트 쿼리
+    const updatePasswordQuery = "UPDATE user SET pw = ? WHERE ID = ?";
+    db.query(updatePasswordQuery, [newPassword, userID], (updateErr, updateResults) => {
+      if (updateErr) {
+        console.error(updateErr);
+        return res.status(500).json({ error: "비밀번호 업데이트 중 오류가 발생했습니다." });
+      }
+      
+      return res.status(200).json({ message: "비밀번호가 성공적으로 변경되었습니다." });
+    });
+  });
+});
+
+app.post("/changeEmail", (req, res) => {
+  const { userID, newEmail, confirmNewEmail } = req.body;
+
+  // 1. 사용자 조회 쿼리
+  const selectUserQuery = "SELECT email FROM user WHERE ID = ?";
+  db.query(selectUserQuery, [userID], (selectErr, selectResults) => {
+    if (selectErr) {
+      console.error(selectErr);
+      return res.status(500).json({ error: "내부 서버 에러" });
+    }
+
+    if (selectResults.length === 0) {
+      return res.status(404).json({ error: "사용자를 찾을 수 없습니다." });
+    }
+
+    if (newEmail.trim() !== confirmNewEmail.trim()) {
+      return res.status(400).json({ error: "새로운 이메일 확인이 일치하지 않습니다." });
+    }
+
+    // 2. 이메일 업데이트 쿼리 (오타 수정: eamil -> email)
+    const updateEmailQuery = "UPDATE user SET email = ? WHERE ID = ?";
+    db.query(updateEmailQuery, [newEmail, userID], (updateErr, updateResults) => {
+      if (updateErr) {
+        console.error(updateErr);
+        return res.status(500).json({ error: "이메일 업데이트 중 오류가 발생했습니다." });
+      }
+
+      return res.status(200).json({ message: "이메일이 성공적으로 변경되었습니다." });
+    });
+  });
+});
+
 app.post("/submit_inquiry", (req, res) => {
-  const { userId, email, subject, message } = req.body;
+  const { ID, email, subject, message, userId } = req.body;
 
   // 데이터베이스에 데이터 삽입
-  const sql = 'INSERT INTO personal_inquiry (ID, email, inquiry_title, inquiry_content, inquiry_date) VALUES (?, ?, ?, ?, ?)';
+  const inquirysql = 'INSERT INTO personal_inquiry (ID, email, inquiry_title, inquiry_content, inquiry_date, userID) VALUES (?, ?, ?, ?, ?, ?)';
   const currentDate = new Date()
-  db.query(sql, [ userId, email, subject, message, currentDate], (err, result) => {
+  db.query(inquirysql, [ ID, email, subject, message, currentDate, userId], (err, result) => {
     if (err) {
       console.error('문의 제출 실패:', err);
       res.status(500).send('문의 제출 실패');
@@ -76,6 +214,30 @@ app.post("/registerNotice", async (req, res) => {
   db.query(sql, [values], function (err, result) {
     if(err) throw err;
   });
+})
+
+app.post('/getSeatInfo', async (req, res) => {
+  const {ID, date, time} = req.body;
+  var sql = 'SELECT seat_num FROM reservation WHERE show_ID = ? AND DATE = ? AND TIME = ?';
+
+  db.query(sql, [ID, date, time], (err, results) => {
+    if(err){
+      console.error(err);
+    }
+    res.json(results);
+  })
+})
+
+app.get('/getBank', async (req, res) => {
+  const sql = 'SELECT * FROM discount_rate';
+
+  db.query(sql, (err, results) => {
+    if(err){
+      console.error(err);
+      return res.status(500).json({error: '내부 서버 에러'}); 
+    }
+    res.json(results);
+  })
 })
 
 app.get('/getFAQ', async (req, res) => {
@@ -115,9 +277,14 @@ app.get('/getRank', async(req, res) => {
 })
 
 app.get('/getDB', async (req, res) => {
-  const sql = 'SELECT * FROM show_info';
+  const date = new Date();
+  let year = date.getFullYear();
+  let month = ('0' + (date.getMonth() + 1)).slice(-2);
+  let day = ('0' + date.getDate()).slice(-2);
+  const today = year + '.' + month + '.' + day;
+  const sql = 'SELECT * FROM show_info WHERE end_date > ?';
 
-  db.query(sql, (err, results) => {
+  db.query(sql, [today],(err, results) => {
     if(err){
       console.error(err);
       return res.status(500).json({error: '내부 서버 에러'});
@@ -127,7 +294,7 @@ app.get('/getDB', async (req, res) => {
 });
 
 app.get("/getreservation_info", async (req, res) => {
-  const sql = "SELECT * FROM reservation_info";
+  const sql = "SELECT * FROM reservation";
 
   db.query(sql, (err, results) => {
     if (err) {
@@ -240,7 +407,7 @@ app.get("/getShowList/:ID", async (req, res) => {
                 result.dbs.db.prfpdto,
                 result.dbs.db.pcseguidance,
                 result.dbs.db.poster,
-                100,
+                0,
                 result.dbs.db.dtguidance,
                 result.dbs.db.prfcast,
               ];
@@ -266,6 +433,19 @@ app.get("/getShowList/:ID", async (req, res) => {
   }
 });
 
+app.get("/LoginInfo", async (req, res) => {
+  const userId = req.query.id; // 로그인한 사용자의 ID를 쿼리 매개변수로부터 가져옴
+  const sql = "SELECT * FROM user WHERE ID = ?"; // 해당 ID에 대한 정보만 가져오도록 쿼리 수정
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "내부 서버 에러" });
+    }
+    res.json(results);
+  });
+});
+
 app.post("/login", (req, res) => {
   var id = req.body.id;
   var pw = req.body.pw;
@@ -283,13 +463,15 @@ app.post('/reservation', (req, res) => {
   var user = req.body.user;
   var re_number = req.body.re_number;
   var price = req.body.price;
+  var seatArr = req.body.seatArr;
+  var bank = req.body.bank;
   const d = new Date();
   var today = d.toLocaleDateString("ko-KR");
   var cancel_date = new Date(d.getFullYear(), d.getMonth(), d.getDate() - 7).toLocaleDateString("ko-KR");
   
   var sql = 'SELECT SUM(re_number) as NUM FROM reservation WHERE show_ID = ? AND DATE = ? AND TIME = ?';
   db.query(sql, [show_id, date, time], (err, result) => { 
-    if(result[0].NUM < 10 && Number(result[0].NUM) + re_number <= 10){
+    if(result[0].NUM < 100 && Number(result[0].NUM) + re_number <= 100){
       var sql2 = 'UPDATE show_info SET seat = seat + ? WHERE show_ID = ?';
       db.query(sql2, [re_number, show_id], (err2, result2) => {
         if(err2){
@@ -297,16 +479,17 @@ app.post('/reservation', (req, res) => {
         }
       });
 
-      var sql3 = 'INSERT INTO reservation (show_ID, bank, re_number, cancel_date, re_date, user_ID, DATE, TIME, price) VALUES (?)';
+      var sql3 = 'INSERT INTO reservation (show_ID, bank, re_number, cancel_date, re_date, user_ID, DATE, TIME, seat_num, price) VALUES (?)';
       var values = [
         show_id,
-        "없음",
+        bank,
         re_number,
         cancel_date,
         today,
         user,
         date,
         time,
+        seatArr,
         price
       ];
       db.query(sql3, [values], function(err3, result3){
@@ -334,6 +517,117 @@ app.post("/signup", async (req, res) => {
   db.query(sql, [values], function (err, result) {
     if(err) throw err;
   });
+})
+
+///////// Notice
+app.get('/getNotices', (req, res) => {
+  const sql = 'SELECT * FROM notice';
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json(results);
+  });
+});
+
+app.post('/updateNotice', (req, res) => {
+  const { notification_ID, title, content } = req.body;
+  const sql = 'UPDATE notice SET title = ?, content = ? WHERE notification_ID = ?';
+
+  db.query(sql, [title, content, notification_ID], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json({ message: 'Data updated successfully' });
+  });
+});
+
+app.delete('/deleteNotice/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'DELETE FROM notice WHERE notification_ID = ?';
+
+  db.query(sql, [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json({ message: 'Notice deleted successfully' });
+  });
+});
+
+app.post('/addNotice', (req, res) => {
+  const { title, content } = req.body;
+  const sql = 'INSERT INTO notice (title, content) VALUES (?, ?)';
+
+  db.query(sql, [title, content], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json({ message: 'Data added successfully' });
+  });
+});
+
+/////////// Faq
+app.get('/getFAQs', (req, res) => {
+  const sql = 'SELECT * FROM faq';
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json(results);
+  });
+});
+
+app.post('/registerFAQ', (req, res) => {
+  const { question, answer } = req.body;
+  const sql = 'INSERT INTO faq (question, answer) VALUES (?, ?)';
+
+  db.query(sql, [question, answer], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    const insertedFAQ = {
+      ID: results.insertId,
+      question,
+      answer,
+    };
+
+    res.json(insertedFAQ);
+  });
+});
+
+app.delete('/deleteFAQ/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'DELETE FROM faq WHERE ID = ?';
+
+  db.query(sql, [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json({ message: 'FAQ deleted successfully' });
+  });
+});
+
+app.post('/changeDiscountRate', (req, res) => {
+  const {bank, rate} = req.body;
+  
+
+  var sql = 'UPDATE discount_rate SET discount_rate = ? WHERE bank = ?';
+
+  db.query(sql, [Number(rate), bank], (err, results) => {
+    if(err){
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json("1");
+  })
 })
 
 app.listen(port, () => {

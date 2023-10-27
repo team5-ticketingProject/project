@@ -13,6 +13,9 @@ const MemberManagement = () => {
   const [searchOption, setSearchOption] = useState("name");
   const [filteredMembers, setFilteredMembers] = useState(members);
 
+
+  console.log("MemberManagement 컴포넌트 렌더링"); // 확인용 로그
+  
   const handleSearch = () => {
     const filtered = members.filter((member) => {
       if (searchOption === "name") {
