@@ -146,8 +146,8 @@ function Check() {
   }; 
 
   const loadUserInfo = async () => {
-    // 사용자 정보 가져오기 - fetchUserInfo 함수 내에서 사용자 정보를 가져오는 방법을 구현해야 합니다.
-    const userId = window.sessionStorage.getItem("id");// 실제 사용자 ID 또는 가져올 ID를 설정해야 합니다.
+    
+    const userId = window.sessionStorage.getItem("id");
     if (userId) {
       try {
         const user = await fetchUserInfo(userId);

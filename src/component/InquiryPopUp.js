@@ -5,6 +5,8 @@ function InquiryContactForm({ onSubmit, onClose }) {
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
+  const [ID, setID] = useState("");
+  
 
   
   useEffect(() => {
@@ -14,15 +16,20 @@ function InquiryContactForm({ onSubmit, onClose }) {
   const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
     // 사용자 로그인 프로세스를 통해 사용자 ID를 얻어옵니다.
     // 이 부분은 사용자 로그인 로직에 따라 달라집니다.
-    const loggedInUserId = (randomNum); // 예시 사용자 ID
+    const inquiryID = (randomNum); // 예시 사용자 ID
 
-    setUserId(loggedInUserId);
+    setID(inquiryID);
+  }, []);
+  
+  useEffect(() => {
+    const loginuser = window.sessionStorage.getItem("id")
+    setUserId(loginuser)
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = { userId, subject, message, email };
+    const formData = { ID, subject, message, email, userId };
     try {
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/submit_inquiry`, {
         method: "POST",

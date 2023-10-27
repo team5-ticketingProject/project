@@ -106,12 +106,12 @@ app.post("/Cancelreservation", async (req, res) => {
 
 
 app.post("/submit_inquiry", (req, res) => {
-  const { userId, email, subject, message } = req.body;
+  const { ID, email, subject, message, userId } = req.body;
 
   // 데이터베이스에 데이터 삽입
-  const inquirysql = 'INSERT INTO personal_inquiry (ID, email, inquiry_title, inquiry_content, inquiry_date) VALUES (?, ?, ?, ?, ?)';
+  const inquirysql = 'INSERT INTO personal_inquiry (ID, email, inquiry_title, inquiry_content, inquiry_date, userID) VALUES (?, ?, ?, ?, ?, ?)';
   const currentDate = new Date()
-  db.query(inquirysql, [ userId, email, subject, message, currentDate], (err, result) => {
+  db.query(inquirysql, [ ID, email, subject, message, currentDate, userId], (err, result) => {
     if (err) {
       console.error('문의 제출 실패:', err);
       res.status(500).send('문의 제출 실패');
