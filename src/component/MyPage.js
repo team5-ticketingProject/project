@@ -24,7 +24,7 @@ const style = {
 };
 
 function MyPage() {
-  const [modalType, setModalType] = useState("UserInfo");
+  const [modalType, setModalType] = useState("Notice");
   const [selectedNotice, setSelectedNotice] = useState(null);
   const [previousModalType, setPreviousModalType] = useState(null);
   const [selectedFaq, setSelectedFaq] = useState(null);

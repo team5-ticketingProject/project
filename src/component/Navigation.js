@@ -1,13 +1,24 @@
-import { Link } from "react-router-dom";
+import  { Link, useNavigate} from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../css/Navigation.css";
+
 
 const Navigation = () => {
   const [searchList, SetSearchList] = useState([]);
   const [posterIndex, SetPosterIndex] = useState(0);
   const [showSearchOutput, setShowSearchOutput] = useState(false);
-  
+  const history = useNavigate();
+
+  const goToMyPage = () => {
+    if (!window.sessionStorage.getItem('id')) {
+      alert("로그인이 필요합니다.")
+      history.push('/login');
+    } else {
+      history.push('/mypage')
+    }
+  }
+   
   const searchTitle = (e) => {
     const title = e.target.value;
     SetPosterIndex();
@@ -115,7 +126,7 @@ const Navigation = () => {
             {window.sessionStorage.getItem('id') ? <a href="/" onClick={() => {window.sessionStorage.setItem('id', "")}}>로그아웃</a> : <a href="/signup">회원가입</a>}
           </span>
           <span>
-            <a href="/mypage">마이페이지</a>
+            <a href="/mypage">고객센터</a>
           </span>
           <span>
           <a href="/mypage/check">예매확인/취소</a>

@@ -104,14 +104,82 @@ app.post("/Cancelreservation", async (req, res) => {
   });
 });
 
+app.post("/changePassword", (req, res) => {
+  
+  const { userID, currentPassword, newPassword, confirmNewPassword } = req.body;
 
+  const selectUserQuery = "SELECT pw FROM user WHERE ID = ?";
+  db.query(selectUserQuery, [userID], (selectErr, selectResults) => {
+    if (selectErr) {
+      console.error(selectErr);
+      return res.status(500).json({ error: "내부 서버 에러" });
+    }
+
+    if (selectResults.length === 0) {
+      return res.status(404).json({ error: "사용자를 찾을 수 없습니다." });
+    }
+
+    const userPassword = selectResults[0].pw;
+
+    if (currentPassword !== userPassword) {
+      return res.status(400).json({ error: "비밀번호가 틀립니다." });
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      return res.status(400).json({ error: "새로운 비밀번호 확인이 일치하지 않습니다." });
+    }
+
+    // 2. 비밀번호 업데이트 쿼리
+    const updatePasswordQuery = "UPDATE user SET pw = ? WHERE ID = ?";
+    db.query(updatePasswordQuery, [newPassword, userID], (updateErr, updateResults) => {
+      if (updateErr) {
+        console.error(updateErr);
+        return res.status(500).json({ error: "비밀번호 업데이트 중 오류가 발생했습니다." });
+      }
+      
+      return res.status(200).json({ message: "비밀번호가 성공적으로 변경되었습니다." });
+    });
+  });
+});
+
+app.post("/changeEmail", (req, res) => {
+  const { userID, newEmail, confirmNewEmail } = req.body;
+
+  // 1. 사용자 조회 쿼리
+  const selectUserQuery = "SELECT email FROM user WHERE ID = ?";
+  db.query(selectUserQuery, [userID], (selectErr, selectResults) => {
+    if (selectErr) {
+      console.error(selectErr);
+      return res.status(500).json({ error: "내부 서버 에러" });
+    }
+
+    if (selectResults.length === 0) {
+      return res.status(404).json({ error: "사용자를 찾을 수 없습니다." });
+    }
+
+    if (newEmail.trim() !== confirmNewEmail.trim()) {
+      return res.status(400).json({ error: "새로운 이메일 확인이 일치하지 않습니다." });
+    }
+
+    // 2. 이메일 업데이트 쿼리 (오타 수정: eamil -> email)
+    const updateEmailQuery = "UPDATE user SET email = ? WHERE ID = ?";
+    db.query(updateEmailQuery, [newEmail, userID], (updateErr, updateResults) => {
+      if (updateErr) {
+        console.error(updateErr);
+        return res.status(500).json({ error: "이메일 업데이트 중 오류가 발생했습니다." });
+      }
+
+      return res.status(200).json({ message: "이메일이 성공적으로 변경되었습니다." });
+    });
+  });
+});
 app.post("/submit_inquiry", (req, res) => {
-  const { userId, email, subject, message } = req.body;
+  const { ID, email, subject, message, userId } = req.body;
 
   // 데이터베이스에 데이터 삽입
-  const inquirysql = 'INSERT INTO personal_inquiry (ID, email, inquiry_title, inquiry_content, inquiry_date) VALUES (?, ?, ?, ?, ?)';
+  const inquirysql = 'INSERT INTO personal_inquiry (ID, email, inquiry_title, inquiry_content, inquiry_date, userID) VALUES (?, ?, ?, ?, ?, ?)';
   const currentDate = new Date()
-  db.query(inquirysql, [ userId, email, subject, message, currentDate], (err, result) => {
+  db.query(inquirysql, [ ID, email, subject, message, currentDate, userId], (err, result) => {
     if (err) {
       console.error('문의 제출 실패:', err);
       res.status(500).send('문의 제출 실패');
@@ -272,16 +340,17 @@ app.get('/getShowInfo/:ID', async (req, res) => {
 });
 
 app.get("/LoginInfo", async (req, res) => {
-  const sql = "SELECT * FROM user ";
+  const userId = req.query.id; // 로그인한 사용자의 ID를 쿼리 매개변수로부터 가져옴
+  const sql = "SELECT * FROM user WHERE ID = ?"; // 해당 ID에 대한 정보만 가져오도록 쿼리 수정
 
-  db.query(sql, (err, results) => {
+  db.query(sql, [userId], (err, results) => {
     if (err) {
       console.error(err);
       return res.status(500).json({ error: "내부 서버 에러" });
     }
     res.json(results);
-    });
-});   
+  });
+});
 
 app.get("/getShowList/:ID", async (req, res) => {
   const location = req.params.ID;

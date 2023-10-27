@@ -4,12 +4,17 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import InquiryContactForm from "./InquiryPopUp"; 
 import ReactDOM from "react-dom";
+import { useNavigate } from "react-router-dom";
+import { fetchUserInfo } from "./fetchLoginUser";
 
 function InquiryContactUs(props) {
   const [inquiries, setInquiries] = useState([]); // 1:1 문의 목록
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const inquiriesPerPage = 10; // 한 페이지에 보여질 1:1 문의 수
   const [selectedInquiry, setSelectedInquiry] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+
+  const navigate = useNavigate();
   
   const openInquiryModal = (inquiry) => {
     
@@ -17,25 +22,52 @@ function InquiryContactUs(props) {
     setSelectedInquiry(inquiry);
     props.openModal("InquiryAnswer", null, null, inquiry);
   };
+  const loadUserInfo = async () => {
+    
+    const userId = window.sessionStorage.getItem("id");
+    if (userId) {
+      try {
+        const user = await fetchUserInfo(userId);
+        setUserInfo(user);
+      } catch (error) {
+        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    loadUserInfo();
+  }, []);
+
+ 
+
   useEffect(() => {
     async function fetchInquiries() {
+      if(userInfo && userInfo.ID) {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_SERVER_URL}/getpersonal_inquiry`
+          `${process.env.REACT_APP_SERVER_URL}/getpersonal_inquiry?userID=${userInfo.ID}`
         ); // API 엔드포인트에 따라 수정
         if (response.ok) {
           const data = await response.json();
 
-           data.sort((a, b) => new Date(b.inquiry_date) - new Date(a.inquiry_date));
-        setInquiries(data);
+          const filteredData = data.filter(item => item.userID === userInfo.ID);
+
+           filteredData.sort((a, b) => new Date(b.inquiry_date) - new Date(a.inquiry_date));
+        setInquiries(filteredData);
         }
       } catch (error) {
         console.error("문의 데이터를 가져오는 중 오류 발생:", error);
+        console.log()
       }
     }
-
+    }
     fetchInquiries();
-  }, []);
+  }, [userInfo]);
+
+ 
+
+  
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
@@ -47,6 +79,7 @@ function InquiryContactUs(props) {
     indexOfFirstInquiry,
     indexOfLastInquiry
   );
+
 
   const openPopup = () => {
     const popupWindow = window.open(
@@ -105,9 +138,18 @@ function InquiryContactUs(props) {
       popupWindow.document.getElementById("popup-root")
     );
   };
-  
+  useEffect(() => {
+    if (!window.sessionStorage.getItem('id')) {
+      // Log out users who are not logged in and navigate to the login page
+      const confirmResult = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+      if (confirmResult) {
+        navigate("/login");
+      }
+    }
+  }, [navigate]);
   return (
     <div className="ContactUs">
+      {userInfo ? (
       <div style={{ borderBottom: "2px solid #ccc" }}>
         <h3
           style={{ fontSize: "25px", fontWeight: "bold", marginBottom: "50px" }}
@@ -133,6 +175,9 @@ function InquiryContactUs(props) {
           </Button>
         </Stack>
       </div>
+      ) : (
+        <p>로그인이 필요합니다</p>
+      )}
       <div style={{ marginTop: "20px" }}>
         <h4>문의 내용을 클릭하여 답변을 확인하세요.</h4>
       </div>

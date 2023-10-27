@@ -8,6 +8,9 @@ import Stack from "@mui/material/Stack";
 import axios from "axios";
 import ReactDOM from "react-dom";
 import ReCancel from "./Re_Cancel";
+import { fetchUserInfo } from "./fetchLoginUser";
+import {useNavigate} from "react-router-dom"; 
+
 
 function Check() {
   const [selectedPeriod, setSelectedPeriod] = useState("15일");
@@ -16,15 +19,20 @@ function Check() {
   const [isLoading, setIsLoading] = useState(false); // 버튼 로딩 상태
   const [selectedYear, setSelectedYear] = useState(""); // 선택한 연도
   const [selectedMonth, setSelectedMonth] = useState(""); // 선택한 월
-  const [selectedReservationInfo, setSelectedReservationInfo] = useState(null); // 선택된 예매 정보
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const [userInfo, setUserInfo] = useState(null);
+  const [filteredReservationInfo, setFilteredReservationInfo] = useState([]);
+
   const ReservationPerPage = 10; // 한 페이지에 보여질 공지사항 수
 
   const indexOfLastreservation = currentPage * ReservationPerPage;
   const indexOfFirstreservation = indexOfLastreservation - ReservationPerPage;
-  const currentreservations = reservationInfo.slice(indexOfFirstreservation, indexOfLastreservation);
+  const currentreservations = filteredReservationInfo.slice(indexOfFirstreservation, indexOfLastreservation);
+
+  const navigate = useNavigate();
   
   const handleReservationInfoClick = (selectedReservationInfo) => {
+    
     const popupWindow = window.open(
       "",
       "팝업 제목",
@@ -135,8 +143,45 @@ function Check() {
     const endDate = new Date(year, month + 1, 0);
 
     fetchReservationInfo("custom", startDate, endDate);
+  }; 
+
+  const loadUserInfo = async () => {
+    
+    const userId = window.sessionStorage.getItem("id");
+    if (userId) {
+      try {
+        const user = await fetchUserInfo(userId);
+        setUserInfo(user);
+      } catch (error) {
+        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
+      }
+    }
   };
+
+  // useEffect를 사용하여 사용자 정보를 가져오도록 설정
+  useEffect(() => {
+    loadUserInfo();
+  }, []); // 처음 한 번만 실행
+
+  // 예매 정보 필터링
   
+  useEffect(() => {
+  const filteredReservationInfo = reservationInfo.filter((item) => {
+    return userInfo && item.user_ID === userInfo.ID;
+  });
+  setFilteredReservationInfo(filteredReservationInfo);
+}, [userInfo, reservationInfo]);
+
+
+useEffect(() => {
+  if (!window.sessionStorage.getItem('id')) {
+    // Log out users who are not logged in and navigate to the login page
+    const confirmResult = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+    if (confirmResult) {
+      navigate("/login");
+    }
+  }
+}, [navigate]);
   return (
     <div className="Check">
       <h1>예매확인/취소</h1>
@@ -276,12 +321,12 @@ function Check() {
             </tr>
           </thead>
           <tbody>
-            {reservationInfo.length === 0 ? (
+            {currentreservations.length === 0 ?  (
               <tr>
                 <td colSpan="6">예매한 내역이 없습니다.</td>
               </tr>
             ) : (
-              currentreservations.map((item, index) => (
+              filteredReservationInfo.map((item, index) => (
                 <tr key={index}>
                   <td>
                     <button
@@ -296,7 +341,7 @@ function Check() {
                   {new Date(new Date(item.DATE).getTime() + 9 * 60 * 60 * 1000)
                       .toISOString().split("T")[0]} {item.TIME}
                   </td>
-                  <td>{item.Re_Number}</td>
+                  <td>{item.re_number}</td>
                   <td>
                     {
                       new Date(new Date(item.DATE) - 15 * 60 * 60 * 1000)
@@ -312,7 +357,7 @@ function Check() {
       <div className="Pagination">
         <Stack spacing={2}>
           <Pagination
-            count={Math.ceil(reservationInfo.length / ReservationPerPage)}
+            count={Math.ceil(filteredReservationInfo.length / ReservationPerPage)}
             page={currentPage}
             onChange={handlePageChange}
             showFirstButton
@@ -347,5 +392,4 @@ function Check() {
     </div>
   );
 }
-
 export default Check;
