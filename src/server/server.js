@@ -12,7 +12,7 @@ const datas = [];
 const dbconfig = {
   host: "127.0.0.1",
   user: "root",
-  password: "123456",
+  password: "apmsetup",
   database: "show_data",
 };
 
@@ -264,32 +264,42 @@ app.get("/getShowList/:ID", async (req, res) => {
   }
 });
 
-// 로그인
+// 로그인(관리자 포함)
 app.post("/login", (req, res) => {
   var id = req.body.id;
   var pw = req.body.pw;
 
   const sqlQuery =
-    "select count(*) as 'cnt' from User where ID =? and pw =?;";
+    "select ID,pw,rank from User where ID =? and pw =?;";
   db.query(sqlQuery, [id, pw], (err, result) => {
+    res.send(result);
+  });
+});
+
+// ID 중복 체크
+app.post("/idcheck", async (req,res) => {
+  const id = req.body.id;
+
+  const sql = "select count(*) as 'cnt' from User where ID =?";
+  db.query(sql, [id], (err, result) => {
     res.send(result);
   });
 });
 
 // 회원가입시 정보 등록
 app.post("/signup", async (req, res) => {
-  var sql = 'INSERT INTO User (ID,pw,tel,email,rank) VALUES (?)';
-  var values = [
-    req.body.ID,
-    req.body.pw,
-    req.body.tel,
-    req.body.email,
-    1
-  ];
+  const id = req.body.id;
+  const pw = req.body.pw;
+  const tel = req.body.tel;
+  const email = req.body.email;
+  const rank = 1;
 
-  db.query(sql, [values], function (err, result) {
+  var sql2 = 'INSERT INTO User (ID,pw,tel,email,rank) VALUES (?)';
+
+  db.query(sql2, [id,pw,tel,email,rank], function (err, result2) {
     if(err) throw err;
   });
+      
 })
 
 app.listen(port, () => {

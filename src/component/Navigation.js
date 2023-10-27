@@ -88,7 +88,13 @@ const Navigation = ({ openModal }) => {
               style={{fontSize:"30px", color:"black",}}>{id}</a>님
             </span>
             <span>
-              <a href="/"><button style={{border:"0", backgroundColor:"white", color:"gray", fontSize:"16px"}} onClick={logout}>로그아웃</button></a>
+              <a href="/"><button 
+              style={{
+                border:"0", 
+                backgroundColor:"white", 
+                color:"gray", 
+                fontSize:"16px"
+                }} onClick={logout}>로그아웃</button></a>
             </span>
             <span>
               <a href="/mypage">마이페이지</a>
