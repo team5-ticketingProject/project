@@ -25,8 +25,7 @@ const Notice = () => {
       axios
         .delete(`http://localhost:5000/deleteNotice/${id}`)
         .then((response) => {
-          // 서버에서 공지사항을 삭제하고 응답을 받아서 notices 상태를 업데이트합니다.
-          setDeleteItemId(id); // 삭제할 아이템 ID 설정
+          setDeleteItemId(id);
         })
         .catch((error) => {
           console.error("Error deleting notice:", error);
@@ -58,8 +57,8 @@ const Notice = () => {
     if (editing) {
       const updatedNotice = {
         notification_ID: editing.id,
-        title, // 추가된 부분: 수정 폼에 입력된 제목을 title 상태로 업데이트
-        content, // 추가된 부분: 수정 폼에 입력된 내용을 content 상태로 업데이트
+        title, 
+        content, 
       };
   
       if (editing.id === "add") {

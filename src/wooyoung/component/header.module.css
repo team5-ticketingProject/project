@@ -4,9 +4,9 @@
   top: 0;
   width: 100%;
   height: 80px;
-  z-index: 100; /* Header가 다른 내용 위에 보이도록 설정 */
-  background-color: white; /* Header의 배경색을 설정 (선택 사항) */
-  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2); /* Header에 그림자 효과 (선택 사항) */
+  z-index: 100; 
+  background-color: white; 
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2); 
 }
 
 
@@ -35,7 +35,7 @@ li + li {
 } 
 
 .nounderline {
-  text-decoration: none; /* 밑줄 제거 */
-  color: inherit; /* 기본 텍스트 색상 상속 */
+  text-decoration: none; 
+  color: inherit; 
 }
 

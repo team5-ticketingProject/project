@@ -8,7 +8,6 @@ const Faq = () => {
   const [newAnswer, setNewAnswer] = useState('');
   const [isFormVisible, setIsFormVisible] = useState(false);
 
-  // FAQ 데이터 가져오는 부분
   useEffect(() => {
     axios.get('http://localhost:5000/getFAQs')
       .then((response) => {
@@ -17,7 +16,7 @@ const Faq = () => {
       .catch((error) => {
         console.error('Error fetching FAQs:', error);
       });
-  }, []); // 빈 배열을 전달하여 한 번만 실행
+  }, []);
 
   const handleCreateFaq = () => {
     if (newQuestion && newAnswer) {
@@ -29,7 +28,7 @@ const Faq = () => {
       axios
         .post('http://localhost:5000/registerFAQ', newFaq)
         .then((response) => {
-          // 서버에서 새 FAQ를 생성하고 응답을 받아서 faqs 상태를 업데이트합니다.
+          // 새 FAQ 생성
           setFaqs([...faqs, response.data]);
           setNewQuestion('');
           setNewAnswer('');
@@ -44,11 +43,10 @@ const Faq = () => {
   const handleDeleteFaq = (id) => {
     const confirmDelete = window.confirm('정말로 삭제하시겠습니까?');
     if (confirmDelete) {
-      // 서버에서 FAQ 삭제 요청을 보내도록 합니다.
+      // FAQ 삭제 요청
       axios
         .delete(`http://localhost:5000/deleteFAQ/${id}`)
         .then((response) => {
-          // 서버에서 FAQ를 삭제하고 응답을 받아서 faqs 상태를 업데이트합니다.
           setFaqs(faqs.filter((faq) => faq.ID !== id));
         })
         .catch((error) => {
