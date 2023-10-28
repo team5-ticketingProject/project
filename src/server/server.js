@@ -615,6 +615,17 @@ app.delete('/deleteFAQ/:id', (req, res) => {
   });
 });
 
+app.get("/getMembers", (req, res) => {
+  const sql = "SELECT * FROM user"; // 테이블명을 변경된 이름으로 복구
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    res.json(results);
+  });
+});
+
 app.post('/changeDiscountRate', (req, res) => {
   const {bank, rate} = req.body;
   
