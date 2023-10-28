@@ -11,13 +11,12 @@ const SignUp = () => {
     const fmailRef = useRef();
     const bmailRef = useRef();
 
-    const email = `${fmailRef}@${bmailRef}`;
-
     const IDCheck = () => {
         if (idRef.current.value === "" || idRef.current.value === undefined) {
             alert("아이디를 입력하세요!!!");
             idRef.current.focus();
-          } else {
+        } else {
+          console.log(idRef.current.value);
         axios
         .post("http://localhost:5000/idcheck", {
             id: idRef.current.value,
@@ -52,6 +51,8 @@ const SignUp = () => {
           else if (fmailRef.current.value === "" || fmailRef.current.value === undefined || bmailRef.current.value === "" || bmailRef.current.value === undefined) {
             alert("이메일을 입력하세요.");
           } else {
+            const email = `${fmailRef.current.value}@${bmailRef.current.value}`;
+            console.log(email);
       axios
       .post("http://localhost:5000/signup", {
         id: idRef.current.value,
@@ -60,7 +61,13 @@ const SignUp = () => {
         email: email,
       })
       .then((res) => {
-        document.location.href("/login");
+        console.log("handleMember =>", res);
+        // 로그인 성공여부는 res.data.affectedRows가 0인지 1인지 확인하면 됨
+        if (res.data.affectedRows === 1) {
+          alert("회원가입 성공!!!");
+          document.location.href="/login"
+        }
+        else alert("회원가입 실패!!!");
       })
       .catch((e) => {
         console.error(e);

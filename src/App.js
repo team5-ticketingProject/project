@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, } from "react-router-dom";
 import Login from "./component/Login";
 import SignUp from "./component/SignUp";
+import FindIP from "./component/FindIP";
 import Main from "./component/Main";
 import MyPage from "./component/MyPage";
 import Reservation from "./component/Reservation";
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/" element={<Main/>}/>      
         <Route path="/login" element={<Login/>} />  
         <Route path="/signup" element={<SignUp/>} />  
+        <Route path="/FindIP" element={<FindIP/>} />  
         <Route path="/mypage" element={<MyPage/>} />  
         <Route path="/reservation/:show_ID" element={<Reservation/>}/>
         <Route path='/dateList' element={<Reserve_Calendar/>}/>

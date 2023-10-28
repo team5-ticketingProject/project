@@ -295,9 +295,10 @@ app.post("/signup", async (req, res) => {
   const rank = 1;
 
   var sql2 = 'INSERT INTO User (ID,pw,tel,email,rank) VALUES (?)';
+  const val = [id,pw,tel,email,rank];
 
-  db.query(sql2, [id,pw,tel,email,rank], function (err, result2) {
-    if(err) throw err;
+  db.query(sql2, [val], (err, result) => {
+    res.send(result);
   });
       
 })
