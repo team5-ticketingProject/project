@@ -8,6 +8,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const xml2js = require("xml2js");
 const mysql = require("mysql2");
+const macaddress = require('node-macaddress');
 const codes = [];
 const datas = [];
 
@@ -35,6 +36,21 @@ app.post("/text", async (req, res) => {
   const code = req.body.name;
   codes.push(code);
 });
+
+app.get('/api/get-mac-address', (req, res) => {
+  if (req.userConsent) { // 사용자 동의 확인 (이 코드는 실제로는 세션 또는 토큰을 사용하여 사용자 동의를 확인해야 함)
+    macaddress.one((err, mac) => {
+      if (!err) {
+        res.json({ mac });
+      } else {
+        res.status(500).json({ error: 'MAC 주소 가져오기 실패' });
+      }
+    });
+  } else {
+    res.status(403).json({ error: '사용자 동의 필요' });
+  }
+});
+
 
 app.post("/Cancelreservation", async (req, res) => {
   const { reservationId } = req.body;

@@ -114,9 +114,9 @@ function ReCancel({ selectedReservationInfo, closePopupWindow }) {
             </td>
           </tr>
           <tr>
-            <th style={thStyle}>결제</th>
+            <th style={thStyle}>가격</th>
             <td style={tdStyle}> {selectedReservationInfo
-                ? selectedReservationInfo.bank
+                ? selectedReservationInfo.price
                 : "여기에 티켓명을 추가하세요"}</td>
           </tr>
         </tbody>
