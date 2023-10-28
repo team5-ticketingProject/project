@@ -129,7 +129,7 @@
     text-align: center;
 }
 
-.re_number button{
+.re_number > button{
     background-color: rgb(88, 0, 151);
     color: white;
     font-size: 20px;
@@ -145,6 +145,7 @@
     border-radius: 10px;
     width: 830px;
     padding: 5px 10px;
+    margin-top: 60px;
 }
 
 .re_read > p {
@@ -164,4 +165,96 @@
     box-Shadow: 24;
     background-color: rgb(255, 255, 255);
     padding: 40px;
+}
+.re_down2{
+    
+    display: flex;
+
+    
+}
+.seat_box{
+    border: 1px solid gray;
+    border-radius: 10px;
+    width: 780px;
+    height: 420px;
+    background-color: white;
+    text-align: center;
+    padding: 0 30px;
+    padding-bottom: 10px;
+}
+.seat_span{
+    margin-top: 13px;
+    margin-left: 5px;
+    width: 68px;
+    height: 20px;
+    float: left;
+    font-size: 13px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+.seat_span:hover{
+    background-color: gray;
+    cursor: pointer;
+}
+.seat_box_alpha{
+    float:left;
+    height:300px; 
+    padding: 10px 0px;
+    font-weight: 500;
+}
+.seat_box_alpha_detail{
+    margin-top: 15px;
+}
+.stage{
+    background-color: gray;
+    color: white;   
+    width: 100px;
+    margin-left: 340px;
+    border-radius: 10px;
+}
+.re_down3{
+    display: flex;
+    margin-top: 60px;
+}
+.select_bank{
+    border: 1px solid gray;
+    border-radius: 10px;
+    width: 550px;
+    height: 250px;
+    text-align: center;
+}
+.select_bank > p{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #171717;
+}
+.bank-box{
+    display: flex;
+}
+.bank-box label{
+    border: 1px solid gray;
+    border-radius: 10px;
+    margin-left: 45px;
+    margin-top: 20px;
+    padding: 10px;
+}
+.bank-box img{
+    width: 100px;
+    height: 50px;
+}
+.final-cost{
+    text-align: center;
+    border: 0.3px solid #a5a3a3;
+    border-radius: 10px;
+    width: 220px;
+    height: 150px;
+}
+.final-cost-button{
+    margin-top: 50px;
+}
+.final-cost-button > button{
+    background-color: rgb(88, 0, 151);
+    width: 220px;
+    height: 50px;  
 }

@@ -9,9 +9,8 @@ import Reserve_Calendar from "./component/Reserve_Calendar";
 import Test from "./component/Test";
 import MemberManagement from './wooyoung/pages/MemberManagement';
 import Notice from './wooyoung/pages/Notice';
-import Faq from './wooyoung/pages/faq';
+import Faq from './wooyoung/pages/Faq';
 import DiscountAdjustment from './wooyoung/pages/DiscountAdjustment';
-import MyPageCheck from "./component/MyPage_default_Check";
 
 const App = () => {
   return (
@@ -23,13 +22,11 @@ const App = () => {
         <Route path="/mypage" element={<MyPage/>} />  
         <Route path="/reservation/:show_ID/:show_time" element={<Reservation/>}/>
         <Route path='/dateList' element={<Reserve_Calendar/>}/>
-        <Route path="/test" element={<Test/>}/>
-        <Route path="/member" element={<MemberManagement />} />
-        <Route path="/notice" element={<Notice />} />
-        <Route path="/Faq" element={<Faq />} />
-        <Route path="/mypage/check" element={<MyPageCheck/>} />
-        <Route path="/discount" element={<DiscountAdjustment />} />
-        
+        <Route path="/admin/*" element={<Test/>}/>
+          <Route path="/member" element={<MemberManagement />} />
+          <Route path="/notice" element={<Notice />} />
+          <Route path="/Faq" element={<Faq />} />
+          <Route path="/discount" element={<DiscountAdjustment />} />
       </Routes>
     </div>
   );

@@ -34,7 +34,7 @@ td .line {
     font-size: 11px;
 }
 
-span {
+.line span {
     color: red;
 }
 

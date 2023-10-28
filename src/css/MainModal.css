@@ -1,0 +1,35 @@
+.btn-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+  }
+  
+  .modal-open-button {
+    display: flex;
+  }
+
+  .modal-close-btn, .modal-payment-btn{
+    cursor: pointer;
+    margin-left: auto;
+  }
+  
+  .modal-container {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-content {
+    background-color: #b5b5b5;
+    width: 500px;
+    height:550px;
+    padding: 15px;
+  }
+
+ 
