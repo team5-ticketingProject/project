@@ -1,4 +1,4 @@
-use project;
+use show_data;
 
 DROP TABLE IF EXISTS `User`;
 
@@ -8,11 +8,11 @@ CREATE TABLE
         `pw` VARCHAR(20) NOT NULL COMMENT '유저 pw',
         `tel` CHAR(15) NOT NULL COMMENT '전화번호',
         `email` varchar(40) NOT NULL COMMENT '이메일',
-        `reservated_list` VARCHAR(100) COMMENT '예약한 공연의 ID리스트',
+        `reservcount` int(10) COMMENT '예매횟수',
         `mac_adrress` VARCHAR(20) COMMENT '인증기기를 위한 맥주소',
         `rank` int(10) COMMENT '등급',
         PRIMARY KEY (`ID`)
-    ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+    ) ENGINE = InnoDB;
 
 LOCK TABLES `User` WRITE;
 
@@ -59,7 +59,21 @@ VALUES (
         'mysql',
         '010-6666-6666',
         'jasql@naver.com',
-        1
+        0
     );
 
 UNLOCK TABLES;
+
+select ID,pw,rank from User where ID ='java' and pw ='mysql';
+
+select count(*) as 'cnt' from User where ID ='java' and pw ='mysql';
+
+INSERT INTO
+    User (ID, pw, tel, email, rank)
+VALUES (
+        'asd',
+        'asd',
+        'asd',
+        'asd',
+        'asd'
+    );
