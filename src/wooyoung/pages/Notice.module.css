@@ -63,12 +63,18 @@
   position: relative;
 }
 
-.style-input, textarea {
+.input{
   width: 60%;
   padding: 10px;
   margin: 10px 0;
 }
 
+.textarea {
+  width: 60%;
+  padding: 10px;
+  margin: 10px 0;
+  height: 400px;
+}
 
 .formButtons {
   display: flex;

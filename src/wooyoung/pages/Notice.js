@@ -121,17 +121,17 @@ const Notice = () => {
       {editing ? (
         <div className={styles.form}>
           <input
-            className="style-input"
+            className={styles.input}
             type="text"
             placeholder="제목"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <textarea
+            className={styles.textarea}
             placeholder="내용"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            style={{ height: "400px" }}
           />
           <div className={styles.formButtons}>
             <button onClick={handleSaveClick}>저장</button>

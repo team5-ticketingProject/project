@@ -4,15 +4,16 @@ import axios from "axios";
 
 const MemberManagement = () => {
   const [search, setSearch] = useState("");
-  const [searchOption, setSearchOption] = useState("ID"); // 초기 검색 옵션을 ID로 설정
+  const [searchOption, setSearchOption] = useState("ID");
   const [filteredMembers, setFilteredMembers] = useState([]);
   const [members, setMembers] = useState([]);
 
   useEffect(() => {
     axios.get("http://localhost:5000/getMembers")
       .then((response) => {
-        setMembers(response.data);
-        setFilteredMembers(response.data);
+        const memberData = response.data;
+        setMembers(memberData);
+        setFilteredMembers(memberData);
       })
       .catch((error) => {
         console.error("Error fetching members:", error);
@@ -20,16 +21,14 @@ const MemberManagement = () => {
   }, []);
 
   const handleSearch = () => {
-    const url = `http://localhost:5000/searchMembers?search=${search}&option=${searchOption}`;
-  
-    axios.get(url)
-      .then((response) => {
-        setFilteredMembers(response.data);
-        setSearch(""); // 검색 후 검색어 초기화
-      })
-      .catch((error) => {
-        console.error("Error searching members:", error);
-      });
+    const searchTerm = search.toLowerCase(); // 검색어를 소문자로 변환
+    const filteredData = members.filter((member) => {
+      const fieldToSearch = member[searchOption].toLowerCase();
+      return fieldToSearch.includes(searchTerm);
+    });
+
+    setFilteredMembers(filteredData);
+    setSearch("");
   };
 
   const handleSelectChange = (e) => {
