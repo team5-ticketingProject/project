@@ -30,6 +30,7 @@ const App = () => {
         <Route path="/Faq" element={<Faq />} />
         <Route path="/mypage/check" element={<MyPageCheck/>} />
         <Route path="/discount" element={<DiscountAdjustment />} />
+        
       </Routes>
     </div>
   );

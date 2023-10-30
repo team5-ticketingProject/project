@@ -1,21 +1,27 @@
-import { Link } from "react-router-dom";
-import React, { useState, useRef, useEffect } from "react";
+import  { Link, useNavigate} from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../css/Navigation.css";
 
-const Navigation = ({ openModal }) => {
+
+const Navigation = () => {
   const [searchList, SetSearchList] = useState([]);
   const [posterIndex, SetPosterIndex] = useState(0);
   const [showSearchOutput, setShowSearchOutput] = useState(false);
+  const history = useNavigate();
 
-  const handelOpenModal = (type) => {
-    if (openModal) {
-      openModal(type);
+  const goToMyPage = () => {
+    if (!window.sessionStorage.getItem('id')) {
+      alert("로그인이 필요합니다.")
+      history.push('/login');
+    } else {
+      history.push('/mypage')
     }
-  };
+  }
+   
   const searchTitle = (e) => {
     const title = e.target.value;
-    SetPosterIndex(0);
+    SetPosterIndex();
     SetSearchList([]);
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/getSearchList/${title}`)
@@ -25,13 +31,12 @@ const Navigation = ({ openModal }) => {
       .catch((error) => {
         console.error(error);
       });
+      
   };
   const hoverOutputDetail = (index) => {
     SetPosterIndex(index);
   };
-
   const searchDivRef = useRef(null);
-
   const handleClickOutside = (event) => {
     if (searchDivRef.current && !searchDivRef.current.contains(event.target)) {
       setShowSearchOutput(false);
@@ -55,11 +60,9 @@ const Navigation = ({ openModal }) => {
           </a>
         </div>
         <div className="search">
-          <div
-            className="searchDiv"
-            ref={searchDivRef}
-            onClick={() => setShowSearchOutput(true)}
-          >
+          <div className="searchDiv"
+           ref={searchDivRef}
+           onClick={() => setShowSearchOutput(true)}>
             <input placeholder=" 공연 검색" onChange={searchTitle} />
             <button>
               <img
@@ -113,7 +116,7 @@ const Navigation = ({ openModal }) => {
             )}
           </div>
         </div>
-
+        
         <div className="menu">
           <span>
             {window.sessionStorage.getItem('id') ? <a href="/mypage">{window.sessionStorage.getItem('id')}</a>: <a href="/login">로그인</a>}
@@ -126,12 +129,11 @@ const Navigation = ({ openModal }) => {
             <a href="/mypage">고객센터</a>
           </span>
           <span>
-            <Link to="/mypage" onClick={() => handelOpenModal("Check")}>
-              예매확인/취소
-            </Link>
+          <a href="/mypage/check">예매확인/취소</a>
           </span>
         </div>
       </div>
+      
     </div>
   );
 };
