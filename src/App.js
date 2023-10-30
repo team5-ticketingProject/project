@@ -23,10 +23,12 @@ const App = () => {
         <Route path="/reservation/:show_ID/:show_time" element={<Reservation/>}/>
         <Route path='/dateList' element={<Reserve_Calendar/>}/>
         <Route path="/admin/*" element={<Test/>}/>
-          <Route path="/member" element={<MemberManagement />} />
-          <Route path="/notice" element={<Notice />} />
-          <Route path="/Faq" element={<Faq />} />
-          <Route path="/discount" element={<DiscountAdjustment />} />
+
+        <Route path="/member" element={<MemberManagement />} />
+        <Route path="/notice" element={<Notice />} />
+        <Route path="/Faq" element={<Faq />} />
+        <Route path="/mypage/check" element={<MyPageCheck/>} />
+        <Route path="/discount" element={<DiscountAdjustment />} />
       </Routes>
     </div>
   );

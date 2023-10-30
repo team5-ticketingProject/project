@@ -316,6 +316,19 @@ app.get("/getpersonal_inquiry", async (req, res) => {
       });
 });   
 
+app.get('/searchMembers', (req, res) => {
+  const { search, option } = req.query;
+  const sql = `SELECT * FROM User WHERE ${option} LIKE ?`; // option에 따라 검색 조건을 변경
+
+  db.query(sql, [`%${search}%`], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json(results);
+  });
+});
+
 app.get('/getSearchList/:title', async (req, res) => {
   const title = req.params.title;
   const sql = 'SELECT * from show_info WHERE show_name LIKE ?;'
@@ -519,6 +532,7 @@ app.post("/signup", async (req, res) => {
   });
 })
 
+
 ///////// Notice /////////////////////////////////////////////////////////////////////
 app.get('/getNotices', (req, res) => {
   const sql = 'SELECT * FROM notice';
@@ -570,8 +584,8 @@ app.post('/addNotice', (req, res) => {
   });
 });
 
-/////////// member /////////////////////////////////////////////////////////////////////
 
+/////////// member /////////////////////////////////////////////////////////////////////
 app.get('/getMembers', (req, res) => {
   const sql = 'SELECT * From user'; // user_rank에 대한 테이블 이름 수정
   db.query(sql, (err, results) => {
@@ -596,7 +610,8 @@ app.get('/searchMembers', (req, res) => {
   });
 });
 
-/////////// Faq /////////////////////////////////////////////////////////////////////
+
+/////////// Faq
 app.get('/getFAQs', (req, res) => {
   const sql = 'SELECT * FROM faq';
   db.query(sql, (err, results) => {

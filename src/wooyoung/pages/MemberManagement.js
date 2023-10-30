@@ -33,6 +33,7 @@ const MemberManagement = () => {
 
   const handleSelectChange = (e) => {
     setSearchOption(e.target.value);
+
   };
 
   return (
@@ -48,6 +49,7 @@ const MemberManagement = () => {
             </tr>
           </thead>
           <tbody>
+
             {filteredMembers.map((member) => (
               <tr key={member.ID}>
                 <td>{member.ID}</td>
