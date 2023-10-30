@@ -3,7 +3,6 @@ import axios from "axios";
 import "../css/MainSlide.css";
 import { Link } from "react-router-dom";
 
-
 const SlideShow = ({ images }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -109,11 +108,11 @@ const SlideShowContainer = ({
         console.error(error);
       });
 
-      axios
+    axios
       .get(`${process.env.REACT_APP_SERVER_URL}/getRank`)
       .then((response) => {
         setRankList(response.data);
-      })
+      });
   }, []);
 
   const location_button = (e) => {
@@ -125,7 +124,7 @@ const SlideShowContainer = ({
 
   const hover_rank = (index) => {
     setSelectedRankPoster(index);
-  }
+  };
 
   return (
     <div>
@@ -134,9 +133,12 @@ const SlideShowContainer = ({
         <div className="main-box">
           <div className="select-classify">
             <span>
-              <strong style={{color:'gray'}}>연극</strong>
+              <strong style={{ color: "gray" }}>연극</strong>
             </span>
-            <span className="select-classify-right-span" style={{color:'gray'}}>
+            <span
+              className="select-classify-right-span"
+              style={{ color: "gray" }}
+            >
               {showData.length}개 상영중
             </span>
             <hr />
@@ -201,29 +203,44 @@ const SlideShowContainer = ({
 
         <div className="mainslide-discount">
           할인사 정보
-          <hr/>
+          <hr />
         </div>
         <div className="rank-box">
           예매 순위
-          <hr/>
+          <hr />
           {rankList.map((data, index) => (
             <div className="rank-detail" onMouseEnter={() => hover_rank(index)}>
-              <div className="rank-detail-number" style={{backgroundColor: index === 0 ? 'red' : 'gray'}}>{index+1}</div>
+              <div
+                className="rank-detail-number"
+                style={{ backgroundColor: index === 0 ? "red" : "gray" }}
+              >
+                {index + 1}
+              </div>
               <div>
-                <Link to={window.sessionStorage.getItem('id') ? `/reservation/${data.show_ID}/${data.show_time}`: '/login'} style={{textDecoration:'none', color:'black'}}>
+                <Link
+                  to={
+                    window.sessionStorage.getItem("id")
+                      ? `/reservation/${data.show_ID}/${data.show_time}`
+                      : "/login"
+                  }
+                  style={{ textDecoration: "none", color: "black" }}
+                >
                   {data.show_name}
                 </Link>
- 
               </div>
-              
             </div>
           ))}
           <div className="rank-image">
-            {rankList.length > 0 && <img src={rankList[selectedRankPoster].poster_url} alt="공연이미지"></img>}
+            {rankList.length > 0 && (
+              <img
+                src={rankList[selectedRankPoster].poster_url}
+                alt="공연이미지"
+              ></img>
+            )}
           </div>
         </div>
       </div>
-        <br/>
+      <br />
       <div className="show-list-title">
         <a id="tag1" href>
           <h1>연극목록</h1>
@@ -235,7 +252,13 @@ const SlideShowContainer = ({
             <div className="main-list">
               <div className="mainslide-show-info">
                 <p>
-                  <Link to={window.sessionStorage.getItem('id') ? `/reservation/${datas.show_ID}/${datas.show_time}`: '/login'}>
+                  <Link
+                    to={
+                      window.sessionStorage.getItem("id")
+                        ? `/reservation/${datas.show_ID}/${datas.show_time}`
+                        : "/login"
+                    }
+                  >
                     <img src={datas.poster_url} alt="공연포스터" />
                   </Link>
                 </p>

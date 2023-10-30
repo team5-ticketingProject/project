@@ -1,11 +1,11 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Header from "../wooyoung/component/header";
-import Menu from "../wooyoung/component/menu";
-import MemberManagement from "../wooyoung/pages/MemberManagement";
-import Notice from "../wooyoung/pages/Notice";
-import Faq from "../wooyoung/pages/faq";
-import DiscountAdjustment from "../wooyoung/pages/DiscountAdjustment";
+import Header from "../admin/component/header";
+import Menu from "../admin/component/menu";
+import MemberManagement from "../admin/pages/MemberManagement";
+import Notice from "../admin/pages/Notice";
+import Faq from "../admin/pages/Faq";
+import DiscountAdjustment from "../admin/pages/DiscountAdjustment";
 
 
 const Test = () => {

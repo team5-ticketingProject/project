@@ -36,12 +36,10 @@ const DiscountAdjustment = () => {
   };
 
   const handleSaveDescription = (productId) => {
-    // 상태에 저장된 변경된 설명을 서버 또는 데이터베이스에 업데이트하는 로직 추가
     setIsEditing((prev) => prev.map((value, index) => (index === productId - 1 ? false : value)));
   };
 
   const DiscountSave = (id) => {
-    // alert(products[id-1].description + discounts[id]);
     axios
     .post(`${process.env.REACT_APP_SERVER_URL}/changeDiscountRate`, {
       bank: products[id-1].description,
