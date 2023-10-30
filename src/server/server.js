@@ -366,7 +366,22 @@ app.get("/searchMembers", (req, res) => {
   });
 });
 
-app.get("/getSearchList/:title", async (req, res) => {
+
+app.get('/searchMembers', (req, res) => {
+  const { search, option } = req.query;
+  const sql = `SELECT * FROM User WHERE ${option} LIKE ?`; // option에 따라 검색 조건을 변경
+
+  db.query(sql, [`%${search}%`], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json(results);
+  });
+});
+
+app.get('/getSearchList/:title', async (req, res) => {
+
   const title = req.params.title;
   const sql = "SELECT * from show_info WHERE show_name LIKE ?;";
   db.query(sql, [`%${title}%`], (err, results) => {
@@ -502,6 +517,7 @@ app.post("/login", (req, res) => {
   var id = req.body.id;
   var pw = req.body.pw;
   const sqlQuery = "select * from user where ID =? and pw =?;";
+  
   db.query(sqlQuery, [id, pw], (err, result) => {
     res.send(result);
   });
@@ -569,6 +585,16 @@ app.post("/idcheck", async (req, res) => {
   });
 });
 
+// ID 중복 체크
+app.post("/idcheck", async (req,res) => {
+  const id = req.body.id;
+
+  const sql = "select count(*) as 'cnt' from User where ID =?";
+  db.query(sql, [id], (err, result) => {
+    res.send(result);
+  });
+});
+
 // 회원가입시 정보 등록
 app.post("/signup", async (req, res) => {
   const id = req.body.id;
@@ -577,17 +603,20 @@ app.post("/signup", async (req, res) => {
   const email = req.body.email;
   const rank = 1;
 
+
   var sql2 = "INSERT INTO `user` (ID, pw, tel, email, `rank`) VALUES (?)";
   const val = [id, pw, tel, email, rank];
 
   db.query(sql2, [val], (err, result) => {
     res.send(result);
   });
+
 });
 
 ///////// Notice /////////////////////////////////////////////////////////////////////
 app.get("/getNotices", (req, res) => {
   const sql = "SELECT * FROM notice";
+
   db.query(sql, (err, results) => {
     if (err) {
       console.error(err);
@@ -662,6 +691,33 @@ app.get("/searchMembers", (req, res) => {
   });
 });
 
+
+/////////// member /////////////////////////////////////////////////////////////////////
+app.get('/getMembers', (req, res) => {
+  const sql = 'SELECT * From user'; // user_rank에 대한 테이블 이름 수정
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json(results);
+  });
+});
+
+app.get('/searchMembers', (req, res) => {
+  const { search, option } = req.query;
+  const sql = `SELECT * FROM User WHERE ${option} LIKE ?`; // option에 따라 검색 조건을 변경
+
+  db.query(sql, [`%${search}%`], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json(results);
+  });
+});
+
+
 /////////// Faq
 app.get("/getFAQs", (req, res) => {
   const sql = "SELECT * FROM faq";
@@ -709,6 +765,7 @@ app.delete("/deleteFAQ/:id", (req, res) => {
 
 app.post("/changeDiscountRate", (req, res) => {
   const { bank, rate } = req.body;
+
 
   var sql = "UPDATE discount_rate SET discount_rate = ? WHERE bank = ?";
 
