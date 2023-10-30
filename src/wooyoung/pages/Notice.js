@@ -1,32 +1,48 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Notice.module.css";
+import axios from "axios";
 
 const Notice = () => {
-  const [notices, setNotices] = useState([
-    { id: 2, title: "두 번째 공지", content: "이것은 두 번째 공지입니다." },
-    { id: 1, title: "첫 번째 공지", content: "이것은 첫 번째 공지입니다." },
-  ]);
+  const [notices, setNotices] = useState([]);
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [deleteItemId, setDeleteItemId] = useState(null);
 
-  const handleCreateClick = () => {
-    setEditing("add");
-    setTitle("");
-    setContent("");
-  };
+  useEffect(() => {
+    axios.get('http://localhost:5000/getNotices')
+      .then((response) => {
+        setNotices(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching notices:', error);
+      });
+  }, []);
 
   const handleDeleteClick = (id) => {
     const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
     if (confirmDelete) {
-      setDeleteItemId(id);
+      axios
+        .delete(`http://localhost:5000/deleteNotice/${id}`)
+        .then((response) => {
+          // 서버에서 공지사항을 삭제하고 응답을 받아서 notices 상태를 업데이트합니다.
+          setDeleteItemId(id); // 삭제할 아이템 ID 설정
+        })
+        .catch((error) => {
+          console.error("Error deleting notice:", error);
+        });
     }
+  };
+
+  const handleCreateClick = () => {
+    setEditing({ id: "add" }); // 사용자 정의 ID 'add'를 지정해 새로운 글을 구분
+    setTitle("");
+    setContent("");
   };
 
   useEffect(() => {
     if (deleteItemId !== null) {
-      setNotices(notices.filter((notice) => notice.id !== deleteItemId));
+      setNotices(notices.filter((notice) => notice.notification_ID !== deleteItemId));
       setEditing(false);
       setDeleteItemId(null);
     }
@@ -39,29 +55,62 @@ const Notice = () => {
   };
 
   const handleSaveClick = () => {
-    if (editing === "add") {
-      const newNotice = {
-        id: Math.max(...notices.map((notice) => notice.id), 0) + 1,
-        title,
-        content,
+    if (editing) {
+      const updatedNotice = {
+        notification_ID: editing.id,
+        title, // 추가된 부분: 수정 폼에 입력된 제목을 title 상태로 업데이트
+        content, // 추가된 부분: 수정 폼에 입력된 내용을 content 상태로 업데이트
       };
-      setNotices([newNotice, ...notices]);
-    } else if (editing) {
-      const updatedNotices = notices.map((notice) =>
-        notice.id === editing.id ? { ...notice, title, content } : notice
-      );
-      setNotices(updatedNotices);
+  
+      if (editing.id === "add") {
+        // 새로운 글을 DB에 추가하는 요청
+        axios
+          .post("http://localhost:5000/addNotice", updatedNotice)
+          .then((response) => {
+            axios.get('http://localhost:5000/getNotices')
+              .then((response) => {
+                setNotices(response.data);
+                setTitle("");
+                setContent("");
+                setEditing(false);
+              })
+              .catch((error) => {
+                console.error('Error fetching notices:', error);
+              });
+          })
+          .catch((error) => {
+            console.error("Error creating notice:", error);
+          });
+      } else {
+        // 이미 존재하는 글을 수정하는 요청
+        axios
+          .post("http://localhost:5000/updateNotice", updatedNotice)
+          .then((response) => {
+            axios.get('http://localhost:5000/getNotices')
+              .then((response) => {
+                setNotices(response.data);
+                setTitle("");
+                setContent("");
+                setEditing(false);
+              })
+              .catch((error) => {
+                console.error('Error fetching notices:', error);
+              });
+          })
+          .catch((error) => {
+            console.error("Error updating notice:", error);
+          });
+      }
     }
-
-    setEditing(false);
-    setTitle("");
-    setContent("");
   };
-
+  
+  
   const handleEditClick = (notice) => {
-    setEditing(notice);
-    setTitle(notice.title);
-    setContent(notice.content);
+    setEditing({
+      id: notice.notification_ID,
+      title: notice.title,
+      content: notice.content,
+    });
   };
 
   return (
@@ -72,7 +121,13 @@ const Notice = () => {
 
       {editing ? (
         <div className={styles.form}>
-          <input className='style-input' type="text" placeholder="제목" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <input
+            className="style-input"
+            type="text"
+            placeholder="제목"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
           <textarea
             placeholder="내용"
             value={content}
@@ -95,12 +150,12 @@ const Notice = () => {
           </thead>
           <tbody>
             {notices.map((notice) => (
-              <tr key={notice.id} className={styles.noticeItem}>
+              <tr key={notice.notification_ID} className={styles.noticeItem}>
                 <td>{notice.title}</td>
                 <td>{notice.content}</td>
                 <td>
                   <button onClick={() => handleEditClick(notice)}>수정</button>
-                  <button onClick={() => handleDeleteClick(notice.id)}>삭제</button>
+                  <button onClick={() => handleDeleteClick(notice.notification_ID)}>삭제</button>
                 </td>
               </tr>
             ))}

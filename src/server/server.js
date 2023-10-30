@@ -173,6 +173,7 @@ app.post("/changeEmail", (req, res) => {
     });
   });
 });
+
 app.post("/submit_inquiry", (req, res) => {
   const { ID, email, subject, message, userId } = req.body;
 
@@ -215,6 +216,30 @@ app.post("/registerNotice", async (req, res) => {
   });
 })
 
+app.post('/getSeatInfo', async (req, res) => {
+  const {ID, date, time} = req.body;
+  var sql = 'SELECT seat_num FROM reservation WHERE show_ID = ? AND DATE = ? AND TIME = ?';
+
+  db.query(sql, [ID, date, time], (err, results) => {
+    if(err){
+      console.error(err);
+    }
+    res.json(results);
+  })
+})
+
+app.get('/getBank', async (req, res) => {
+  const sql = 'SELECT * FROM discount_rate';
+
+  db.query(sql, (err, results) => {
+    if(err){
+      console.error(err);
+      return res.status(500).json({error: '내부 서버 에러'}); 
+    }
+    res.json(results);
+  })
+})
+
 app.get('/getFAQ', async (req, res) => {
   const sql = 'SELECT * FROM faq';
 
@@ -252,9 +277,14 @@ app.get('/getRank', async(req, res) => {
 })
 
 app.get('/getDB', async (req, res) => {
-  const sql = 'SELECT * FROM show_info';
+  const date = new Date();
+  let year = date.getFullYear();
+  let month = ('0' + (date.getMonth() + 1)).slice(-2);
+  let day = ('0' + date.getDate()).slice(-2);
+  const today = year + '.' + month + '.' + day;
+  const sql = 'SELECT * FROM show_info WHERE end_date > ?';
 
-  db.query(sql, (err, results) => {
+  db.query(sql, [today],(err, results) => {
     if(err){
       console.error(err);
       return res.status(500).json({error: '내부 서버 에러'});
@@ -285,6 +315,19 @@ app.get("/getpersonal_inquiry", async (req, res) => {
       res.json(results);
       });
 });   
+
+app.get('/searchMembers', (req, res) => {
+  const { search, option } = req.query;
+  const sql = `SELECT * FROM User WHERE ${option} LIKE ?`; // option에 따라 검색 조건을 변경
+
+  db.query(sql, [`%${search}%`], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json(results);
+  });
+});
 
 app.get('/getSearchList/:title', async (req, res) => {
   const title = req.params.title;
@@ -339,19 +382,6 @@ app.get('/getShowInfo/:ID', async (req, res) => {
   }
 });
 
-app.get("/LoginInfo", async (req, res) => {
-  const userId = req.query.id; // 로그인한 사용자의 ID를 쿼리 매개변수로부터 가져옴
-  const sql = "SELECT * FROM user WHERE ID = ?"; // 해당 ID에 대한 정보만 가져오도록 쿼리 수정
-
-  db.query(sql, [userId], (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: "내부 서버 에러" });
-    }
-    res.json(results);
-  });
-});
-
 app.get("/getShowList/:ID", async (req, res) => {
   const location = req.params.ID;
   try {
@@ -390,7 +420,7 @@ app.get("/getShowList/:ID", async (req, res) => {
                 result.dbs.db.prfpdto,
                 result.dbs.db.pcseguidance,
                 result.dbs.db.poster,
-                100,
+                0,
                 result.dbs.db.dtguidance,
                 result.dbs.db.prfcast,
               ];
@@ -416,6 +446,19 @@ app.get("/getShowList/:ID", async (req, res) => {
   }
 });
 
+app.get("/LoginInfo", async (req, res) => {
+  const userId = req.query.id; // 로그인한 사용자의 ID를 쿼리 매개변수로부터 가져옴
+  const sql = "SELECT * FROM user WHERE ID = ?"; // 해당 ID에 대한 정보만 가져오도록 쿼리 수정
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "내부 서버 에러" });
+    }
+    res.json(results);
+  });
+});
+
 app.post("/login", (req, res) => {
   var id = req.body.id;
   var pw = req.body.pw;
@@ -433,13 +476,15 @@ app.post('/reservation', (req, res) => {
   var user = req.body.user;
   var re_number = req.body.re_number;
   var price = req.body.price;
+  var seatArr = req.body.seatArr;
+  var bank = req.body.bank;
   const d = new Date();
   var today = d.toLocaleDateString("ko-KR");
   var cancel_date = new Date(d.getFullYear(), d.getMonth(), d.getDate() - 7).toLocaleDateString("ko-KR");
   
   var sql = 'SELECT SUM(re_number) as NUM FROM reservation WHERE show_ID = ? AND DATE = ? AND TIME = ?';
   db.query(sql, [show_id, date, time], (err, result) => { 
-    if(result[0].NUM < 10 && Number(result[0].NUM) + re_number <= 10){
+    if(result[0].NUM < 100 && Number(result[0].NUM) + re_number <= 100){
       var sql2 = 'UPDATE show_info SET seat = seat + ? WHERE show_ID = ?';
       db.query(sql2, [re_number, show_id], (err2, result2) => {
         if(err2){
@@ -447,16 +492,17 @@ app.post('/reservation', (req, res) => {
         }
       });
 
-      var sql3 = 'INSERT INTO reservation (show_ID, bank, re_number, cancel_date, re_date, user_ID, DATE, TIME, price) VALUES (?)';
+      var sql3 = 'INSERT INTO reservation (show_ID, bank, re_number, cancel_date, re_date, user_ID, DATE, TIME, seat_num, price) VALUES (?)';
       var values = [
         show_id,
-        "없음",
+        bank,
         re_number,
         cancel_date,
         today,
         user,
         date,
         time,
+        seatArr,
         price
       ];
       db.query(sql3, [values], function(err3, result3){
@@ -484,6 +530,128 @@ app.post("/signup", async (req, res) => {
   db.query(sql, [values], function (err, result) {
     if(err) throw err;
   });
+})
+
+///////// Notice
+app.get('/getNotices', (req, res) => {
+  const sql = 'SELECT * FROM notice';
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json(results);
+  });
+});
+
+app.post('/updateNotice', (req, res) => {
+  const { notification_ID, title, content } = req.body;
+  const sql = 'UPDATE notice SET title = ?, content = ? WHERE notification_ID = ?';
+
+  db.query(sql, [title, content, notification_ID], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json({ message: 'Data updated successfully' });
+  });
+});
+
+app.delete('/deleteNotice/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'DELETE FROM notice WHERE notification_ID = ?';
+
+  db.query(sql, [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json({ message: 'Notice deleted successfully' });
+  });
+});
+
+app.post('/addNotice', (req, res) => {
+  const { title, content } = req.body;
+  const sql = 'INSERT INTO notice (title, content) VALUES (?, ?)';
+
+  db.query(sql, [title, content], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json({ message: 'Data added successfully' });
+  });
+});
+
+/////////// Faq
+app.get('/getFAQs', (req, res) => {
+  const sql = 'SELECT * FROM faq';
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json(results);
+  });
+});
+
+app.post('/registerFAQ', (req, res) => {
+  const { question, answer } = req.body;
+  const sql = 'INSERT INTO faq (question, answer) VALUES (?, ?)';
+
+  db.query(sql, [question, answer], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    const insertedFAQ = {
+      ID: results.insertId,
+      question,
+      answer,
+    };
+
+    res.json(insertedFAQ);
+  });
+});
+
+app.delete('/deleteFAQ/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'DELETE FROM faq WHERE ID = ?';
+
+  db.query(sql, [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json({ message: 'FAQ deleted successfully' });
+  });
+});
+
+app.get("/getMembers", (req, res) => {
+  const sql = "SELECT * FROM user"; // 테이블명을 변경된 이름으로 복구
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    res.json(results);
+  });
+});
+
+app.post('/changeDiscountRate', (req, res) => {
+  const {bank, rate} = req.body;
+  
+
+  var sql = 'UPDATE discount_rate SET discount_rate = ? WHERE bank = ?';
+
+  db.query(sql, [Number(rate), bank], (err, results) => {
+    if(err){
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json("1");
+  })
 })
 
 app.listen(port, () => {
