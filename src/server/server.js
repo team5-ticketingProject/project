@@ -532,7 +532,8 @@ app.post("/signup", async (req, res) => {
   });
 })
 
-///////// Notice
+
+///////// Notice /////////////////////////////////////////////////////////////////////
 app.get('/getNotices', (req, res) => {
   const sql = 'SELECT * FROM notice';
   db.query(sql, (err, results) => {
@@ -583,6 +584,33 @@ app.post('/addNotice', (req, res) => {
   });
 });
 
+
+/////////// member /////////////////////////////////////////////////////////////////////
+app.get('/getMembers', (req, res) => {
+  const sql = 'SELECT * From user'; // user_rank에 대한 테이블 이름 수정
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json(results);
+  });
+});
+
+app.get('/searchMembers', (req, res) => {
+  const { search, option } = req.query;
+  const sql = `SELECT * FROM User WHERE ${option} LIKE ?`; // option에 따라 검색 조건을 변경
+
+  db.query(sql, [`%${search}%`], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json(results);
+  });
+});
+
+
 /////////// Faq
 app.get('/getFAQs', (req, res) => {
   const sql = 'SELECT * FROM faq';
@@ -625,17 +653,6 @@ app.delete('/deleteFAQ/:id', (req, res) => {
       return res.status(500).json({ error: 'Internal Server Error' });
     }
     res.json({ message: 'FAQ deleted successfully' });
-  });
-});
-
-app.get("/getMembers", (req, res) => {
-  const sql = "SELECT * FROM user"; // 테이블명을 변경된 이름으로 복구
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-    res.json(results);
   });
 });
 
