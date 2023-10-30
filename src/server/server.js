@@ -37,9 +37,10 @@ app.post("/text", async (req, res) => {
   codes.push(code);
 });
 
-app.get('/api/get-mac-address', (req, res) => {
-  if (req.userConsent) { // 사용자 동의 확인 (이 코드는 실제로는 세션 또는 토큰을 사용하여 사용자 동의를 확인해야 함)
-    macaddress.one((err, mac) => {
+app.get('/api/getmacaddress', (req, res) => {
+  const userConsent = req.query.userConsent;
+  if (userConsent === 'true') {
+    macaddress.one(function (err, mac) {
       if (!err) {
         res.json({ mac });
       } else {
