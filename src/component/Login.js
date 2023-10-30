@@ -20,30 +20,34 @@ const Login = () => {
       alert("패스워드를 입력하세요!!!");
       pwRef.current.focus();
       return false;
-    }
-
+    } else {
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/login`, {
         id: idRef.current.value,
         pw: pwRef.current.value,
       })
       .then((res) => {
-        if (res.data[0].cnt === 1) {
-          window.sessionStorage.setItem("id", idRef.current.value); 
-          // 세션스토리지에 key : id , value : idRef.current.value로 저장
-          // sessionsStorage는 창 닫으면 사라짐, localStorage는 안사라짐
-          document.location.href='/'
-        } else {
-          alert("아이디, 패스워드가 정확하지 않습니다.");
-          idRef.current.value = "";
-          pwRef.current.value = "";
-          navigate("/login");
-        }
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-    }
+        console.log(res.data[0])
+       if (res.data[0].ID === idRef.current.value && res.data[0].pw === pwRef.current.value) {
+         window.sessionStorage.setItem("id", idRef.current.value); 
+         // 세션스토리지에 key : id , value : idRef.current.value로 저장
+         // sessionsStorage는 창 닫으면 사라짐, localStorage는 안사라짐
+         if (res.data[0].rank === 0) {
+          document.location.href = '/mypage'; // 어드민 페이지로 변경해야함
+         } else {document.location.href='/';}
+       } else {
+         alert("아이디, 패스워드가 정확하지 않습니다.");
+         console.log(res.data[0])
+         idRef.current.value = "";
+         pwRef.current.value = "";
+         navigate("/login");
+       }
+     })
+     .catch((e) => {
+       console.error(e);
+     });
+   }
+  }
     
     return(
         <div>
