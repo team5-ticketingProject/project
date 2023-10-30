@@ -187,7 +187,7 @@ function MyPage() {
           onClick={closeModal}
         >
           <div
-            className="modal-content"
+            className="modal-contents"
             style={{ height: "100%" }}
             onClick={(e) => e.stopPropagation()}
           >

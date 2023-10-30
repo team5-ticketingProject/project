@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import MacAddressCollector from "./MacAddressCollector";
 
 function Review() {
   const [reviews, setReviews] = useState([]); // 후기 목록
@@ -39,6 +40,7 @@ function Review() {
       <div style={{ borderBottom: "2px solid #ccc" }}>
         <h3 style={{ fontSize: "25px", fontWeight: "bold", marginBottom: "10px" }}>
           나의 후기 관리
+          <MacAddressCollector />
         </h3>
       </div>
       <div style={{ marginTop: "20px" }}>
