@@ -31,7 +31,6 @@ const Login = () => {
             res.data[0].ID === idRef.current.value &&
             res.data[0].pw === pwRef.current.value
           ) {
-            console.log("6");
             alert(res.data[0].ID);
             alert(res.data[0].pw);
             window.sessionStorage.setItem("id", idRef.current.value);
