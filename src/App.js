@@ -7,10 +7,10 @@ import MyPage from "./component/MyPage";
 import Reservation from "./component/Reservation";
 import Reserve_Calendar from "./component/Reserve_Calendar";
 import Test from "./component/Test";
-import MemberManagement from './wooyoung/pages/MemberManagement';
-import Notice from './wooyoung/pages/Notice';
-import Faq from './wooyoung/pages/faq';
-import DiscountAdjustment from './wooyoung/pages/DiscountAdjustment';
+import MemberManagement from './admin/pages/MemberManagement';
+import Notice from './admin/pages/Notice';
+import Faq from './admin/pages/Faq';
+import DiscountAdjustment from './admin/pages/DiscountAdjustment';
 import MyPageCheck from "./component/MyPage_default_Check";
 
 const App = () => {
@@ -23,7 +23,8 @@ const App = () => {
         <Route path="/mypage" element={<MyPage/>} />  
         <Route path="/reservation/:show_ID/:show_time" element={<Reservation/>}/>
         <Route path='/dateList' element={<Reserve_Calendar/>}/>
-        <Route path="/test" element={<Test/>}/>
+        <Route path="/admin/*" element={<Test/>}/>
+
         <Route path="/member" element={<MemberManagement />} />
         <Route path="/notice" element={<Notice />} />
         <Route path="/Faq" element={<Faq />} />

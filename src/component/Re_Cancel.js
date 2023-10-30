@@ -114,6 +114,7 @@ function ReCancel({ selectedReservationInfo, closePopupWindow }) {
             </td>
           </tr>
           <tr>
+
             <th style={thStyle}>가격</th>
             <td style={tdStyle}> {selectedReservationInfo
                 ? selectedReservationInfo.price

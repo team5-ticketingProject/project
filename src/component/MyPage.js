@@ -215,7 +215,6 @@ function MyPage() {
           </div>
         </div>
       </div>
-      <Footer></Footer>
     </div>
   );
 }
