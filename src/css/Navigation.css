@@ -24,7 +24,6 @@ color: black;
 float: left;
 margin-left: 100px;
 padding: 25px 0;
-width: 600px;
 }
 
 .searchDiv{
@@ -32,7 +31,7 @@ width: 350px;
 height: 50px;
 line-height: 50px;
 border: 1px solid gray;
-background-color: white;
+background-color: white;;
 }
 .search input{
 width: 270px;
@@ -58,6 +57,7 @@ margin-right: 150px;
 .menu span{
 margin-left: 40px;
 }
+
 .menu a{
 text-decoration: none;
 color: gray;
@@ -74,33 +74,14 @@ cursor: pointer;
 }
 .search-output{
   width: 350px;
-  height: 309px;
   border-left: 1px solid black;
-  border-right: 1px solid gray;
-  border-bottom: 1px solid black;
-  background-color: white;
-  position: absolute;
-  z-index: 9;
+  border-right: 1px solid black;
+  position: relative;
 }
-.output-detail-image{
-  background-color: white;
- width: 248px;
- float: right;
- height: 309px;
- border: 1px solid black;
- border-left: none;
- position: absolute;
- left: 351px;
- top: -1px;
- overflow: hidden;
-}
-.output-detail-image img{
-  width: 170px;
-  height: 200px;
-  margin-top: 10px;
-}
-.output-detail-image-explain{
-  margin-top: -30px;
-  line-height: 20px;
-}
+.navbutton :hover {
+  color: black;
+  cursor: pointer;
+  } 
+  
+
 

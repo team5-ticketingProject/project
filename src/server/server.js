@@ -316,6 +316,19 @@ app.get("/getpersonal_inquiry", async (req, res) => {
       });
 });   
 
+app.get('/searchMembers', (req, res) => {
+  const { search, option } = req.query;
+  const sql = `SELECT * FROM User WHERE ${option} LIKE ?`; // option에 따라 검색 조건을 변경
+
+  db.query(sql, [`%${search}%`], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json(results);
+  });
+});
+
 app.get('/getSearchList/:title', async (req, res) => {
   const title = req.params.title;
   const sql = 'SELECT * from show_info WHERE show_name LIKE ?;'
