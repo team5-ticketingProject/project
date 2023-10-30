@@ -34,9 +34,9 @@ const Main = () => {
             <li onClick={handleMenu} value="1">
               지역별
             </li>
-            <li onClick={handleMenu} value="2">
+            {/* <li onClick={handleMenu} value="2">
               할인
-            </li>
+            </li> */}
           </ul>
         </div>
 
@@ -49,7 +49,7 @@ const Main = () => {
           {menuNumber === 1 && (
             <GetShowData clicked={clicked} setClicked={setClicked} setLocation={setLocation} location={location}/>
           )}
-          {menuNumber === 2 && <div>할인</div>}
+          {/* {menuNumber === 2 && <div>할인</div>} */}
         </div>
       </div>
 

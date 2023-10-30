@@ -164,7 +164,17 @@ const Reservation = () => {
   }, [date, selectedTime]);
 
   const onChange = (selectedDate) => {
-    if (moment(selectedDate).isBetween(info[0].start_date, info[0].end_date)) {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = ('0' + (d.getMonth() + 1)).slice(-2);
+    const day = ('0' + d.getDate()).slice(-2);
+
+    const today = year + '.' + month + '.' + day;
+
+    console.log(info[0].start_date);
+    console.log(today);
+
+    if (info[0].start_date <= today && info[0].end_date >= today) {
       setDate(selectedDate);
       setTotalPrice(price);
       setReNumber(1);

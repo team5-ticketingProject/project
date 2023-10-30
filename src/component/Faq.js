@@ -16,7 +16,7 @@ function FAQ(props) {
   
   useEffect(() => {
     axios
-      .get("http://localhost:5000/getFAQ")
+      .get(`${process.env.REACT_APP_SERVER_URL}/getFAQ`)
       .then((response) => {
         setFAQs(response.data);
       })

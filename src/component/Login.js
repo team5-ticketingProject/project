@@ -31,8 +31,6 @@ const Login = () => {
             res.data[0].ID === idRef.current.value &&
             res.data[0].pw === pwRef.current.value
           ) {
-            alert(res.data[0].ID);
-            alert(res.data[0].pw);
             window.sessionStorage.setItem("id", idRef.current.value);
             // 세션스토리지에 key : id , value : idRef.current.value로 저장
             // sessionsStorage는 창 닫으면 사라짐, localStorage는 안사라짐
