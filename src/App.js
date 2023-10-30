@@ -11,6 +11,7 @@ import MemberManagement from './admin/pages/MemberManagement';
 import Notice from './admin/pages/Notice';
 import Faq from './admin/pages/Faq';
 import DiscountAdjustment from './admin/pages/DiscountAdjustment';
+import MyPageCheck from "./component/MyPage_default_Check";
 
 const App = () => {
   return (
