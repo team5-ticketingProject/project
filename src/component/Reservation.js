@@ -11,6 +11,7 @@ import Payment from "./payment/Payment";
 import PaymentModal from "./payment/PaymentModal";
 import ReservationTabs from "./ReservationTabs";
 
+
 const Reservation = () => {
   const [info, SetInfo] = useState([]);
   const id = useParams();
@@ -33,6 +34,8 @@ const Reservation = () => {
   const [bank, setBank] = useState([]);
   const [clicked, setClicked] = useState([]);
   const [reservatedSeat, setReservatedSeat] = useState([]);
+  const [mac, setMac] = useState("");
+  const [userMac, setUserMac] = useState("");
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
@@ -138,6 +141,25 @@ const Reservation = () => {
       .catch((error) => {
         console.error(error);
       });
+
+      axios
+      .post(`${process.env.REACT_APP_SERVER_URL}/getUserMac`, {
+        user: window.sessionStorage.getItem('id')
+      })
+      .then((response) => {
+        setMac(response.data[0].mac_address);
+      });
+
+      axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/api/getmacaddress`, {
+        params: { userConsent: 'true' }
+      })
+      .then((response) => {
+        setUserMac(response.data.mac);
+      })
+      .catch((error) => {
+        console.error(error);
+      });    
   }, []);
 
   useEffect(() => {
@@ -189,7 +211,7 @@ const Reservation = () => {
       alert("유효한 날짜를 선택해 주세요.");
       return;
     }
-    console.log(clicked.length, reNumber);
+
     if(clicked.length < reNumber){
       alert('선택한 좌석이 매수보다 적습니다.');
       return;
@@ -198,6 +220,64 @@ const Reservation = () => {
       alert('선택한 좌석이 매수보다 많습니다.')
       return;
     }
+
+    axios
+      .post(`${process.env.REACT_APP_SERVER_URL}/getUserMac`, {
+        user: window.sessionStorage.getItem('id')
+      })
+      .then((response) => {
+        setMac(response.data[0].mac_address);
+      })
+
+    if(mac === null){
+      if(window.confirm('최초 결제 시 맥 어드레스 수집이 필요합니다. 동의하시겠습니까?')){
+
+      axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/api/getmacaddress`, {
+        params: { userConsent: 'true' }
+      })
+      .then((response) => {
+        setMac(response.data.mac);
+        setUserMac(response.data.mac);
+        axios
+        .post(`${process.env.REACT_APP_SERVER_URL}/saveUserMac`, {
+          user:window.sessionStorage.getItem('id'),
+          mac: response.data.mac
+        })
+        .catch((err) => {
+          console.error(err);
+        })
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+      }
+      else{
+        return;
+      }
+    }
+    else{
+      axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/api/getmacaddress`, {
+        params: { userConsent: 'true' }
+      })
+      .then((response) => {
+        setUserMac(response.data.mac);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+      console.log('user: '+ userMac);
+      console.log('mac: '+ mac);
+      if(userMac === mac){
+        console.log('기기 정보 일치');
+      }
+      else{
+        alert('기기 인증 정보가 다릅니다');
+        return;
+      }
+    }
+    
     
     let seatArr = '';
     for(let i = 0 ; i < clicked.length ; i++){
@@ -221,6 +301,7 @@ const Reservation = () => {
         bank: selectedBank
       })
       .then((response) => {
+
         if (response.data === "1") {
           setModalContent(
             <Payment
@@ -231,6 +312,9 @@ const Reservation = () => {
             />
           );
           setShowModal(true);
+
+          
+
           setClicked([]);
         } else if (response.data === "2") {
           alert("좌석이 부족합니다.");

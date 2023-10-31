@@ -39,6 +39,29 @@ app.post("/text", async (req, res) => {
   codes.push(code);
 });
 
+app.post('/getUserMac', (req, res) => {
+  const ID = req.body.user;
+  const sql = 'SELECT mac_address FROM `user` WHERE ID = ?';
+
+  db.query(sql, [ID], (err, result) => {
+    if(err){
+      console.error(err);
+    }
+    res.send(result);
+  })
+})
+
+app.post('/saveUserMac', (req, res) => {
+  const ID = req.body.user;
+  const mac = req.body.mac;
+ 
+  const sql = 'UPDATE `user` set mac_address = ? WHERE `ID` = ?';
+  db.query(sql, [mac, ID], (err, result) => {
+    if(err){
+      console.error(err);
+    }
+  })
+})
 
 app.get('/api/getmacaddress', (req, res) => {
   const userConsent = req.query.userConsent;
