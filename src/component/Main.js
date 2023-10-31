@@ -24,7 +24,6 @@ const Main = () => {
       <div>
         <Navigation />
         <GetShowCode />
-        <Link to="/admin">임시 어드민페이지</Link>
 
         <div className="mainMenu">
           <ul>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './header.module.css'
+import GetShowCode from '../../api/GetShowCode';
 
 const Header = () => {
   
@@ -10,8 +11,7 @@ const Header = () => {
         <h2 className={styles.logo}>
         <Link to="/" className={styles.nounderline}>LOGO</Link> {/*로고 누르면 메인화면으로 */}
         </h2>
-
-
+        <GetShowCode />
         <nav className={styles.navigation}>
           <ul>
           <li>
