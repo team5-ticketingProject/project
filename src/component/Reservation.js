@@ -230,7 +230,7 @@ const Reservation = () => {
       })
 
     if(mac === null){
-      if(window.confirm('최초 결제 시 맥 어드레스 수집이 필요합니다. 동의하시겠습니까?')){
+      if(window.confirm('최초 결제 시 기기인증 정보 수집이 필요합니다. 동의하시겠습니까?')){
 
       axios
       .get(`${process.env.REACT_APP_SERVER_URL}/api/getmacaddress`, {
@@ -289,40 +289,23 @@ const Reservation = () => {
       }
     }
     
-    axios // ********* 지금은 결제완료 안하고 결제하기 버튼만 눌러도 예약이 되기 때문에 나중에 결제 api창으로 빼는 작업이 필요함
-      .post(`${process.env.REACT_APP_SERVER_URL}/reservation`, {
-        ID: id.show_ID,
-        date: date.toLocaleDateString("ko-KR"),
-        time: selectedTime,
-        user: window.sessionStorage.getItem("id"),
-        re_number: reNumber,
-        price: totalPrice * (100 - discount) / 100,
-        seatArr : seatArr,
-        bank: selectedBank
-      })
-      .then((response) => {
+    setModalContent(
+      <Payment
+        date={date}
+        totalPrice={totalPrice * (100 - discount) / 100}
+        reNumber={reNumber}
+        selectedTime={selectedTime}
+        ID={id.show_ID}
+        time={selectedTime}
+        user={window.sessionStorage.getItem('id')}
+        seatArr={seatArr}
+        bank={selectedBank}
+      />
+    );
+    setShowModal(true);
+    setClicked([]);
 
-        if (response.data === "1") {
-          setModalContent(
-            <Payment
-              date={date}
-              totalPrice={totalPrice * (100 - discount) / 100}
-              reNumber={reNumber}
-              selectedTime={selectedTime}
-            />
-          );
-          setShowModal(true);
-
-          
-
-          setClicked([]);
-        } else if (response.data === "2") {
-          alert("좌석이 부족합니다.");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    
   };
 
   const number_button = (e) => {

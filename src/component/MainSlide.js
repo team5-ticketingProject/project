@@ -91,7 +91,10 @@ const SlideShowContainer = ({
   const [showMap, setShowMap] = useState(false);
   const [showDate, setShowDate] = useState(false);
   const [rankList, setRankList] = useState([]);
+  const [notices, setNotices] = useState([]);
+  const [faq, setFaq] = useState([]);
   const [selectedRankPoster, setSelectedRankPoster] = useState(0);
+  const [noticeOption, setNoticeOption] = useState(0);
   const slideImageUrls = [
     ["http://www.kopis.or.kr/upload/pfmPoster/PF_PF226641_230925_144508.gif"],
     "http://www.kopis.or.kr/upload/pfmPoster/PF_PF227080_231005_144935.gif",
@@ -113,6 +116,19 @@ const SlideShowContainer = ({
       .then((response) => {
         setRankList(response.data);
       });
+
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/getNotice`)
+      .then((response) => {
+        setNotices(response.data);
+      });
+
+    axios
+    .get(`${process.env.REACT_APP_SERVER_URL}/getFAQs`)
+    .then((response) => {
+      setFaq(response.data);
+    })
+
   }, []);
 
   const location_button = (e) => {
@@ -125,6 +141,10 @@ const SlideShowContainer = ({
   const hover_rank = (index) => {
     setSelectedRankPoster(index);
   };
+
+  const handleNoticeOption = (index) => {
+    setNoticeOption(index);
+  }
 
   return (
     <div>
@@ -201,10 +221,6 @@ const SlideShowContainer = ({
           </div>
         </div>
 
-        <div className="mainslide-discount">
-          할인사 정보
-          <hr />
-        </div>
         <div className="rank-box">
           예매 순위
           <hr />
@@ -238,6 +254,35 @@ const SlideShowContainer = ({
               ></img>
             )}
           </div>
+        </div>
+
+        <div className="mainslide-notice">
+          <span style={{padding:'0 30px'}} onClick={() => handleNoticeOption(0)}>공지사항</span>
+          <span style={{padding:'0 40px'}} onClick={() => handleNoticeOption(1)}>FAQ</span>
+          <hr />
+          {noticeOption===0 && notices.slice(0,7)
+          .map((datas, index) => (
+            <div className="notice-box">
+              <div className="notice-box-left">           
+                <Link to = "/mypage" style={{textDecoration:'none', color:'black'}}>{datas.title}</Link>
+              </div>
+              <div className="notice-box-right">
+              {new Date(new Date(datas.date).getTime() + 9 * 60 * 60 * 1000)
+                      .toISOString().split("T")[0]}
+              </div>
+            </div>
+          ))}
+          {noticeOption===1 && faq.slice(0,7)
+          .map((datas, index) => (
+            <div className="notice-box">
+              <div className="notice-box-left">           
+                <Link to = "/mypage" style={{textDecoration:'none', color:'black'}}>{datas.question}</Link>
+              </div>
+              <div className="notice-box-right">
+              {datas.answer}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
       <br />

@@ -225,13 +225,12 @@
 }
 .main-container{
   padding: 0 285px;
+  display: flex;
 }
 .rank-box{
   border: 5px solid rgb(189, 183, 183);
-  width: 300px;
+  width: 400px;
   height: 200px;
-  margin-left: 1040px;
-  
 }
 .rank-detail{  
   width: 50%;
@@ -255,11 +254,35 @@
   width: 100px;
   height: 150px;
 }
-.mainslide-discount{
+.mainslide-notice{
   border: 5px solid rgb(228, 228, 171);
   border-radius: 10px;
   width: 300px;
   height: 200px;
-  margin-left: 40px;
-  float: left;
+  margin-left: 160px;
+}
+.mainslide-notice span{
+  color: gray;
+}
+.mainslide-notice span:hover{
+  color: black;
+  cursor: pointer;
+}
+.notice-box{
+  display: flex;
+}
+.notice-box-left{
+  width: 60%;
+  text-align: left;
+  padding: 0 0 0 20px;
+  overflow: hidden;
+  height: 20px;
+  text-overflow : ellipsis
+}
+.notice-box-right{
+  width: 30%;
+  padding: 0 20px 0 0;
+  overflow: hidden;
+  height: 20px;
+  text-overflow : ellipsis
 }
