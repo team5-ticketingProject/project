@@ -2,29 +2,26 @@ import React, { useState, useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import MacAddressCollector from "./MacAddressCollector";
+import axios from "axios";
 
 function Review() {
   const [reviews, setReviews] = useState([]); // 후기 목록
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const reviewsPerPage = 10; // 한 페이지에 보여질 후기 수
 
-  // 예시로 후기 데이터를 상태에 추가
   useEffect(() => {
-    // 이 부분에서 후기 데이터를 가져오는 API를 호출하여 상태에 설정
-    const sampleReviews = [
-      {
-        product: "상품명 1",
-        content: "후기 내용 1",
-        date: "작성일 1",
-      },
-      {
-        product: "상품명 2",
-        content: "후기 내용 2",
-        date: "작성일 2",
-      },
-      // 나머지 후기 데이터도 추가
-    ];
-    setReviews(sampleReviews);
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/getReview`)
+      .then((response) => {
+        // 이 부분에서 후기 데이터를 가져오는 API를 호출하여 상태에 설정 
+        // 현재 페이지의 로그인된 ID와 동일한 내용을 가진 review 데이터만 출력
+        const userId = window.sessionStorage.getItem("id");
+        const filteredReviews = response.data.filter((review) => review.ID === userId);
+        setReviews(filteredReviews);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   const handlePageChange = (event, page) => {
@@ -63,9 +60,9 @@ function Review() {
             <tbody>
               {currentReviews.map((review, index) => (
                 <tr key={index}>
-                  <td>{review.product}</td>
+                  <td>{review.show_name}</td>
                   <td>{review.content}</td>
-                  <td>{review.date}</td>
+                  <td>{review.date.substring(0, 10)}</td>
                 </tr>
               ))}
             </tbody>
