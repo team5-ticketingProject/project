@@ -9,7 +9,8 @@ import moment from "moment";
 import Button from "@mui/material/Button";
 import Payment from "./payment/Payment";
 import PaymentModal from "./payment/PaymentModal";
-import MacAddressCollector from "./MacAddressCollector";
+import ReservationTabs from "./ReservationTabs";
+
 
 const Reservation = () => {
   const [info, SetInfo] = useState([]);
@@ -588,35 +589,7 @@ const Reservation = () => {
                 </div>
               </div>
             </div>
-            <div className="re_read">
-              <p>
-                ◈ 예매자는 본 안내페이지의 모든 내용을 숙지 및 동의한 것으로
-                간주합니다.
-                <br />
-                티켓 수령/공연 관람 안내 미숙지로 인한 책임은 관람자 본인에게
-                있으며, 이에따른 예매 티켓의 취소/변경/환불은 불가 하오니 각별히
-                유의하시기 바랍니다.
-                <br />
-              </p>
-              <p>
-                ■ 공연 관람
-                <br />
-                원활한 공연 진행을 위해 공연 시작 후에는 입장이 제한됩니다.{" "}
-                <br />
-                공연이 시작된 후에는 공연의 흐름에 따라 입장이 지연되거나 제한될
-                수 있으며, 이 경우 예매하신 본인 좌석이 아닌 지연석에 착석하여야
-                합니다. 또한 이에 따른 환불 및 좌석 변경은 불가합니다.
-                <br />
-              </p>
-              <p>
-                ■ 공연 시점의 정부의 공연장 방역 수칙에 따라 운영이 변동 될 수
-                있습니다. 관람 당일 꼭 확인해 주십시오.
-                <br />
-                방역 수칙에 따른 변경이 있을 경우, 예매자 정보입력 시 기재된
-                연락처로 문자 안내 드립니다. 잘못된 연락처 기입으로 인한 책임은
-                예매자 본인에게 있으니 올바른 기입 바랍니다.
-              </p>
-            </div>
+            <ReservationTabs show_name={datas.show_name} />
           </div>
         ))}
       </div>
