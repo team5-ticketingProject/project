@@ -23,8 +23,8 @@ const style = {
   bgcolor: "background.paper",
 };
 
-function MyPageCheck() {
-  const [modalType, setModalType] = useState("Check");
+function MyPageNotice() {
+  const [modalType, setModalType] = useState("Notice");
   const [selectedNotice, setSelectedNotice] = useState(null);
   const [previousModalType, setPreviousModalType] = useState(null);
   const [selectedFaq, setSelectedFaq] = useState(null);
@@ -170,4 +170,4 @@ function MyPageCheck() {
   );
 }
 
-export default MyPageCheck;
+export default MyPageNotice;

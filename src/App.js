@@ -12,6 +12,7 @@ import Notice from './admin/pages/Notice';
 import Faq from './admin/pages/Faq';
 import DiscountAdjustment from './admin/pages/DiscountAdjustment';
 import MyPageCheck from "./component/MyPage_default_Check";
+import MyPageNotice from "./component/Mypage_default_Notice";
 
 const App = () => {
   return (
@@ -29,7 +30,9 @@ const App = () => {
         <Route path="/notice" element={<Notice />} />
         <Route path="/Faq" element={<Faq />} />
         <Route path="/mypage/check" element={<MyPageCheck/>} />
+        <Route path="/mypage/notice" element={<MyPageNotice/>} />
         <Route path="/discount" element={<DiscountAdjustment />} />
+
         
       </Routes>
     </div>

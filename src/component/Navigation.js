@@ -126,7 +126,7 @@ const Navigation = () => {
             {window.sessionStorage.getItem('id') ? <a href="/" onClick={() => {window.sessionStorage.setItem('id', "")}}>로그아웃</a> : <a href="/signup">회원가입</a>}
           </span>
           <span>
-            <a href="/mypage">고객센터</a>
+            <a href="/mypage/notice">고객센터</a>
           </span>
           <span>
           <a href="/mypage/check">예매확인/취소</a>
