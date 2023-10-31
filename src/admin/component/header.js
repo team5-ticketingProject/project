@@ -14,10 +14,10 @@ const Header = () => {
         <GetShowCode />
         <nav className={styles.navigation}>
           <ul>
-          <li>
+          <li ClassName={styles.list}>
             <Link to="/login" className={styles.nounderline}>Logout</Link> {/* "Logout"을 클릭하면 "/login"으로 이동 */}
           </li>
-          <li>
+          <li ClassName={styles.list}>
             <Link to="/" className={styles.nounderline}>Home</Link> {/* "Home"을 클릭하면 메인페이지로 이동 */}
           </li>
           </ul>
