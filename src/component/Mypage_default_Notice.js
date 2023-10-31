@@ -16,6 +16,7 @@ import NoticeInfo from "./NoticeInfo";
 import FaqInfo from "./FaqInfo";
 import InquiryAnswer from "./inquiry_answer";
 import SelectInput from "@mui/material/Select/SelectInput";
+import MacInfo from "./Macaddressinfo";
 
 const style = {
   width: "100%",
@@ -81,7 +82,7 @@ function MyPageNotice() {
     { label: "회원정보관리", type: "UserInfo" },
     { label: "예매/확인취소", type: "Check" },
     { label: "나의 후기", type: "Review" },
-    { label: "소유기기 인증확인", type: "DeviceVerification" },
+    { label: "소유기기 인증확인", type: "MacInfo" },
     { label: "공지사항", type: "Notice" },
     { label: "자주묻는질문", type: "Faq" },
     { label: "1:1 문의", type: "Inquiry" },
@@ -135,6 +136,7 @@ function MyPageNotice() {
             onClick={(e) => e.stopPropagation()}
           >
             {modalType === "Check" && <Check />}
+            {modalType === "MacInfo" && <MacInfo />}
             {modalType === "UserInfo" && <UserInfo />}
             {modalType === "Review" && <Review />}
             {modalType === "Notice" && <Notice openModal={openModal} />}

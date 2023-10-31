@@ -331,5 +331,19 @@
   .Review-modal.active {
     display: block;
   }
+
+  .MacInfo {
+    margin: auto;
+    padding: 50px;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  .MacCollect h2 {
+    font-weight: bold;
+    font-size: 30px;
+  }
+
+  
   
   

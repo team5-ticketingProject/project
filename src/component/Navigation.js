@@ -126,9 +126,9 @@ const Navigation = ({ openModal }) => {
             <a href="/mypage/notice">고객센터</a>
           </span>
           <span>
-            <Link to="/mypage" onClick={() => handelOpenModal("Check")}>
+          <a href="/mypage/Check">
               예매확인/취소
-            </Link>
+              </a>
           </span>
         </div>
       </div>

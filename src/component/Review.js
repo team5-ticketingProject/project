@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Review() {
   const [reviews, setReviews] = useState([]); // 후기 목록
@@ -9,6 +10,8 @@ function Review() {
   const [editingReview, setEditingReview] = useState(null); // 수정 중인 후기
   const [isModalOpen, setIsModalOpen] = useState(false);
   const reviewsPerPage = 10; // 한 페이지에 보여질 후기 수
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -85,7 +88,15 @@ function Review() {
         console.error(error);
       });
   };
-  
+  useEffect(() => {
+    if (!window.sessionStorage.getItem('id')) {
+      // Display an alert with a message
+      window.alert("로그인이 필요합니다.");
+      
+      // Navigate to the login page
+      navigate("/login");
+    }
+  }, [navigate]);
 
   return (
     <div className="Review">
