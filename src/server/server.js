@@ -895,3 +895,34 @@ app.post("/changeDiscountRate", (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
+
+
+// Reservation_Tabs 결제페이지 하단 후기 -> 마이페이지 Reivew
+app.get('/getReview', async (req, res) => {
+  const sql = 'SELECT * FROM review';
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json(results);
+  });
+});
+
+app.post('/addReview', (req, res) => {
+  const show_name = req.body.show_name;
+  const ID = req.body.user;
+  const content = req.body.content;
+  const rating = req.body.rating;
+
+  const sql = 'INSERT INTO review (ID, show_name, content, rating) VALUES (?, ?, ?, ?)';
+  const values = [ID, show_name, content, rating];
+  
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    res.json({ message: 'Data added successfully' });
+  });
+});

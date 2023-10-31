@@ -1,6 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-.modal-reserve {
+/* PaymentModal.js */
+  .pay_modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -12,58 +13,124 @@
     justify-content: center;
   }
   
-  .modal-content {
-    padding: 20px;
-    border-radius: 5px;
-    background-color: rgb(255, 255, 255);
+  .pay_modal_but {
+    float: right;
+    border-radius: 1px; 
+    border-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    margin: 10px 0px;
+  }
+  .pay_modal_but:hover {
+    border-radius: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.6);
   }
   
-  .close-button {
-    color: black;
-    font-size: 30px;
-  }
-
-  .payment_info {
+/* Payment.js */
+  .pay_info {
     display: flex;
-    border-radius: 5px;
-    padding: 10px 10px;
     align-items: center;
     background-color: rgb(255, 255, 255);
+    border: 5px solid white;
+    width:550px;
   }
 
-  
-  .payment_info > img {
+  .pay_info_con{
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pay_info > img {
     width: 200px;
     height: 270px;
     border-radius: 5px;
+    padding: 20px 15px;
   }
   
-  .payment_title {
-    padding: 0px 30px; 
+  .pay_title {
+    text-align: left;
     margin: 5px 0px; 
-    font-family: 'Noto Sans KR', sans-serif;
-    font-weight: 800;
+    font-family: 'Noto Sans KR', sans-serif; 
+    font-weight: 900;
     font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
   }
 
-  .payment_text {
-    display: inline-block;
-    padding: 0px 30px;
+  .pay_text_con {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pay_text {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+  }
+
+  .pay_text2 {
+    text-align: right;
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 800;
+
   }
 
-  .payment_text2 {
+  .pay_but {
+    text-align: center;
+  }
+
+
+/* SuccessPay.js */
+  .pay_suc_con {
+    width: 1920px;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+    margin: auto;
     display: inline-block;
-    text-align: right;
-    padding: 0px 10px;
+  }
+
+  .pay_suc_img{
+    width: 400px;
+    height: 400px;
+  } 
+
+  .pay_suc_text {
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 800;
+    font-size: 28px;
   }
 
-  .payment_but {
-    text-align: right;
-    padding: 0px 10px;
-    margin: 10px;
+  .pay_suc_but1 {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 500;
+    text-align: center;
+    width: 120px;
+    height: 50px;
+    margin: 20px;
+    background-color: white;
+    color: rgb(43, 43, 43);
+    font-size: 20px;
+    border-radius: 0;
+    color: rgb(126, 69, 162);
+    border-color: rgb(126, 69, 162);
+  }
+
+  .pay_suc_but2 {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 500;
+    text-align: center;
+    width: 120px;
+    height: 50px;
+    margin: 20px;
+    font-size: 20px;
+    background-color: rgb(126, 69, 162);
+    color: white;
+    border-color: rgb(126, 69, 162);
+    border-radius: 0;
   }
 
