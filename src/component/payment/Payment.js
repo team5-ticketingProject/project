@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { useParams, useNavigate } from "react-router-dom";
 import './Payment.css';
 
-const Payment = ({ show_name, date, totalPrice, reNumber, selectedTime }) => {
+const Payment = ({ show_name, date, totalPrice, reNumber, selectedTime, ID, time, user, seatArr, bank }) => {
   const id = useParams();
   const [payInfo, setPayInfo] = useState([]);
 
@@ -35,6 +35,30 @@ const Payment = ({ show_name, date, totalPrice, reNumber, selectedTime }) => {
   const requestPay = () => {
     const IMP = window.IMP;
     IMP.init('imp82021042');
+    
+    axios // ********* 지금은 결제완료 안하고 결제하기 버튼만 눌러도 예약이 되기 때문에 나중에 결제 api창으로 빼는 작업이 필요함
+      .post(`${process.env.REACT_APP_SERVER_URL}/reservation`, {
+        ID: id.show_ID,
+        date: date.toLocaleDateString("ko-KR"),
+        time: selectedTime,
+        user: window.sessionStorage.getItem("id"),
+        re_number: reNumber,
+        price: totalPrice,
+        seatArr : seatArr,
+        bank: bank
+      })
+      .then((response) => {
+
+        if (response.data === "1") {
+ 
+        } else if (response.data === "2") {
+          alert("좌석이 부족합니다.");
+          return;
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
     IMP.request_pay(
       {
