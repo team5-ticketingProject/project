@@ -30,10 +30,9 @@ function InquiryContactForm({ onSubmit, onClose }) {
     const loginuser = window.sessionStorage.getItem("id")
     setUserId(loginuser)
   }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     const formData = { ID, subject, message, email, userId };
     try {
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/submit_inquiry`, {
@@ -42,6 +41,7 @@ function InquiryContactForm({ onSubmit, onClose }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
+       
       });
 
       if (response.status === 200) {
@@ -54,7 +54,7 @@ function InquiryContactForm({ onSubmit, onClose }) {
       console.error("문의 제출 중 오류:", error);
     }
   };
-
+  
   return (
     <div className="ContactForm">
       <h3>1:1 문의 작성</h3>
