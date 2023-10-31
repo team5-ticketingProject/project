@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Navigation from "./Navigation";
 import Footer from "./Footer";
-import GetShowCode from "../api/GetShowCode";
 import GetShowData from "./ShowList";
 import MainSlide from "./MainSlide";
 import { Link } from "react-router-dom";
@@ -23,7 +22,6 @@ const Main = () => {
     <div className="main">
       <div>
         <Navigation />
-        <GetShowCode />
 
         <div className="mainMenu">
           <ul>
