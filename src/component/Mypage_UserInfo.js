@@ -14,7 +14,7 @@ function UserInfo() {
   useEffect(() => {
     const userId = window.sessionStorage.getItem("id");
 
-    console.log("사용자 아이디:", userId);
+   
     if (userId) {
       axios
         .get(`${process.env.REACT_APP_SERVER_URL}/LoginInfo`,{

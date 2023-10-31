@@ -293,5 +293,43 @@
     padding: 15px;
     text-align: center;
   }
+  .modalcontent button {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  .Review-modal {
+    display:block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    z-index: 1000;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    max-width: 80%;
+    max-height: 80%;
+    width: 800px;
+  }
+  
+  
+  .modalcontent {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    
+    
+  }
+  .Review-modal.active {
+    display: block;
+  }
   
   
