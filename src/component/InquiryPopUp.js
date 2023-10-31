@@ -11,14 +11,19 @@ function InquiryContactForm({ onSubmit, onClose }) {
   
   useEffect(() => {
     const min = 1;
-  const max = 100;
+    const max = 10000000;
+    const existingIDs = new Set(); // 이미 사용된 ID를 추적하기 위한 Set
 
-  const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
-    // 사용자 로그인 프로세스를 통해 사용자 ID를 얻어옵니다.
-    // 이 부분은 사용자 로그인 로직에 따라 달라집니다.
-    const inquiryID = (randomNum); // 예시 사용자 ID
+    const generateUniqueRandomID = () => {
+      let inquiryID;
+      do {
+        inquiryID = Math.floor(Math.random() * (max - min + 1)) + min;
+      } while (existingIDs.has(inquiryID)); // 이미 사용된 ID인 경우 재시도
+      existingIDs.add(inquiryID); // 새로 생성된 ID를 Set에 추가
+      setID(inquiryID);
+    };
 
-    setID(inquiryID);
+    generateUniqueRandomID();
   }, []);
   
   useEffect(() => {

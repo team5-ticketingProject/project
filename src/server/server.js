@@ -20,6 +20,7 @@ const dbconfig = {
 
 const db = mysql.createPool(dbconfig);
 
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 app.use(bodyParser.json());
@@ -220,87 +221,19 @@ app.post("/submit_inquiry", (req, res) => {
   const { ID, email, subject, message, userId } = req.body;
 
   // 데이터베이스에 데이터 삽입
-  const inquirysql = 'INSERT INTO personal_inquiry (ID, email, inquiry_title, inquiry_content, inquiry_date, userID) VALUES (?, ?, ?, ?, ?, ?)';
+  const sql = 'INSERT INTO personal_inquiry (ID, email, inquiry_title, inquiry_content, inquiry_date) VALUES (?, ?, ?, ?, ?)';
   const currentDate = new Date()
-  db.query(inquirysql, [ ID, email, subject, message, currentDate, userId], (err, result) => {
-
+  db.query(sql, [ ID, email, subject, message, currentDate, userId], (err, result) => {
     if (err) {
-      console.error("Error getting connection:", err);
-      return res.status(500).send("Internal server error");
+      console.error('문의 제출 실패:', err);
+      res.status(500).send('문의 제출 실패');
+    } else {
+      console.log('문의가 성공적으로 제출되었습니다.');
+      res.status(200).send('문의가 성공적으로 제출되었습니다.');
     }
-
-    connection.beginTransaction(function (err) {
-      if (err) {
-        connection.release(); // Release the connection if there's an error
-        console.error("Error beginning transaction:", err);
-        return res.status(500).send("Internal server error");
-      }
-
-      const deleteReservationSql =
-        "DELETE FROM reservation WHERE show_number = ?;";
-      const TransreservationQuery = `
-      INSERT INTO cancelreservation (show_number, show_ID, bank, re_number, cancel_date, re_date, user_ID,  DATE,  TIME, seat_num, price ) 
-      SELECT show_number, show_ID, bank, re_number, cancel_date, re_date, user_ID,  DATE,  TIME, seat_num, price
-      FROM reservation WHERE show_number = ?;
-      
-    `;
-      connection.query(
-        TransreservationQuery,
-        [reservationId],
-        function (err, insertResult) {
-          if (err) {
-            connection.rollback(function () {
-              connection.release();
-              console.error("Error rolling back transaction (insertion):", err);
-              return res.status(500).send("Internal server error");
-            });
-          }
-
-          console.log("Inserted into reservation", insertResult);
-
-          connection.query(
-            deleteReservationSql,
-            [reservationId],
-            function (err, deleteResult) {
-              if (err) {
-                connection.rollback(function () {
-                  connection.release();
-                  console.error(
-                    "Error rolling back transaction (deletion):",
-                    err
-                  );
-                  return res.status(500).send("Internal server error");
-                });
-              }
-
-              console.log("Deleted reservation", deleteResult);
-
-              connection.commit(function (err) {
-                if (err) {
-                  connection.rollback(function () {
-                    connection.release();
-                    console.error("Error committing transaction:", err);
-                    return res.status(500).send("Error committing transaction");
-                  });
-                }
-
-                console.log(
-                  "예매 정보가 성공적으로 삭제 및 취소 정보로 이동되었습니다."
-                );
-                res
-                  .status(200)
-                  .send(
-                    "예매 정보가 성공적으로 삭제 및 취소 정보로 이동되었습니다."
-                  );
-                connection.release(); // Release the connection when the transaction is complete
-              });
-            }
-          );
-        }
-      );
-    });
   });
 });
+   
 
 app.post("/changePassword", (req, res) => {
   const { userID, currentPassword, newPassword, confirmNewPassword } = req.body;

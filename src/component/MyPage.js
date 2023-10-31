@@ -24,12 +24,11 @@ const style = {
 };
 
 function MyPage() {
-  const [modalType, setModalType] = useState("Notice");
+  const [modalType, setModalType] = useState("UserInfo");
   const [selectedNotice, setSelectedNotice] = useState(null);
   const [previousModalType, setPreviousModalType] = useState(null);
   const [selectedFaq, setSelectedFaq] = useState(null);
-  const [selectedInquiry, setSelectedInquiry] = useState(null); 
-
+  const [selectedInquiry, setSelectedInquiry] = useState(null);
 
   const openModal = (type, notice, faq, inquiry) => {
     setPreviousModalType(modalType);
@@ -37,7 +36,6 @@ function MyPage() {
     setSelectedNotice(notice);
     setSelectedFaq(faq);
     setSelectedInquiry(inquiry);
-    
   };
 
   const closeModal = (e) => {
@@ -46,20 +44,15 @@ function MyPage() {
     setSelectedNotice(null);
     setSelectedFaq(null);
     setSelectedInquiry(null);
-   
   };
-  
 
   useEffect(() => {
-    // 뒤로 가기 버튼을 감지하는 이벤트 리스너
     const handlePopState = (event) => {
       if (event.state && event.state.modalType) {
         setModalType(event.state.modalType);
         setSelectedNotice(null);
         setSelectedFaq(null);
         setSelectedInquiry(null);
-       
-        
       }
     };
 
@@ -72,10 +65,8 @@ function MyPage() {
 
   const navigateToModal = (type) => {
     if (type === "Check") {
-      // 예매확인/취소 섹션으로 이동
       setModalType("Check");
     } else {
-      // 다른 섹션으로 이동하는 경우
       setModalType(type);
     }
     setSelectedNotice(null);
@@ -85,11 +76,22 @@ function MyPage() {
     window.history.pushState(modalState, null, null);
   };
 
+  // 아래는 좌측 네비게이션 메뉴 항목을 배열로 정의하여 반복적으로 렌더링합니다.
+  const leftNavItems = [
+    { label: "회원정보관리", type: "UserInfo" },
+    { label: "예매/확인취소", type: "Check" },
+    { label: "나의 후기", type: "Review" },
+    { label: "소유기기 인증확인", type: "DeviceVerification" },
+    { label: "공지사항", type: "Notice" },
+    { label: "자주묻는질문", type: "Faq" },
+    { label: "1:1 문의", type: "Inquiry" },
+  ];
+
   return (
     <div>
       <div className="main">
         <div style={{ height: "88vh" }}>
-          <Navigation navigateToModal={navigateToModal} />
+          <Navigation />
         </div>
       </div>
       <div className="MyPage">
@@ -97,80 +99,21 @@ function MyPage() {
           <div className="ListPadding">
             <List sx={style} component="nav" aria-label="mailbox folders">
               <br />
-              <ListItem button onClick={() => navigateToModal("UserInfo")}>
-                <ListItemText
-                  primary={
-                    <span style={{ fontSize: "18px", fontWeight: "bold" }}>
-                      회원정보관리
-                    </span>
-                  }
-                />
-              </ListItem>
-              <br />
-              <Divider />
-              <br />
-              <ListItem button onClick={() => navigateToModal("Check")}>
-                <ListItemText
-                  primary={
-                    <span style={{ fontSize: "18px", fontWeight: "bold" }}>
-                      예매/확인취소
-                    </span>
-                  }
-                />
-              </ListItem>
-              <br />
-              <Divider />
-              <br />
-              <ListItem button onClick={() => navigateToModal("Review")}>
-                <ListItemText
-                  primary={
-                    <span style={{ fontSize: "18px", fontWeight: "bold" }}>
-                      나의 후기
-                    </span>
-                  }
-                />
-              </ListItem>
-              <br />
-              <Divider light />
-              <br />
-              <ListItem button>
-                <ListItemText
-                  primary={
-                    <span style={{ fontSize: "18px", fontWeight: "bold" }}>
-                      소유기기 인증확인
-                    </span>
-                  }
-                />
-              </ListItem>
-              <br />
-              <Divider />
-              <ListItem button onClick={() => navigateToModal("Notice")}>
-                <ListItemText
-                  primary={
-                    <span style={{ fontSize: "18px", fontWeight: "bold" }}>
-                      공지사항
-                    </span>
-                  }
-                />
-              </ListItem>
-              <ListItem button onClick={() => navigateToModal("Faq")}>
-                <ListItemText
-                  primary={
-                    <span style={{ fontSize: "18px", fontWeight: "bold" }}>
-                      자주묻는질문
-                    </span>
-                  }
-                />
-              </ListItem>
-              <ListItem button onClick={() => navigateToModal("Inquiry")}>
-                <ListItemText
-                  primary={
-                    <span style={{ fontSize: "18px", fontWeight: "bold" }}>
-                      1:1 문의
-                    </span>
-                  }
-                />
-              </ListItem>
+              {leftNavItems.map((item, index) => (
+                <div key={index}>
+                  <ListItem button onClick={() => navigateToModal(item.type)}>
+                    <ListItemText
+                      primary={
+                        <span style={{ fontSize: "18px", fontWeight: "bold" }}>
+                          {item.label}
+                        </span>
+                      }
+                    />
+                  </ListItem>
+                  <br />
+                  {index < leftNavItems.length - 1 && <Divider />}
+                </div>
+              ))}
             </List>
             <Divider></Divider>
           </div>
@@ -187,7 +130,7 @@ function MyPage() {
           onClick={closeModal}
         >
           <div
-            className="modal-content"
+            className="modal-contents"
             style={{ height: "100%" }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -210,8 +153,16 @@ function MyPage() {
                 openModal={openModal}
               />
             )}
-            {modalType === "Inquiry" && <InquiryContactUs openModal={openModal} />}
-            {modalType === "InquiryAnswer" && ( <InquiryAnswer selectedInquiry={selectedInquiry} goBackToInquiry={closeModal} openModal={openModal} />)}
+            {modalType === "Inquiry" && (
+              <InquiryContactUs openModal={openModal} />
+            )}
+            {modalType === "InquiryAnswer" && (
+              <InquiryAnswer
+                selectedInquiry={selectedInquiry}
+                goBackToInquiry={closeModal}
+                openModal={openModal}
+              />
+            )}
           </div>
         </div>
       </div>
