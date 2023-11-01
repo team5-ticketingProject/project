@@ -232,7 +232,7 @@ const SlideShowContainer = ({
               >
                 {index + 1}
               </div>
-              <div>
+              <div className="rank-detail-name">
                 <Link
                   to={
                     window.sessionStorage.getItem("id")
@@ -264,7 +264,7 @@ const SlideShowContainer = ({
           .map((datas, index) => (
             <div className="notice-box">
               <div className="notice-box-left">           
-                <Link to = "/mypage" style={{textDecoration:'none', color:'black'}}>{datas.title}</Link>
+                <Link to = "/mypage/notice" style={{textDecoration:'none', color:'black'}}>{datas.title}</Link>
               </div>
               <div className="notice-box-right">
               {new Date(new Date(datas.date).getTime() + 9 * 60 * 60 * 1000)
