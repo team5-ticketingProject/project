@@ -27,6 +27,7 @@ const SignUp = () => {
                 idRef.current.value = "";
               } else {
                 alert("사용 가능한 아이디입니다.");
+                window.sessionStorage.setItem("idcheck",1);
               }
             })
             .catch((e) => {
@@ -35,24 +36,41 @@ const SignUp = () => {
           }
     };
 
+
     const submitUser = () => {
+      const telCheck = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+      const pwCheck = /^[a-z0-9_]{8,16}$/;
+      const emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
         if (idRef.current.value === "" || idRef.current.value === undefined) {
             alert("아이디를 입력하세요.");
           }
+          else if(!window.sessionStorage.getItem("idcheck")) {
+            alert("아이디 중복체크를 해주세요.");
+          }
           else if (pwRef.current.value === "" || pwRef.current.value === undefined) {
-            alert("패스워드를 입력하세요.");
+            alert("비밀번호를 입력하세요.");
+          }
+          else if (!pwCheck.test(pwRef.current.value)) {
+            alert("조건에 맞게 비밀번호를 정해주세요.")
           }
           else if (pwRef.current.value !== repwRef.current.value) {
-            alert("패스워드가 틀립니다.");
+            alert("비밀번호가 일치하지 않습니다.");
           }
           else if (telRef.current.value === "" || telRef.current.value === undefined) {
             alert("전화번호를 입력하세요.");
           }
+          else if(!telCheck.test(telRef.current.value)) {
+            alert('전화번호를 다시 입력해주세요.')
+          }
           else if (fmailRef.current.value === "" || fmailRef.current.value === undefined || bmailRef.current.value === "" || bmailRef.current.value === undefined) {
             alert("이메일을 입력하세요.");
-          } else {
+          }  else {
             const email = `${fmailRef.current.value}@${bmailRef.current.value}`;
             console.log(email);
+            if (!emailCheck.test(email)) {
+              alert("이메일 형식에 맞게 입력해주세요.")
+            }
+            else {
       axios
       .post(`${process.env.REACT_APP_SERVER_URL}/signup`, {
         id: idRef.current.value,
@@ -65,6 +83,7 @@ const SignUp = () => {
         // 로그인 성공여부는 res.data.affectedRows가 0인지 1인지 확인하면 됨
         if (res.data.affectedRows === 1) {
           alert("회원가입 성공!!!");
+          window.sessionStorage.removeItem("idcheck");
           document.location.href="/login"
         }
         else alert("회원가입 실패!!!");
@@ -73,8 +92,9 @@ const SignUp = () => {
         console.error(e);
       });
     }
+  }
     };
-    
+
     return(
         <div>
             <Navigation />
@@ -93,8 +113,10 @@ const SignUp = () => {
                         <td><input type="password" size={50} ref={pwRef} placeholder="8~16자리 영문, 숫자, 특수문자"/></td>
                     </tr>
                     <tr>
-                        <td>비밀번호 확인</td>
-                        <td><input type="password" size={50} ref={repwRef}/></td>
+                        <td valign="top">비밀번호 확인</td>
+                        <td>
+                        <input type="password" size={50} ref={repwRef}/>
+                        </td>
                     </tr>
                     <tr>
                         <td valign="top">전화번호</td>

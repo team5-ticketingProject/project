@@ -35,6 +35,7 @@ const Login = () => {
             // 세션스토리지에 key : id , value : idRef.current.value로 저장
             // sessionsStorage는 창 닫으면 사라짐, localStorage는 안사라짐
             if (res.data[0].rank === 0) {
+
               window.sessionStorage.setItem('admin', 'true');
               document.location.href = "/admin/*"; // 어드민 페이지로 변경해야함
             } else {
