@@ -891,6 +891,19 @@ app.delete('/deleteReview/:reviewId', (req, res) => {
   });
 });
 
+app.put('/deleteMac/:UserId', (req, res) => {
+  const userId = req.params.UserId;
+  const sql = 'UPDATE user SET mac_address = NULL WHERE ID = ?';
+  db.query(sql, [userId], (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
+      res.json({ message: 'Mac deleted successfully' });
+    }
+  });
+});
+
 
 
 // Reservation_Tabs 결제페이지 하단 후기 -> 마이페이지 Reivew

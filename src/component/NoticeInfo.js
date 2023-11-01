@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
-function NoticeInfo(props) {
-  const [selectedNotice, setSelectedNotice] = useState(null); // 공지사항 목록
-
-  useEffect(() => {
-    if (props.selectedNotice) {
-      // Load the selected notice from props
-      setSelectedNotice(props.selectedNotice);
-    }
-  }, [props.selectedNotice]);
+function NoticeInfo(notice) {
+  // 공지사항 목록
+  const navigate = useNavigate();
+  const location = useLocation();
+  const selectedNotice = location.state?.selectedNotice || null;
+ 
 
   const goBackToNotice = () => {
-    props.openModal("Notice"); //
-    setSelectedNotice(null);
+    navigate("/mypageremake/mypagenotice");
   };
+ 
+
   
   return (
     <div className="Notice">

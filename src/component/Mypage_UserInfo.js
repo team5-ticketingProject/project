@@ -105,7 +105,7 @@ function UserInfo() {
   return (
     <>
       <div className="UserInfodiv">
-        <h3>회원정보</h3>
+        <h3 style={{fontWeight:"bold"}}>회원정보</h3>
         {userInfo ? (
           <>
             <div className="h4div">
