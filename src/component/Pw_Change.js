@@ -45,6 +45,7 @@ function PwChange( {onClose} ) {
         setConfirmNewPassword("");
         onClose();
         alert("비밀번호가 변경되었습니다.")
+        window.location.reload();
       } else {
         if (response.status === 401) {
           // 현재 비밀번호가 일치하지 않을 때 서버에서 401 상태 코드를 반환하도록 설정

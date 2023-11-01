@@ -30,10 +30,9 @@ function InquiryContactForm({ onSubmit, onClose }) {
     const loginuser = window.sessionStorage.getItem("id")
     setUserId(loginuser)
   }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     const formData = { ID, subject, message, email, userId };
     try {
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/submit_inquiry`, {
@@ -42,11 +41,13 @@ function InquiryContactForm({ onSubmit, onClose }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
+       
       });
 
       if (response.status === 200) {
         console.log("문의가 성공적으로 제출");
         onClose(); // 제출 후 onClose 함수 호출하여 팝업 닫기
+        window.location.reload();
       } else {
         console.error("문의 제출 실패");
       }
@@ -54,7 +55,7 @@ function InquiryContactForm({ onSubmit, onClose }) {
       console.error("문의 제출 중 오류:", error);
     }
   };
-
+  
   return (
     <div className="ContactForm">
       <h3>1:1 문의 작성</h3>

@@ -6,8 +6,11 @@ import InquiryContactForm from "./InquiryPopUp";
 import ReactDOM from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { fetchUserInfo } from "./fetchLoginUser";
+import InquiryAnswer from "./inquiry_answer";
 
-function InquiryContactUs(props) {
+
+
+function InquiryContactUs() {
   const [inquiries, setInquiries] = useState([]); // 1:1 문의 목록
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const inquiriesPerPage = 10; // 한 페이지에 보여질 1:1 문의 수
@@ -16,28 +19,24 @@ function InquiryContactUs(props) {
 
   const navigate = useNavigate();
   
-  const openInquiryModal = (inquiry) => {
+  const OpenInquiryAnswerClick = (inquiry) => {
+    navigate(`/mypageremake/InquiryAnswer/`, { state: { selectedInquiry: inquiry } });
     
-    // Notice 모달을 열 때 선택된 공지사항을 설정
-    setSelectedInquiry(inquiry);
-    props.openModal("InquiryAnswer", null, null, inquiry);
-  };
-  const loadUserInfo = async () => {
-    
-    const userId = window.sessionStorage.getItem("id");
-    if (userId) {
-      try {
-        const user = await fetchUserInfo(userId);
-        setUserInfo(user);
-      } catch (error) {
-        console.error("사용자 정보를 가져오는 중 오류 발생:", error);
-      }
-    }
   };
 
   useEffect(() => {
-    loadUserInfo();
+    // 사용자 정보를 가져오는 비동기 함수
+    async function fetchUser() {
+      const userId = window.sessionStorage.getItem("id") // 현재 로그인한 사용자의 ID를 어떻게 가져올지에 따라 수정
+
+      const user = await fetchUserInfo(userId); // fetchUserInfo 함수를 사용하여 사용자 정보 가져오기
+      setUserInfo(user);
+    }
+
+    fetchUser();
   }, []);
+
+ 
 
  
 
@@ -140,11 +139,11 @@ function InquiryContactUs(props) {
   };
   useEffect(() => {
     if (!window.sessionStorage.getItem('id')) {
-      // Log out users who are not logged in and navigate to the login page
-      const confirmResult = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
-      if (confirmResult) {
-        navigate("/login");
-      }
+      // Display an alert with a message
+      window.alert("로그인이 필요합니다.");
+      
+      // Navigate to the login page
+      navigate("/login");
     }
   }, [navigate]);
   return (
@@ -198,7 +197,7 @@ function InquiryContactUs(props) {
             ) : (
               currentInquiries.map((inquiry, index) => (
                 <tr key={index}>
-                  <td style={{cursor:"pointer"}} onClick={() => openInquiryModal(inquiry)}>{inquiry.inquiry_title}</td>
+                  <td><span style={{cursor:"pointer"}} onClick={() => OpenInquiryAnswerClick(inquiry)}>{inquiry.inquiry_title}</span></td>
                   <td style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", maxHeight:"200px", maxWidth:"200px"}}>{inquiry.inquiry_content}</td>
                   <td>
                   {new Date(new Date(inquiry.inquiry_date).getTime() + 9 * 60 * 60 * 1000)
@@ -221,6 +220,9 @@ function InquiryContactUs(props) {
           />
         </Stack>
       </div>
+      {selectedInquiry && (
+        <InquiryAnswer inquiry={selectedInquiry} />
+      )}
     </div>
   );
 }
