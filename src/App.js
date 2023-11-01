@@ -3,7 +3,6 @@ import { Routes, Route, } from "react-router-dom";
 import Login from "./component/Login";
 import SignUp from "./component/SignUp";
 import Main from "./component/Main";
-import MyPage from "./component/MyPage";
 import Reservation from "./component/Reservation";
 import Reserve_Calendar from "./component/Reserve_Calendar";
 import Test from "./component/Test";
@@ -12,8 +11,9 @@ import Notice from './admin/pages/Notice';
 import Faq from './admin/pages/Faq';
 import MypageFaq from './component/Faq';
 import DiscountAdjustment from './admin/pages/DiscountAdjustment';
-import MyPageCheck from "./component/MyPage_default_Check";
-import MyPageNotice from "./component/Mypage_default_Notice";
+import MypageRemake from "./component/mypagereamke";
+import MypageNotice from "./component/MyPage_Notice";
+import UserInfo from "./component/Mypage_UserInfo";
 
 const App = () => {
   return (
@@ -22,10 +22,14 @@ const App = () => {
         <Route path="/" element={<Main/>}/>      
         <Route path="/login" element={<Login/>} />  
         <Route path="/signup" element={<SignUp/>} />  
-        <Route path="/mypage" element={<MyPage/>} />  
+        <Route path="/mypageremake/*" element={<MypageRemake/>} />  
         <Route path="/reservation/:show_ID/:show_time" element={<Reservation/>}/>
         <Route path='/dateList' element={<Reserve_Calendar/>}/>
         <Route path="/admin/*" element={<Test/>}/>
+        <Route path="/mypagenotice" element={<MypageNotice/>}/>
+        <Route path="/UserInfo" element={<UserInfo/>}/>
+
+
 
         <Route path="/member" element={<MemberManagement />} />
         <Route path="/notice" element={<Notice />} />

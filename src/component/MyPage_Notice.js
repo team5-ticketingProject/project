@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import NoticeInfo from "./NoticeInfo";
 
-function Notice(props) {
+function MypageNotice() {
   const [notices, setNotices] = useState([]); // 공지사항 목록
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const noticesPerPage = 10; // 한 페이지에 보여질 공지사항 수
   const [selectedNotice, setSelectedNotice] = useState(null);
+  const navigate = useNavigate();
 
-  const openNoticeModal = (notice) => {
-    // Notice 모달을 열 때 선택된 공지사항을 설정
-    setSelectedNotice(notice);
-    props.openModal("NoticeInfo", notice);
+  const openNoticeInfoClick = (notice) => {
+    navigate(`/mypageremake/NoticeInfo/`, { state: { selectedNotice: notice } });
   };
 
   useEffect(() => {
@@ -66,7 +67,7 @@ function Notice(props) {
                 <td>
                   <span
                     style={{ cursor: "pointer" }}
-                    onClick={() => openNoticeModal(notice)}
+                    onClick={() => openNoticeInfoClick(notice)}
                   >
                     {notice.title}
                   </span>
@@ -92,8 +93,11 @@ function Notice(props) {
           />
         </Stack>
       </div>
+      {selectedNotice && (
+        <NoticeInfo inquiry={selectedNotice} />
+      )}
     </div>
   );
 }
 
-export default Notice;
+export default MypageNotice;

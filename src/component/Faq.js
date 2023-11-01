@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import FaqInfo from "./FaqInfo";
 
-function FAQ(props) {
+function FAQ() {
   const [faqs, setFAQs] = useState([]); // FAQ 목록
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const faqsPerPage = 10; // 한 페이지에 보여질 FAQ 수
   const [selectedFaq, setSelectedFaq] = useState(null);
+  const navigate = useNavigate();
+  const OpenFaqInfoClick = (faq) => {
   
-  const handleFaqClick = (faq) => {
-    setSelectedFaq(faq);
-    props.openModal("FaqInfo", null, faq);
+  navigate(`/mypageremake/Faqinfo/`, { state: { selectedFaq: faq } });
   }
   
   useEffect(() => {
@@ -60,7 +62,7 @@ function FAQ(props) {
             {currentFAQs.map((faq, index) => (
               <tr key={index}>
                 <td>
-                  <span style={{cursor:"pointer"}} onClick={() => handleFaqClick(faq)}>
+                  <span style={{cursor:"pointer"}} onClick={() => OpenFaqInfoClick(faq)}>
                     {faq.question}
                   </span>
                 </td>
@@ -83,6 +85,9 @@ function FAQ(props) {
           />
         </Stack>
       </div>
+      {selectedFaq && (
+        <FaqInfo inquiry={selectedFaq} />
+      )}
     </div>
   );
 }

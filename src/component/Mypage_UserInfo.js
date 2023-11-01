@@ -14,7 +14,7 @@ function UserInfo() {
   useEffect(() => {
     const userId = window.sessionStorage.getItem("id");
 
-    console.log("사용자 아이디:", userId);
+   
     if (userId) {
       axios
         .get(`${process.env.REACT_APP_SERVER_URL}/LoginInfo`,{
@@ -94,17 +94,18 @@ function UserInfo() {
   };
   useEffect(() => {
     if (!window.sessionStorage.getItem('id')) {
-      // Log out users who are not logged in and navigate to the login page
-      const confirmResult = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
-      if (confirmResult) {
-        navigate("/login");
-      }
+      // Display an alert with a message
+      window.alert("로그인이 필요합니다.");
+      
+      // Navigate to the login page
+      navigate("/login");
     }
   }, [navigate]);
+  
   return (
     <>
       <div className="UserInfodiv">
-        <h3>회원정보</h3>
+        <h3 style={{fontWeight:"bold"}}>회원정보</h3>
         {userInfo ? (
           <>
             <div className="h4div">
