@@ -643,6 +643,7 @@ app.post("/reservation", (req, res) => {
   var price = req.body.price;
   var seatArr = req.body.seatArr;
   var bank = req.body.bank;
+  var name = req.body.name;
   const d = new Date();
   var today = d.toLocaleDateString("ko-KR");
   var cancel_date = new Date(
@@ -663,7 +664,7 @@ app.post("/reservation", (req, res) => {
       });
 
       var sql3 =
-        "INSERT INTO reservation (show_ID, bank, re_number, cancel_date, re_date, user_ID, DATE, TIME, seat_num, price) VALUES (?)";
+        "INSERT INTO reservation (show_ID, bank, re_number, cancel_date, re_date, user_ID, DATE, TIME, seat_num, price, show_name) VALUES (?)";
       var values = [
         show_id,
         bank,
@@ -675,6 +676,7 @@ app.post("/reservation", (req, res) => {
         time,
         seatArr,
         price,
+        name
       ];
       db.query(sql3, [values], function (err3, result3) {
         if (err3) throw err3;
