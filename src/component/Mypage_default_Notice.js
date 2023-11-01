@@ -166,6 +166,7 @@ function MyPageNotice() {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }
