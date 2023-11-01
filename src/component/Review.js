@@ -66,6 +66,7 @@ function Review() {
       });
       setReviews(updatedReviews);
       closeModal();
+      window.location.reload();
     })
     .catch((error) => {
       console.error(error);
@@ -83,6 +84,7 @@ function Review() {
         const updatedReviews = reviews.filter((review) => review.review_number !== reviewId);
         setReviews(updatedReviews);
         closeModal();
+        window.location.reload();
       })
       .catch((error) => {
         console.error(error);

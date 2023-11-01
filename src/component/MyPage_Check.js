@@ -336,7 +336,7 @@ useEffect(() => {
                       {item.show_number}
                     </button>
                   </td>
-                  <td>{item.show_ID}</td>
+                  <td>{item.show_name}</td>
                   <td>
                   {new Date(new Date(item.DATE).getTime() + 9 * 60 * 60 * 1000)
                       .toISOString().split("T")[0]} {item.TIME}
