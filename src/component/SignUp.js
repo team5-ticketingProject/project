@@ -116,7 +116,6 @@ const SignUp = () => {
                         <td valign="top">비밀번호 확인</td>
                         <td>
                         <input type="password" size={50} ref={repwRef}/>
-                        <p class='line'>&#10056;</p>
                         </td>
                     </tr>
                     <tr>
