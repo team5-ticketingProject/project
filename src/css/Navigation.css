@@ -71,9 +71,11 @@ cursor: pointer;
   line-height: 40px;
   border-bottom: 1px solid black;
   overflow: hidden;
+  
 }
 .search-output{
   width: 350px;
+  height: 309px;
   border-left: 1px solid black;
   border-right: 1px solid gray;
   border-bottom: 1px solid black;

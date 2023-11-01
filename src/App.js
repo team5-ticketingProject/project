@@ -10,6 +10,7 @@ import Test from "./component/Test";
 import MemberManagement from './admin/pages/MemberManagement';
 import Notice from './admin/pages/Notice';
 import Faq from './admin/pages/Faq';
+import MypageFaq from './component/Faq';
 import DiscountAdjustment from './admin/pages/DiscountAdjustment';
 import MyPageCheck from "./component/MyPage_default_Check";
 import MyPageNotice from "./component/Mypage_default_Notice";
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/Faq" element={<Faq />} />
         <Route path="/mypage/check" element={<MyPageCheck/>} />
         <Route path="/mypage/notice" element={<MyPageNotice/>} />
+        <Route path="/mypage/faq" element={<MypageFaq/>} />
         <Route path="/discount" element={<DiscountAdjustment />} />
 
         

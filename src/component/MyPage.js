@@ -166,6 +166,7 @@ function MyPage() {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

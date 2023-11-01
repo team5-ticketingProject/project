@@ -403,7 +403,7 @@ app.get("/getFAQ", async (req, res) => {
 });
 
 app.get("/getNotice", async (req, res) => {
-  const sql = "SELECT * FROM notice";
+  const sql = "SELECT * FROM notice ORDER BY date DESC;";
 
   db.query(sql, (err, results) => {
     if (err) {
