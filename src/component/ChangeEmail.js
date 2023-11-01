@@ -36,6 +36,7 @@ function EmailChange({ onClose }) {
         setConfirmNewEmail("");
         onClose();
         alert("이메일이 변경되었습니다.");
+        window.location.reload();
       } else {
         if (response.status === 401) {
           setErrorMessage("이메일 변경에 실패하였습니다.");

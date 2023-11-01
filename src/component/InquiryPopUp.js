@@ -47,6 +47,7 @@ function InquiryContactForm({ onSubmit, onClose }) {
       if (response.status === 200) {
         console.log("문의가 성공적으로 제출");
         onClose(); // 제출 후 onClose 함수 호출하여 팝업 닫기
+        window.location.reload();
       } else {
         console.error("문의 제출 실패");
       }

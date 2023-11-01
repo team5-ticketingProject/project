@@ -55,8 +55,8 @@ function ReCancel({ selectedReservationInfo, closePopupWindow }) {
         .then((response) => {
           console.log(response.data);
           // 취소 성공 메시지를 처리
-
           window.close();
+          window.location.reload();
         })
         .catch((error) => {
           console.error("취소 실패:", error);
