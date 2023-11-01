@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { useParams, useNavigate } from "react-router-dom";
 import './Payment.css';
 
-const Payment = ({ show_name, date, totalPrice, reNumber, selectedTime, ID, time, user, seatArr, bank }) => {
+const Payment = ({ showName, date, totalPrice, reNumber, selectedTime, ID, time, user, seatArr, bank }) => {
   const id = useParams();
   const [payInfo, setPayInfo] = useState([]);
 
@@ -65,8 +65,8 @@ const Payment = ({ show_name, date, totalPrice, reNumber, selectedTime, ID, time
         pg: 'html5_inicis',
         pay_method: 'card',
         merchant_uid: 'merchant_' + new Date().getTime(),
-        amount: totalPrice,                                    
-        name: show_name,   
+        amount: 100, // totalPrice,                                    
+        name: showName,   
         buyer_email: 'iamport@siot.do',
         buyer_name: '구매자이름',
         buyer_tel: '010-1234-5678',

@@ -13,6 +13,8 @@ import Faq from './admin/pages/Faq';
 import DiscountAdjustment from './admin/pages/DiscountAdjustment';
 import MyPageCheck from "./component/MyPage_default_Check";
 import MyPageNotice from "./component/Mypage_default_Notice";
+import SuccessPay from "./component/payment/SuccessPay";
+
 
 const App = () => {
   return (
@@ -32,6 +34,8 @@ const App = () => {
         <Route path="/mypage/check" element={<MyPageCheck/>} />
         <Route path="/mypage/notice" element={<MyPageNotice/>} />
         <Route path="/discount" element={<DiscountAdjustment />} />
+
+        <Route path="/successpay" element={<SuccessPay />} />
 
         
       </Routes>

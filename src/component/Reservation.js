@@ -6,11 +6,10 @@ import "react-calendar/dist/Calendar.css";
 import "../css/Reservation.css";
 import Navigation from "./Navigation";
 import moment from "moment";
-import Button from "@mui/material/Button";
 import Payment from "./payment/Payment";
 import PaymentModal from "./payment/PaymentModal";
 import ReservationTabs from "./ReservationTabs";
-
+import { Button } from "@mui/material";
 
 const Reservation = () => {
   const [info, SetInfo] = useState([]);
@@ -36,6 +35,7 @@ const Reservation = () => {
   const [reservatedSeat, setReservatedSeat] = useState([]);
   const [mac, setMac] = useState("");
   const [userMac, setUserMac] = useState("");
+  const [showName, setShowName] = useState("");
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
@@ -52,6 +52,7 @@ const Reservation = () => {
       .get(`${process.env.REACT_APP_SERVER_URL}/getDetail/${id.show_ID}`)
       .then((response) => {
         SetInfo(response.data);
+        setShowName(response.data[0].show_name);
         let split_price = response.data[0].price.split(",");
         let temp_price = "";
         for (let i = 0; i < split_price[0].length; i++) {
@@ -300,6 +301,7 @@ const Reservation = () => {
         user={window.sessionStorage.getItem('id')}
         seatArr={seatArr}
         bank={selectedBank}
+        showName={showName}
       />
     );
     setShowModal(true);
@@ -341,9 +343,7 @@ const Reservation = () => {
 
   return (
     <div>
-      <div className="main">
         <Navigation />
-      </div>
       <div className="re_container">
         {info.map((datas, index) => (
           <div key={index} className="re_top">

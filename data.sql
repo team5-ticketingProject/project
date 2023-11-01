@@ -97,6 +97,28 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `reservation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reservation` (
+  `show_number` int NOT NULL AUTO_INCREMENT COMMENT '예매번호',
+  `show_ID` char(45) NOT NULL COMMENT '공연 ID',
+  `bank` char(45) DEFAULT NULL COMMENT '은행정보',
+  `re_number` int NOT NULL COMMENT '예매표 개수',
+  `cancel_date` char(45) NOT NULL COMMENT '취소가능일자',
+  `re_date` char(45) NOT NULL COMMENT '예매한 날짜',
+  `user_ID` varchar(10) NOT NULL COMMENT '예매한 유저 ID',
+  `DATE` varchar(45) NOT NULL COMMENT '예매한공연날짜',
+  `TIME` varchar(45) NOT NULL COMMENT '예매한 시간대',
+  `seat_num` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '예매한 좌석',
+  `price` int DEFAULT NULL COMMENT '가격',
+  PRIMARY KEY (`show_number`),
+  KEY `show_ID` (`show_ID`),
+  KEY `user_ID` (`user_ID`),
+  CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`show_ID`) REFERENCES `show_info` (`show_ID`),
+  CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`user_ID`) REFERENCES `user` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `reservation` WRITE;
+/*!40000 ALTER TABLE `reservation` DISABLE KEYS */;
+
 CREATE TABLE `cancelreservation` (
   `show_number` int NOT NULL AUTO_INCREMENT COMMENT '예매번호',
   `show_ID` char(45) NOT NULL COMMENT '공연 ID',
@@ -121,8 +143,6 @@ CREATE TABLE `cancelreservation` (
 -- Dumping data for table `reservation`
 --
 
-LOCK TABLES `reservation` WRITE;
-/*!40000 ALTER TABLE `reservation` DISABLE KEYS */;
 INSERT INTO `reservation` VALUES (47,'PF182737','없음',3,'2023. 10. 20.','2023. 10. 27.','ticket','2023. 10. 28.','11:00','a1,a2,a3',165600),(48,'PF182737','없음',3,'2023. 10. 20.','2023. 10. 27.','ticket','2023. 10. 28.','11:00','a4,a5,a6',165600),(49,'PF182737','없음',1,'2023. 10. 20.','2023. 10. 27.','ticket','2023. 10. 27.','14:00','g9',69000),(50,'PF182737','없음',2,'2023. 10. 20.','2023. 10. 27.','ticket','2023. 10. 27.','11:30','d8,d9',138000),(51,'PF182737','없음',4,'2023. 10. 20.','2023. 10. 27.','ticket','2023. 10. 27.','11:30','e7,d7,e8,e9',193200),(52,'PF182737','없음',3,'2023. 10. 20.','2023. 10. 27.','ticket','2023. 10. 27.','11:30','d6,c6,c7',144900),(53,'PF182737','없음',2,'2023. 10. 20.','2023. 10. 27.','ticket','2023. 10. 28.','11:30','b10,c10',138000),(54,'PF227080','없음',2,'2023. 10. 20.','2023. 10. 27.','ticket','2023. 10. 28.','16:30','a8,a9',54000),(55,'PF160272','없음',2,'2023. 10. 20.','2023. 10. 27.','ticket','2023. 10. 27.','12:00','b7,b8',88200),(56,'PF160272','없음',2,'2023. 10. 20.','2023. 10. 27.','ticket','2023. 10. 27.','12:00','b9,d10',88200),(57,'PF191223','없음',2,'2023. 10. 20.','2023. 10. 27.','ticket','2023. 10. 28.','18:00','a10,b10',8288000),(58,'PF182737','Sinhan',1,'2023. 10. 20.','2023. 10. 27.','ticket','2023. 10. 28.','11:30','d10',55200);
 /*!40000 ALTER TABLE `reservation` ENABLE KEYS */;
 UNLOCK TABLES;
