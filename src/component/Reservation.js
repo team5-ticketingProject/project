@@ -9,6 +9,8 @@ import moment from "moment";
 import Button from "@mui/material/Button";
 import Payment from "./payment/Payment";
 import PaymentModal from "./payment/PaymentModal";
+import ReservationTabs from "./ReservationTabs";
+
 
 const Reservation = () => {
   const [info, SetInfo] = useState([]);
@@ -32,6 +34,8 @@ const Reservation = () => {
   const [bank, setBank] = useState([]);
   const [clicked, setClicked] = useState([]);
   const [reservatedSeat, setReservatedSeat] = useState([]);
+  const [mac, setMac] = useState("");
+  const [userMac, setUserMac] = useState("");
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
@@ -137,6 +141,25 @@ const Reservation = () => {
       .catch((error) => {
         console.error(error);
       });
+
+      axios
+      .post(`${process.env.REACT_APP_SERVER_URL}/getUserMac`, {
+        user: window.sessionStorage.getItem('id')
+      })
+      .then((response) => {
+        setMac(response.data[0].mac_address);
+      });
+
+      axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/api/getmacaddress`, {
+        params: { userConsent: 'true' }
+      })
+      .then((response) => {
+        setUserMac(response.data.mac);
+      })
+      .catch((error) => {
+        console.error(error);
+      });    
   }, []);
 
   useEffect(() => {
@@ -188,7 +211,7 @@ const Reservation = () => {
       alert("유효한 날짜를 선택해 주세요.");
       return;
     }
-    console.log(clicked.length, reNumber);
+
     if(clicked.length < reNumber){
       alert('선택한 좌석이 매수보다 적습니다.');
       return;
@@ -197,6 +220,64 @@ const Reservation = () => {
       alert('선택한 좌석이 매수보다 많습니다.')
       return;
     }
+
+    axios
+      .post(`${process.env.REACT_APP_SERVER_URL}/getUserMac`, {
+        user: window.sessionStorage.getItem('id')
+      })
+      .then((response) => {
+        setMac(response.data[0].mac_address);
+      })
+
+    if(mac === null){
+      if(window.confirm('최초 결제 시 기기인증 정보 수집이 필요합니다. 동의하시겠습니까?')){
+
+      axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/api/getmacaddress`, {
+        params: { userConsent: 'true' }
+      })
+      .then((response) => {
+        setMac(response.data.mac);
+        setUserMac(response.data.mac);
+        axios
+        .post(`${process.env.REACT_APP_SERVER_URL}/saveUserMac`, {
+          user:window.sessionStorage.getItem('id'),
+          mac: response.data.mac
+        })
+        .catch((err) => {
+          console.error(err);
+        })
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+      }
+      else{
+        return;
+      }
+    }
+    else{
+      axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/api/getmacaddress`, {
+        params: { userConsent: 'true' }
+      })
+      .then((response) => {
+        setUserMac(response.data.mac);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+      console.log('user: '+ userMac);
+      console.log('mac: '+ mac);
+      if(userMac === mac){
+        console.log('기기 정보 일치');
+      }
+      else{
+        alert('기기 인증 정보가 다릅니다');
+        return;
+      }
+    }
+    
     
     let seatArr = '';
     for(let i = 0 ; i < clicked.length ; i++){
@@ -208,36 +289,23 @@ const Reservation = () => {
       }
     }
     
-    axios // ********* 지금은 결제완료 안하고 결제하기 버튼만 눌러도 예약이 되기 때문에 나중에 결제 api창으로 빼는 작업이 필요함
-      .post(`${process.env.REACT_APP_SERVER_URL}/reservation`, {
-        ID: id.show_ID,
-        date: date.toLocaleDateString("ko-KR"),
-        time: selectedTime,
-        user: window.sessionStorage.getItem("id"),
-        re_number: reNumber,
-        price: totalPrice * (100 - discount) / 100,
-        seatArr : seatArr,
-        bank: selectedBank
-      })
-      .then((response) => {
-        if (response.data === "1") {
-          setModalContent(
-            <Payment
-              date={date}
-              totalPrice={totalPrice * (100 - discount) / 100}
-              reNumber={reNumber}
-              selectedTime={selectedTime}
-            />
-          );
-          setShowModal(true);
-          setClicked([]);
-        } else if (response.data === "2") {
-          alert("좌석이 부족합니다.");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    setModalContent(
+      <Payment
+        date={date}
+        totalPrice={totalPrice * (100 - discount) / 100}
+        reNumber={reNumber}
+        selectedTime={selectedTime}
+        ID={id.show_ID}
+        time={selectedTime}
+        user={window.sessionStorage.getItem('id')}
+        seatArr={seatArr}
+        bank={selectedBank}
+      />
+    );
+    setShowModal(true);
+    setClicked([]);
+
+    
   };
 
   const number_button = (e) => {
@@ -504,35 +572,7 @@ const Reservation = () => {
                 </div>
               </div>
             </div>
-            <div className="re_read">
-              <p>
-                ◈ 예매자는 본 안내페이지의 모든 내용을 숙지 및 동의한 것으로
-                간주합니다.
-                <br />
-                티켓 수령/공연 관람 안내 미숙지로 인한 책임은 관람자 본인에게
-                있으며, 이에따른 예매 티켓의 취소/변경/환불은 불가 하오니 각별히
-                유의하시기 바랍니다.
-                <br />
-              </p>
-              <p>
-                ■ 공연 관람
-                <br />
-                원활한 공연 진행을 위해 공연 시작 후에는 입장이 제한됩니다.{" "}
-                <br />
-                공연이 시작된 후에는 공연의 흐름에 따라 입장이 지연되거나 제한될
-                수 있으며, 이 경우 예매하신 본인 좌석이 아닌 지연석에 착석하여야
-                합니다. 또한 이에 따른 환불 및 좌석 변경은 불가합니다.
-                <br />
-              </p>
-              <p>
-                ■ 공연 시점의 정부의 공연장 방역 수칙에 따라 운영이 변동 될 수
-                있습니다. 관람 당일 꼭 확인해 주십시오.
-                <br />
-                방역 수칙에 따른 변경이 있을 경우, 예매자 정보입력 시 기재된
-                연락처로 문자 안내 드립니다. 잘못된 연락처 기입으로 인한 책임은
-                예매자 본인에게 있으니 올바른 기입 바랍니다.
-              </p>
-            </div>
+            <ReservationTabs show_name={datas.show_name} />
           </div>
         ))}
       </div>

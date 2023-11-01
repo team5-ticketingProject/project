@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Navigation from "./Navigation";
 import Footer from "./Footer";
-import GetShowCode from "../api/GetShowCode";
 import GetShowData from "./ShowList";
 import MainSlide from "./MainSlide";
 import { Link } from "react-router-dom";
@@ -23,8 +22,6 @@ const Main = () => {
     <div className="main">
       <div>
         <Navigation />
-        <GetShowCode />
-        <Link to="/admin">임시 어드민페이지</Link>
 
         <div className="mainMenu">
           <ul>

@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Button from '@mui/material/Button';
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import './Payment.css';
 
-
-
-const Payment = ({date, totalPrice, reNumber, selectedTime}) => {
+const Payment = ({ show_name, date, totalPrice, reNumber, selectedTime, ID, time, user, seatArr, bank }) => {
   const id = useParams();
   const [payInfo, setPayInfo] = useState([]);
-    useEffect(() => {
-      axios
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    axios
       .get(`${process.env.REACT_APP_SERVER_URL}/getDetail/${id.show_ID}`)
       .then((response) => {
         setPayInfo(response.data);
       })
-    })
+  }, [id.show_ID]);
 
   useEffect(() => {
     const jquery = document.createElement("script");
@@ -23,6 +25,7 @@ const Payment = ({date, totalPrice, reNumber, selectedTime}) => {
     iamport.src = "http://cdn.iamport.kr/js/iamport.payment-1.1.7.js";
     document.head.appendChild(jquery);
     document.head.appendChild(iamport);
+
     return () => {
       document.head.removeChild(jquery);
       document.head.removeChild(iamport);
@@ -30,61 +33,89 @@ const Payment = ({date, totalPrice, reNumber, selectedTime}) => {
   }, []);
 
   const requestPay = () => {
-    const { IMP } = window;
+    const IMP = window.IMP;
     IMP.init('imp82021042');
-    IMP.request_pay({
-      pg: 'html5_inicis',                             // PG사
-      pay_method: 'card',                             // 결제수단
-      merchant_uid: `mid_${new Date().getTime()}`,    // 주문번호
-      amount: 100,                                    // 결제금액
-      name: 'test',                                   // 주문명
-      buyer_name: '5조',                              // 구매자 이름
-      buyer_tel: '01012341234',                       // 구매자 전화번호
-      buyer_email: 'example@example',                 // 구매자 이메일
-      buyer_addr: '신사동 661-16',                    // 구매자 주소
-      buyer_postcode: '06018',                        // 구매자 우편번호
-    }, async (rsp) => {
-      try {
-        const { data } = await axios.post('http://localhost:8080/verifyIamport/' + rsp.imp_uid);
-        if (rsp.paid_amount === data.response.amount) {
-       
-              <p>결제에 완료하였습니다.</p>
-          
-        } else {
-      
-              <p>결제에 실패하였습니다. 다시 시도해주세요.</p>
-         
-        }
+    
+    axios // ********* 지금은 결제완료 안하고 결제하기 버튼만 눌러도 예약이 되기 때문에 나중에 결제 api창으로 빼는 작업이 필요함
+      .post(`${process.env.REACT_APP_SERVER_URL}/reservation`, {
+        ID: id.show_ID,
+        date: date.toLocaleDateString("ko-KR"),
+        time: selectedTime,
+        user: window.sessionStorage.getItem("id"),
+        re_number: reNumber,
+        price: totalPrice,
+        seatArr : seatArr,
+        bank: bank
+      })
+      .then((response) => {
 
-      } catch (error) {
-   
-              <p>결제에 실패하였습니다. 다시 시도해주세요.</p>
-          
+        if (response.data === "1") {
+ 
+        } else if (response.data === "2") {
+          alert("좌석이 부족합니다.");
+          return;
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    IMP.request_pay(
+      {
+        pg: 'html5_inicis',
+        pay_method: 'card',
+        merchant_uid: 'merchant_' + new Date().getTime(),
+        amount: totalPrice,                                    
+        name: show_name,   
+        buyer_email: 'iamport@siot.do',
+        buyer_name: '구매자이름',
+        buyer_tel: '010-1234-5678',
+      },
+      function (rsp) {
+        console.log(rsp);
+        if (rsp.success) {
+          navigate("/successpay");
+        } else if (rsp.error_msg === '결제실패') {
+          console.log("결제가 실패되었습니다.");
+        } else {
+          window.location.reload();
+          window.scrollTo(0,0);
+          console.log("취소");
+        }
       }
-    });
+    ); 
   };
 
   return (
     <div>
       {payInfo.map((datas, index) => (
-        <div key={index} className="payment_info">
+        <div key={index} className="pay_info">
           <img src={datas.poster_url} alt="공연포스터" />
-          <div>
-            <p className='payment_title'>{datas.show_name}</p>
-            <div className='payment_text'>
-              <p>일시</p>
-              <p>매수</p>
-              <p>배송료</p>
-              <p>총 결제</p>
+          <div className='pay_info_con'>
+            <p className='pay_title'>{datas.show_name}</p>
+            <div className='pay_text_con'>
+              <div className='pay_text'>
+                <p>일시</p>
+                <p>매수</p>
+                <p>배송료</p>
+                <p>총 결제</p>
+              </div>
+              <div className='pay_text2'>
+                <p>{date && date.toLocaleDateString("ko-KR")}&nbsp;{selectedTime}</p>
+                <p>{reNumber} 매</p>
+                <p>0원</p>
+                <p>{totalPrice}원</p>
+              </div>
             </div>
-            <div className='payment_text2'>
-              <p>{date && date.toLocaleDateString("ko-KR")}&nbsp;{selectedTime}</p>
-              <p>{reNumber} 매</p>
-              <p>0원</p>
-              <p>{totalPrice}원</p>
-            </div>
-            <div className='payment_but'>
-              <Button variant="contained" disableElevation onClick={requestPay}>결제하기</Button>
+            <div className='pay_but'>
+              <Button 
+                size="large" 
+                color="error" 
+                variant="contained" 
+                disableElevation 
+                onClick={() => {requestPay();}} >
+                  결제하기
+              </Button>
             </div>
           </div>
         </div>
@@ -92,5 +123,4 @@ const Payment = ({date, totalPrice, reNumber, selectedTime}) => {
     </div>
   );
 };
-
 export default Payment;

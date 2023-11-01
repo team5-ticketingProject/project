@@ -3,7 +3,7 @@
 .re_container{
     display: inline;
     align-items: center;
-    padding: 100px;
+    margin-left: 100px;
 }
 
 .re_top {

@@ -97,7 +97,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `reservation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `reservation` (
+CREATE TABLE `cancelreservation` (
   `show_number` int NOT NULL AUTO_INCREMENT COMMENT '예매번호',
   `show_ID` char(45) NOT NULL COMMENT '공연 ID',
   `bank` char(45) DEFAULT NULL COMMENT '은행정보',
@@ -112,9 +112,9 @@ CREATE TABLE `reservation` (
   PRIMARY KEY (`show_number`),
   KEY `show_ID` (`show_ID`),
   KEY `user_ID` (`user_ID`),
-  CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`show_ID`) REFERENCES `show_info` (`show_ID`),
-  CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`user_ID`) REFERENCES `user` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `reservation_ibfk_3` FOREIGN KEY (`show_ID`) REFERENCES `show_info` (`show_ID`),
+  CONSTRAINT `reservation_ibfk_4` FOREIGN KEY (`user_ID`) REFERENCES `user` (`ID`)
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
