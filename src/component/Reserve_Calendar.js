@@ -118,7 +118,7 @@ const Reserve_Calendar = () => {
                   <div className="inside-div" style={{width:'17%', padding:'0 10px'}}>
                     {datas.show_location}
                   </div>
-                  <div className="inside-div" style={{width:'17%', padding:'0 10px'}}>
+                  <div className="inside-div" style={{width:'17%', padding:'0 10px', height:'60px'}}>
                     {datas.show_time}
                   </div>
                   <div className="inside-div" style={{width:'16%'}}>
