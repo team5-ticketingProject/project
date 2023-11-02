@@ -26,12 +26,12 @@ const SlideShow = ({ images }) => {
 
   return (
     <div className="mainSlide">
-      <div className="previousButton">
+      {/* <div className="previousButton">
         <button onClick={handlePrevClick}>
           {" "}
           <h3>&lt;</h3>{" "}
         </button>
-      </div>
+      </div> */}
       <div
         className="imgDiv"
         style={{
@@ -71,12 +71,12 @@ const SlideShow = ({ images }) => {
         <img src={images[currentImageIndex]} alt="Slide" />
       </div>
 
-      <div className="nextButton">
+      {/* <div className="nextButton">
         <button onClick={handleNextClick}>
           {" "}
           <h3>&gt;</h3>{" "}
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

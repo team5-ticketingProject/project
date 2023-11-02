@@ -1,14 +1,14 @@
 .mainSlide{
-  width: 1500px;
+  width: 2000px;
   height: 450px;
   display: inline-block;
 }
 
 .imgDiv{
   float:left;
-  width:90%;
+  width:95%;
   border: 1px solid gray;
-  border-radius: 20px;
+
   overflow: hidden;
  
 }
