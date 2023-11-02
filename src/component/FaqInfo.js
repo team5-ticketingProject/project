@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
-function FaqInfo(props) {
-  const [selectedFaq, setSelectedFaq] = useState(null);
 
-  useEffect(() => {
-    if (props.selectedFaq) {
-      setSelectedFaq(props.selectedFaq);
-    }
-  }, [props.selectedFaq]);
+function FaqInfo() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const selectedFaq= location.state?.selectedFaq || null;
+
 
   const goBacktoFaq = () => {
-    props.openModal("Faq", null);
-    setSelectedFaq(null);
+    navigate("/mypageremake/Faq");
   };
 
+
+  
   return (
     <div className="FAQ">
       <div style={{ borderBottom: "2px solid #ccc" }}>

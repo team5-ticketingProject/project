@@ -10,6 +10,7 @@ import Payment from "./payment/Payment";
 import PaymentModal from "./payment/PaymentModal";
 import ReservationTabs from "./ReservationTabs";
 import { Button, ButtonGroup } from "@mui/material";
+import Footer from "./Footer";
 
 const Reservation = () => {
   const [info, SetInfo] = useState([]);
@@ -561,6 +562,7 @@ const Reservation = () => {
           </div>
         ))}
       </div>
+      <Footer/>
     </div>
   );
 };

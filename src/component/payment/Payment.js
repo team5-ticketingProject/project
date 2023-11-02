@@ -7,6 +7,7 @@ import './Payment.css';
 const Payment = ({ showName, date, totalPrice, reNumber, selectedTime, ID, time, user, seatArr, bank }) => {
   const id = useParams();
   const [payInfo, setPayInfo] = useState([]);
+  
 
   const navigate = useNavigate()
 
@@ -25,7 +26,6 @@ const Payment = ({ showName, date, totalPrice, reNumber, selectedTime, ID, time,
     iamport.src = "http://cdn.iamport.kr/js/iamport.payment-1.1.7.js";
     document.head.appendChild(jquery);
     document.head.appendChild(iamport);
-
     return () => {
       document.head.removeChild(jquery);
       document.head.removeChild(iamport);
@@ -36,7 +36,7 @@ const Payment = ({ showName, date, totalPrice, reNumber, selectedTime, ID, time,
     const IMP = window.IMP;
     IMP.init('imp82021042');
     
-    axios // ********* 지금은 결제완료 안하고 결제하기 버튼만 눌러도 예약이 되기 때문에 나중에 결제 api창으로 빼는 작업이 필요함
+    axios 
       .post(`${process.env.REACT_APP_SERVER_URL}/reservation`, {
         ID: id.show_ID,
         date: date.toLocaleDateString("ko-KR"),
@@ -45,7 +45,8 @@ const Payment = ({ showName, date, totalPrice, reNumber, selectedTime, ID, time,
         re_number: reNumber,
         price: totalPrice,
         seatArr : seatArr,
-        bank: bank
+        bank: bank,
+        name: payInfo[0].show_name
       })
       .then((response) => {
 

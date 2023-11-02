@@ -7,20 +7,18 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import EmailChange from "./ChangeEmail";
 
-
 function UserInfo() {
   const [userInfo, setUserInfo] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
     const userId = window.sessionStorage.getItem("id");
 
-    console.log("사용자 아이디:", userId);
     if (userId) {
       axios
-        .get(`${process.env.REACT_APP_SERVER_URL}/LoginInfo`,{
+        .get(`${process.env.REACT_APP_SERVER_URL}/LoginInfo`, {
           params: {
             id: userId,
-          }
+          },
         })
         .then((response) => {
           setUserInfo(response.data[0]);
@@ -30,14 +28,19 @@ function UserInfo() {
         });
     }
   }, []);
-  
-  
-  
+  const popupWidth = 800; // 팝업 창의 폭
+  const popupHeight = 500; // 팝업 창의 높이
+
+  // 팝업 창의 가로 위치 계산
+  const left = window.screenX + (window.outerWidth - popupWidth) / 2;
+  // 팝업 창의 세로 위치 계산
+  const top = window.screenY + (window.outerHeight - popupHeight) / 2;
+
   const openPopupPw = (popupName) => {
     const popupWindow = window.open(
       "",
       "팝업 제목",
-      "width=600,height=400,menubar=no,location=no,resizable=no,scrollbars=no,status=no"
+      `width=${popupWidth},height=${popupHeight},left=${left},top=${top},menubar=no,location=no,resizable=no,scrollbars=no,status=no`
     );
 
     // 팝업 윈도우에 React 컴포넌트 렌더링
@@ -46,7 +49,7 @@ function UserInfo() {
     popupWindow.document.head.innerHTML += `
     <style>
       .ContactForm {
-        max-width: 400px;
+        max-width: 100%;
         margin: 0 auto;
         padding: 20px;
         background-color: #f7f7f7;
@@ -56,19 +59,16 @@ function UserInfo() {
       }
   
       .input-field {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
+        margin: 5px;
+        border: 2px solid black;
         border-radius: 3px;
+        padding: 10px;
       }
       .text-area {
-        width: 100%;
-        height: 150px;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
+        margin: 5px;
+        border: 2px solid black;
         border-radius: 3px;
+        padding: 10px;
       }
   
       .submit-button {
@@ -93,18 +93,19 @@ function UserInfo() {
     }
   };
   useEffect(() => {
-    if (!window.sessionStorage.getItem('id')) {
-      // Log out users who are not logged in and navigate to the login page
-      const confirmResult = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
-      if (confirmResult) {
-        navigate("/login");
-      }
+    if (!window.sessionStorage.getItem("id")) {
+      // Display an alert with a message
+      window.alert("로그인이 필요합니다.");
+
+      // Navigate to the login page
+      navigate("/login");
     }
   }, [navigate]);
+
   return (
     <>
       <div className="UserInfodiv">
-        <h3>회원정보</h3>
+        <h3 style={{ fontWeight: "bold" }}>회원정보</h3>
         {userInfo ? (
           <>
             <div className="h4div">
@@ -122,30 +123,30 @@ function UserInfo() {
                 </colgroup>
                 <tbody>
                   <tr>
-                <th scope="row">
+                    <th scope="row">
                       {" "}
                       <br />
                       아이디 <br /> <br />
                     </th>
                     <td className="ID">{userInfo.ID}</td>
-                    </tr>
+                  </tr>
                   <tr>
                     <th scope="row">이메일</th>
                     <td>
-                      <br/>
+                      <br />
                       {userInfo.email}
                       <p className="fs12_v2 color_gray">
                         <label htmlFor="agree_mail">
-                        <Button
-                        onClick={() => openPopupPw("EmailChange")}
-                        sx={{
-                          border: "1px solid #000",
-                          color: "black",
-                          fontSize: "12px",
-                        }}
-                      >
-                        이메일 변경 
-                      </Button>
+                          <Button
+                            onClick={() => openPopupPw("EmailChange")}
+                            sx={{
+                              border: "1px solid #000",
+                              color: "black",
+                              fontSize: "12px",
+                            }}
+                          >
+                            이메일 변경
+                          </Button>
                         </label>
                       </p>
                     </td>
@@ -177,7 +178,6 @@ function UserInfo() {
 
                     <td className="number">{userInfo.tel}</td>
                   </tr>
-                 
                 </tbody>
               </table>
             </div>

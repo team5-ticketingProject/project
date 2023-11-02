@@ -12,7 +12,8 @@ const Notice = () => {
   useEffect(() => {
     axios.get('http://localhost:5000/getNotices')
       .then((response) => {
-        setNotices(response.data);
+        const sortedNotices = response.data.sort((a, b) => b.notification_ID - a.notification_ID);
+        setNotices(sortedNotices);
       })
       .catch((error) => {
         console.error('Error fetching notices:', error);
@@ -66,16 +67,12 @@ const Notice = () => {
         axios
           .post("http://localhost:5000/addNotice", updatedNotice)
           .then((response) => {
-            axios.get('http://localhost:5000/getNotices')
-              .then((response) => {
-                setNotices(response.data);
-                setTitle("");
-                setContent("");
-                setEditing(false);
-              })
-              .catch((error) => {
-                console.error('Error fetching notices:', error);
-              });
+            // 새로운 공지사항을 배열의 가장 앞에 추가
+            setNotices([response.data, ...notices]);
+  
+            setTitle("");
+            setContent("");
+            setEditing(false);
           })
           .catch((error) => {
             console.error("Error creating notice:", error);
@@ -85,16 +82,15 @@ const Notice = () => {
         axios
           .post("http://localhost:5000/updateNotice", updatedNotice)
           .then((response) => {
-            axios.get('http://localhost:5000/getNotices')
-              .then((response) => {
-                setNotices(response.data);
-                setTitle("");
-                setContent("");
-                setEditing(false);
-              })
-              .catch((error) => {
-                console.error('Error fetching notices:', error);
-              });
+            // 업데이트된 공지사항을 배열에서 찾아서 교체
+            const updatedNotices = [...notices];
+            const index = updatedNotices.findIndex(n => n.notification_ID === response.data.notification_ID);
+            updatedNotices[index] = response.data;
+            setNotices(updatedNotices);
+  
+            setTitle("");
+            setContent("");
+            setEditing(false);
           })
           .catch((error) => {
             console.error("Error updating notice:", error);

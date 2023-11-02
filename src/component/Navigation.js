@@ -3,16 +3,12 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "../css/Navigation.css";
 
-const Navigation = ({ openModal }) => {
+const Navigation = () => {
   const [searchList, SetSearchList] = useState([]);
   const [posterIndex, SetPosterIndex] = useState(0);
   const [showSearchOutput, setShowSearchOutput] = useState(false);
 
-  const handelOpenModal = (type) => {
-    if (openModal) {
-      openModal(type);
-    }
-  };
+ 
   const searchTitle = (e) => {
     const title = e.target.value;
     SetPosterIndex(0);
@@ -116,19 +112,19 @@ const Navigation = ({ openModal }) => {
 
         <div className="menu">
           <span>
-            {window.sessionStorage.getItem('id') ? <a href="/mypage">{window.sessionStorage.getItem('id')}</a>: <a href="/login">로그인</a>}
+            {window.sessionStorage.getItem('id') ? <a href="/mypageremake/UserInfo">{window.sessionStorage.getItem('id')}</a>: <a href="/login">로그인</a>}
             
           </span>
           <span>
             {window.sessionStorage.getItem('id') ? <a href="/" onClick={() => {window.sessionStorage.setItem('id', "")}}>로그아웃</a> : <a href="/signup">회원가입</a>}
           </span>
           <span>
-            <a href="/mypage/notice">고객센터</a>
+            <a href="/mypageremake/mypagenotice">고객센터</a>
           </span>
           <span>
-            <Link to="/mypage" onClick={() => handelOpenModal("Check")}>
+          <a href="/mypageremake/check">
               예매확인/취소
-            </Link>
+              </a>
           </span>
         </div>
       </div>

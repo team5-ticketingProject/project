@@ -221,7 +221,7 @@ app.post("/submit_inquiry", (req, res) => {
   const { ID, email, subject, message, userId } = req.body;
 
   // 데이터베이스에 데이터 삽입
-  const sql = 'INSERT INTO personal_inquiry (ID, email, inquiry_title, inquiry_content, inquiry_date) VALUES (?, ?, ?, ?, ?)';
+  const sql = 'INSERT INTO personal_inquiry (ID, email, inquiry_title, inquiry_content, inquiry_date, userID) VALUES (?, ?, ?, ?, ?, ?)';
   const currentDate = new Date()
   db.query(sql, [ ID, email, subject, message, currentDate, userId], (err, result) => {
     if (err) {
@@ -403,7 +403,7 @@ app.get("/getFAQ", async (req, res) => {
 });
 
 app.get("/getNotice", async (req, res) => {
-  const sql = "SELECT * FROM notice";
+  const sql = "SELECT * FROM notice ORDER BY date DESC;";
 
   db.query(sql, (err, results) => {
     if (err) {
@@ -643,6 +643,7 @@ app.post("/reservation", (req, res) => {
   var price = req.body.price;
   var seatArr = req.body.seatArr;
   var bank = req.body.bank;
+  var name = req.body.name;
   const d = new Date();
   var today = d.toLocaleDateString("ko-KR");
   var cancel_date = new Date(
@@ -663,7 +664,7 @@ app.post("/reservation", (req, res) => {
       });
 
       var sql3 =
-        "INSERT INTO reservation (show_ID, bank, re_number, cancel_date, re_date, user_ID, DATE, TIME, seat_num, price) VALUES (?)";
+        "INSERT INTO reservation (show_ID, bank, re_number, cancel_date, re_date, user_ID, DATE, TIME, seat_num, price, show_name) VALUES (?)";
       var values = [
         show_id,
         bank,
@@ -675,6 +676,7 @@ app.post("/reservation", (req, res) => {
         time,
         seatArr,
         price,
+        name
       ];
       db.query(sql3, [values], function (err3, result3) {
         if (err3) throw err3;
@@ -851,6 +853,59 @@ app.post("/changeDiscountRate", (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
+app.get('/getReview/:userId', (req, res) => {
+  const userId = req.params.userId;
+  const sql = 'SELECT * FROM review WHERE userID = ?';
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.put('/updateReview/:reviewId', (req, res) => {
+  const reviewId = req.params.reviewId;
+  const updatedContent = req.body.content;
+  const sql = 'UPDATE review SET content = ? WHERE review_number = ?';
+  db.query(sql, [updatedContent, reviewId], (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
+      res.json({ message: 'Review updated successfully' });
+    }
+  });
+});
+
+app.delete('/deleteReview/:reviewId', (req, res) => {
+  const reviewId = req.params.reviewId;
+  const sql = 'DELETE FROM review WHERE review_number = ?';
+  db.query(sql, [reviewId], (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
+      res.json({ message: 'Review deleted successfully' });
+    }
+  });
+});
+
+app.put('/deleteMac/:UserId', (req, res) => {
+  const userId = req.params.UserId;
+  const sql = 'UPDATE user SET mac_address = NULL WHERE ID = ?';
+  db.query(sql, [userId], (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
+      res.json({ message: 'Mac deleted successfully' });
+    }
+  });
+});
+
 
 
 // Reservation_Tabs 결제페이지 하단 후기 -> 마이페이지 Reivew

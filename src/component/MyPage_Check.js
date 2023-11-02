@@ -175,11 +175,11 @@ function Check() {
 
 useEffect(() => {
   if (!window.sessionStorage.getItem('id')) {
-    // Log out users who are not logged in and navigate to the login page
-    const confirmResult = window.confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
-    if (confirmResult) {
-      navigate("/login");
-    }
+    // Display an alert with a message
+    window.alert("로그인이 필요합니다.");
+    
+    // Navigate to the login page
+    navigate("/login");
   }
 }, [navigate]);
   return (
@@ -336,7 +336,7 @@ useEffect(() => {
                       {item.show_number}
                     </button>
                   </td>
-                  <td>{item.show_ID}</td>
+                  <td>{item.show_name}</td>
                   <td>
                   {new Date(new Date(item.DATE).getTime() + 9 * 60 * 60 * 1000)
                       .toISOString().split("T")[0]} {item.TIME}

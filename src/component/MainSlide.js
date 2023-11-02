@@ -232,14 +232,14 @@ const SlideShowContainer = ({
               >
                 {index + 1}
               </div>
-              <div>
+              <div className="rank-detail-name">
                 <Link
                   to={
                     window.sessionStorage.getItem("id")
                       ? `/reservation/${data.show_ID}/${data.show_time}`
                       : "/login"
                   }
-                  style={{ textDecoration: "none", color: "black" }}
+                  className="rank-link"
                 >
                   {data.show_name}
                 </Link>
@@ -264,7 +264,7 @@ const SlideShowContainer = ({
           .map((datas, index) => (
             <div className="notice-box">
               <div className="notice-box-left">           
-                <Link to = "/mypage" style={{textDecoration:'none', color:'black'}}>{datas.title}</Link>
+                <Link to = "/mypageremake/mypagenotice" className="notice-link">{datas.title}</Link>
               </div>
               <div className="notice-box-right">
               {new Date(new Date(datas.date).getTime() + 9 * 60 * 60 * 1000)
@@ -276,7 +276,7 @@ const SlideShowContainer = ({
           .map((datas, index) => (
             <div className="notice-box">
               <div className="notice-box-left">           
-                <Link to = "/mypage" style={{textDecoration:'none', color:'black'}}>{datas.question}</Link>
+                <Link to = "/mypageremake/Faq" className="notice-link">{datas.question}</Link>
               </div>
               <div className="notice-box-right">
               {datas.answer}

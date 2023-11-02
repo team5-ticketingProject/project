@@ -55,8 +55,8 @@ function ReCancel({ selectedReservationInfo, closePopupWindow }) {
         .then((response) => {
           console.log(response.data);
           // 취소 성공 메시지를 처리
-
           window.close();
+          window.location.reload();
         })
         .catch((error) => {
           console.error("취소 실패:", error);
@@ -81,7 +81,7 @@ function ReCancel({ selectedReservationInfo, closePopupWindow }) {
             <th style={thStyle}>티켓명</th>
             <td style={tdStyle}>
               {selectedReservationInfo
-                ? selectedReservationInfo.show_ID
+                ? selectedReservationInfo.show_name
                 : "여기에 티켓명을 추가하세요"}
             </td>
           </tr>
