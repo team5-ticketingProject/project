@@ -56,6 +56,8 @@
 .inside-div{
     margin-top: 60px;
     font-size: 14px;
+    overflow: hidden;
+    text-overflow : ellipsis;
 }
 .inside-show-name{
     position: relative;
