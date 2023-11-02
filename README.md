@@ -44,7 +44,8 @@ Developement
 
 ### 메인페이지
 
-![image](https://github.com/team5-ticketingProject/project/assets/139444462/f5c4eb33-7153-456c-947d-18932e0dd735)
+![image](https://github.com/team5-ticketingProject/project/assets/66791115/c5d37c2d-165c-41af-9040-22d41bd3b148)
+
 
 ### 로그인페이지
 
