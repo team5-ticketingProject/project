@@ -9,7 +9,7 @@ const Header = () => {
     <header className={styles.header}>
       <div className={styles.contents}>
         <h2 className={styles.logo}>
-        <Link to="/" className={styles.nounderline}>LOGO</Link> {/*로고 누르면 메인화면으로 */}
+        <Link to="/" className={styles.nounderline}><img src="/img/logo.png" alt="로고" /></Link> {/*로고 누르면 메인화면으로 */}
         </h2>
         <GetShowCode />
         <nav className={styles.navigation}>
