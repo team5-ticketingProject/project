@@ -10,6 +10,27 @@ import EmailChange from "./ChangeEmail";
 function UserInfo() {
   const [userInfo, setUserInfo] = useState(null);
   const navigate = useNavigate();
+
+  const maskEmail = (email) => {
+    if (email) {
+      const [id, domain] = email.split("@");
+      const maskedEmail = id.substring(0, 3) + "***@" + domain;
+      return maskedEmail;
+    }
+    return "";
+  };
+
+  const maskPhoneNumber = (phoneNumber) => {
+    if (phoneNumber) {
+      const parts = phoneNumber.split("-");
+      if (parts.length === 3) {
+        const maskedPhoneNumber = `010-****-${parts[2]}`;
+        return maskedPhoneNumber;
+      }
+    }
+    return "";
+  };
+
   useEffect(() => {
     const userId = window.sessionStorage.getItem("id");
 
@@ -134,7 +155,7 @@ function UserInfo() {
                     <th scope="row">이메일</th>
                     <td>
                       <br />
-                      {userInfo.email}
+                      {maskEmail(userInfo.email)}
                       <p className="fs12_v2 color_gray">
                         <label htmlFor="agree_mail">
                           <Button
@@ -176,7 +197,7 @@ function UserInfo() {
                       연락처 <br /> <br />
                     </th>
 
-                    <td className="number">{userInfo.tel}</td>
+                    <td className="number">{maskPhoneNumber(userInfo.tel)}</td>
                   </tr>
                 </tbody>
               </table>

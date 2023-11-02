@@ -13,7 +13,7 @@ function FAQ() {
   const navigate = useNavigate();
   const OpenFaqInfoClick = (faq) => {
   
-  navigate(`/mypageremake/Faqinfo/`, { state: { selectedFaq: faq } });
+  navigate(`/mypageremake/Faq/${faq.ID}`, { state: { selectedFaq: faq } });
   }
   
   useEffect(() => {
@@ -62,7 +62,7 @@ function FAQ() {
             {currentFAQs.map((faq, index) => (
               <tr key={index}>
                 <td>
-                  <span style={{cursor:"pointer"}} onClick={() => OpenFaqInfoClick(faq)}>
+                  <span className="hover_underline" style={{cursor:"pointer"}} onClick={() => OpenFaqInfoClick(faq)}>
                     {faq.question}
                   </span>
                 </td>

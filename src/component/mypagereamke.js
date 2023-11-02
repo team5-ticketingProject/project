@@ -32,10 +32,10 @@ function MypageRemake() {
             <Route path="/Review" element={<Review />} />
             <Route path="/MacInfo" element={<MacInfo />} />
             <Route path="/Faq" element={<FAQ />} />
-            <Route path="/Inquiry/*" element={<InquiryContactUs />} />
-            <Route path="/InquiryAnswer" element={<InquiryAnswer/>} />
-            <Route path="/NoticeInfo" element={<NoticeInfo/>} />
-            <Route path="/Faqinfo" element={<FaqInfo/>} />
+            <Route path="/Inquiry" element={<InquiryContactUs />} />
+            <Route path="/Inquiry/:id" element={<InquiryAnswer/>} />
+            <Route path="/mypagenotice/:id" element={<NoticeInfo/>} />
+            <Route path="/Faq/:id" element={<FaqInfo/>} />
           </Routes>
         
       </div>

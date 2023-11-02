@@ -133,7 +133,8 @@ function Review() {
                 <tr key={index}>
                   <td>
                     <span
-                      style={{ cursor: "pointer", textDecoration: "underline" }}
+                    className="hover_underline"
+                      style={{ cursor: "pointer" }}
                       onClick={() => openModal(review)}
                     >
                       {review.show_name}

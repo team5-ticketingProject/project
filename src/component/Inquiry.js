@@ -20,7 +20,7 @@ function InquiryContactUs() {
   const navigate = useNavigate();
   
   const OpenInquiryAnswerClick = (inquiry) => {
-    navigate(`/mypageremake/InquiryAnswer/`, { state: { selectedInquiry: inquiry } });
+    navigate(`/mypageremake/Inquiry/${inquiry.ID}`, { state: { selectedInquiry: inquiry } });
     
   };
 
@@ -197,7 +197,7 @@ function InquiryContactUs() {
             ) : (
               currentInquiries.map((inquiry, index) => (
                 <tr key={index}>
-                  <td><span style={{cursor:"pointer"}} onClick={() => OpenInquiryAnswerClick(inquiry)}>{inquiry.inquiry_title}</span></td>
+                  <td className="hover_underline" style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", maxHeight:"200px", maxWidth:"200px"}}><span style={{cursor:"pointer"}} onClick={() => OpenInquiryAnswerClick(inquiry)}>{inquiry.inquiry_title}</span></td>
                   <td style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", maxHeight:"200px", maxWidth:"200px"}}>{inquiry.inquiry_content}</td>
                   <td>
                   {new Date(new Date(inquiry.inquiry_date).getTime() + 9 * 60 * 60 * 1000)

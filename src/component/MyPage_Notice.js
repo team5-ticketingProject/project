@@ -4,6 +4,7 @@ import Stack from "@mui/material/Stack";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import NoticeInfo from "./NoticeInfo";
+import "../css/MyPage.css";
 
 function MypageNotice() {
   const [notices, setNotices] = useState([]); // 공지사항 목록
@@ -13,7 +14,7 @@ function MypageNotice() {
   const navigate = useNavigate();
 
   const openNoticeInfoClick = (notice) => {
-    navigate(`/mypageremake/NoticeInfo/`, { state: { selectedNotice: notice } });
+    navigate(`/mypageremake/mypagenotice/${notice.notification_ID}`, { state: { selectedNotice: notice } });
   };
 
   useEffect(() => {
@@ -66,7 +67,8 @@ function MypageNotice() {
               <tr key={index}>
                 <td>
                   <span
-                    style={{ cursor: "pointer" }}
+                  className="hover_underline"
+                   style={{cursor:"pointer",textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", maxHeight:"200px", maxWidth:"200px"}}
                     onClick={() => openNoticeInfoClick(notice)}
                   >
                     {notice.title}
