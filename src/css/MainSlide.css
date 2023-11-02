@@ -3,33 +3,50 @@
 .mainSlide{
   display: inline-block;
   margin-bottom: 30px;
+  width: 1520px;
+}
+.slide-sub-image{
+  position: absolute;
+  list-style-type: none;
+  top: 600px;
+}
+.slide-sub-image li {
+  float: left;
+  margin-left: 10px;
+}
+.slide-sub-image li img{
+  width: 60px;
+  height: 70px;
+  border: 2px solid white;
+  border-radius: 5px;
 }
 
 .imgDiv{
   float:left;
-  width:1300px;
+  width:1350px;
+  margin-left: 50px;
   overflow: hidden;
 }
 
 .imgDiv-sub{
   display: flex;
-  margin: 0px 0px 0px 50px;
+  
 }
 
 .mainSlide img{
-  width: 400px;
+  width: 450px;
   height: 500px;
 }
 
 .previousButton{
   float:left;
   margin-top: 200px;
-
 }
 
 .nextButton{
-  display:flex;
+  float: right;
   margin-top: 200px;
+  
 }
 
 .mainSlide button{

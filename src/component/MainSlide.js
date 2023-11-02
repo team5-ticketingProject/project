@@ -9,7 +9,7 @@ const SlideShow = ({ images }) => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000);
+    }, 8000);
 
     return () => clearInterval(intervalId);
   }, [images]);
@@ -24,6 +24,10 @@ const SlideShow = ({ images }) => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
 
+  const selectImage = (index) => {
+    setCurrentImageIndex(index);
+  }
+
   return (
     <div className="mainSlide">
       <div className="previousButton">
@@ -32,46 +36,44 @@ const SlideShow = ({ images }) => {
           <h3>&lt;</h3>{" "}
         </button>
       </div>
-      <div
-        className="imgDiv"
-        style={{
-          backgroundColor:
-            currentImageIndex === 0
-            ? "white"
-              : currentImageIndex === 1
-              ? "white"
-              : currentImageIndex === 2
-              ? "white"
-              : "",
-        }}
-      >
+      <div className="imgDiv">
+        <ul className="slide-sub-image">
+          <li><img src="http://www.kopis.or.kr/upload/pfmPoster/PF_PF226641_230925_144508.gif" alt='환장할진심' onMouseEnter={() => selectImage(0)} style={{filter: currentImageIndex === 0 ? 'brightness(100%)':'brightness(50%)'}}></img></li>
+          <li><img src="http://www.kopis.or.kr/upload/pfmPoster/PF_PF227080_231005_144935.gif" alt='괴물' onMouseEnter={() => selectImage(1)} style={{filter: currentImageIndex === 1 ? 'brightness(100%)':'brightness(50%)'}}></img></li>
+          <li><img src="http://www.kopis.or.kr/upload/pfmPoster/PF_PF226888_231004_094736.gif" alt='인사이드미' onMouseEnter={() => selectImage(2)} style={{filter: currentImageIndex === 2 ? 'brightness(100%)':'brightness(50%)'}}></img></li>
+          <li><img src="http://www.kopis.or.kr/upload/pfmPoster/PF_PF219269_230530_134507.png" alt='몽연' onMouseEnter={() => selectImage(3)} style={{filter: currentImageIndex === 3 ? 'brightness(100%)':'brightness(50%)'}}></img></li>
+          <li><img src="http://www.kopis.or.kr/upload/pfmPoster/PF_PF227219_231006_133629.jpg" alt='몽연' onMouseEnter={() => selectImage(4)} style={{filter: currentImageIndex === 4 ? 'brightness(100%)':'brightness(50%)'}}></img></li>
+        </ul>
         <div className="imgDiv-sub">
         <img src={images[currentImageIndex]} alt="Slide" />
           {currentImageIndex === 0 && (
             <div>
               <img className="imgDiv-sub_index2" src="img/환장할진심2.png" alt="Slide" />
               <img className="imgDiv-sub_index2" src="img/환장할진심3.png" alt="Slide" />
-              {/* <p>환장할 진심</p>
-              <p>화요일 ~ 금요일(19:30), 토요일 ~ 일요일(15:00,18:00)</p>
-              <p>씨어터 쿰 (씨어터 쿰)</p> */}
             </div>
           )}
           {currentImageIndex === 1 && (
             <div>
               <img className="imgDiv-sub_index2" src="img/괴물.png" alt="Slide" />
               <img className="imgDiv-sub_index2" src="img/괴물2.png" alt="Slide" />
-              {/* <p>괴물 [대학로]</p>
-              <p>화요일 ~ 금요일(20:00), 토요일(16:30), 일요일(15:00)</p>
-              <p>대학로단막극장 (대학로단막극장)</p> */}
             </div>
           )}
           {currentImageIndex === 2 && (
             <div className="imgDiv-sub2">
-              <img className="imgDiv-sub_index2" src="img/인사이드미.png" alt="Slide" />
               <img className="imgDiv-sub_index2" src="img/인사이드미2.png" alt="Slide" />
-              {/* <p>인사이드미</p>
-              <p>화요일 ~ 금요일(19:30), 토요일(15:00,19:00), 일요일(15:00)</p>
-              <p>JTN 아트홀(구. 대학로예술마당) (2관)</p> */}
+              <img className="imgDiv-sub_index2" src="img/인사이드미.png" alt="Slide" />
+            </div>
+          )}
+          {currentImageIndex === 3 && (
+            <div className="imgDiv-sub2">
+              <img className="imgDiv-sub_index2" src="img/몽연2.png" alt="Slide" />
+              <img className="imgDiv-sub_index2" src="img/몽연.png" alt="Slide" />
+            </div>
+          )}
+          {currentImageIndex === 4 && (
+            <div className="imgDiv-sub2">
+              <img className="imgDiv-sub_index2" src="img/피노키오.png" alt="Slide" />
+              <img className="imgDiv-sub_index2" src="img/피노키오2.png" alt="Slide" />
             </div>
           )}
         </div>
@@ -105,6 +107,8 @@ const SlideShowContainer = ({
     ["http://www.kopis.or.kr/upload/pfmPoster/PF_PF226641_230925_144508.gif"],
     "http://www.kopis.or.kr/upload/pfmPoster/PF_PF227080_231005_144935.gif",
     "http://www.kopis.or.kr/upload/pfmPoster/PF_PF226888_231004_094736.gif",
+    "http://www.kopis.or.kr/upload/pfmPoster/PF_PF219269_230530_134507.png",
+    "http://www.kopis.or.kr/upload/pfmPoster/PF_PF227219_231006_133629.jpg"
   ];
 
   useEffect(() => {
