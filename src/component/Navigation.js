@@ -47,7 +47,7 @@ const Navigation = () => {
       <div className="inside">
         <div className="logo">
           <a href="/">
-            <h2>ticketing</h2>
+            <h2><img src="/img/logo.png" alt="로고" /></h2>
           </a>
         </div>
         <div className="search">
