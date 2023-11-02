@@ -364,7 +364,7 @@ const Reservation = () => {
                 <p>{datas.start_date} ~ {datas.end_date}</p>
                 <p>{datas.show_location}</p>
                 <p>{datas.price}</p>
-                <p style={{height:"40px"}}>{datas.show_time}</p>
+                <p style={{height:"50px", overflow:'hidden'}}>{datas.show_time}</p>
                 <br/>
                 <p style={{height:"40px"}}>{datas.actor}</p>
               </div>
