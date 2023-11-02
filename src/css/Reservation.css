@@ -1,104 +1,110 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap');
 
 .re_container{
-    display: inline;
-    align-items: center;
-    margin-left: 100px;
+    width: 1000px;
+    margin: auto;
 }
 
 .re_top {
     display: inline-block;
 }
-.re_showname {    
-    font-size: 24px;
-    margin: 30px 10px;
-}
-
-.re_showname > p {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-weight: 800;
-    font-size: 20px;
-    display: flex;
-}
 
 .re_img {
     float: left;
+    width: 330px;
+    height: 430px;
+    margin: 20px 20px 0px 0px;
 }
 
-.re_img > img {
+.re_info{
     display: flex;
-    width: 350px;
-    height: 450px;
-    border-radius: 10px;
-
-}
-
-.re_info {
-    display: inline-block;
-    margin: 0px 40px;
-    width: 600px;
-    height: 450px;
-}
-
-.re_info > p {
     font-family: 'Noto Sans KR', sans-serif;
-    font-weight: 600;
-    font-size: 16px;
+    font-weight: 400;
+    font-size: 18px;
     color: #171717;
 }
 
-.re_info > p > strong {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 16px;
-    color: #090909;
+.re_info1 {
+    height: 330px;
+    width: 70px;
 }
 
+.re_info2{
+    width: 410px;
+    margin: 0px 0px 0px 20px;
+}
+
+.re_title{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 800;
+    font-size: 25px;
+}
 
 .re_down{
     display: flex;
-    margin: 50px -20px;
+    margin-top: 50px;
+    height: 300px;
+    width: 840px;
+    border: 0.3px solid #a5a3a3;
+    border-radius: 10px 10px 0px 0px;
 }
 
-.re_calendar {
-    border-radius: 10px;
-    margin: 0px 30px;
+.re_down .re_calendar {
+
+    border:none;
+    border-right: 1px solid rgb(208, 208, 208);
+    border-radius: 0;
+}
+
+
+.react-calendar__navigation__label > span {
+    border-radius: 100%;
+    font-size:  16px;
+    font-weight: 600;
+}
+
+.re_down .re_calendar:enabled:hover,
+.re_down .re_calendar:enabled:focus {
+  background-color: rgb(127, 24, 197);
+  border-radius: 0;
+  color: white;
 }
 
 .re_time {
-    border: 0.3px solid #a5a3a3;
-    border-radius: 10px;
-    width: 200px;
+    width: 170px;
+    height: 300px;
     text-align: center;
-    
-
+    border-right: 1px solid rgb(208, 208, 208);
 }
 
-.re_time > p {
+.re_time p {
     font-size: 16px;
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 800;
-}
+    text-align: center;
+} 
 
-.re_time > Button {
+.re_time Button {
     font-size:16px; 
     color: black;
 }
-.re_time > Button:hover {
+.re_time Button:hover {
     font-size:16px; 
-    color: rgb(76, 76, 76);
-    border: 0.3px solid #b0b0b0;
+    background-color: rgb(127, 24, 197);
+    color: white;
+    border: 0.3px solid #a5a3a3;
     border-radius: 18px ;
 }
 
-.re_select {
-    margin: 0px 30px;
+.re_time Button:active {
+    background-color: rgb(127, 24, 197);
+    color: white;
 }
 
 .re_sel_top {
-    border: 0.3px solid #a5a3a3;
-    border-radius: 10px;
-    width: 220px;
-    height: 150px;
+    width: 170px;
+    height: 300px;
+    border-left: 1px solid rgb(208, 208, 208);
 }
 
 .re_sel_top > p {
@@ -109,36 +115,45 @@
 }
 
 
-.re_select > button {
-    background-color: rgb(88, 0, 151);
-    width: 220px;
-    height: 50px;
-    margin: 15px auto;
-
-
+.re_number {
+    width: 170px;
+    height: 300px;
 }
 
-.re_select > button > p {
-    text-align: center;
+.re_number p {
     font-size: 16px;
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 800;
-}
-
-.re_number {
-    padding-top: 20px;
     text-align: center;
 }
 
-.re_number > button{
-    background-color: rgb(88, 0, 151);
-    color: white;
-    font-size: 20px;
+.re_number button{
+    border: 1px solid rgb(127, 24, 197);
+    background-color: rgb(127, 24, 197);
+    margin: 15px;
     height: 30px;
+    width: 30px;
+    border-radius: 100%;
+    color:white;
+    font-size: 20px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 800;
+    padding-bottom: 2px;
 }
 
+.re_number button:hover{
+    background-color: rgb(127, 24, 197);
+    color: rgb(255, 255, 255);
+}
+
+
 .re_price {
-    display: flex;
+    border: 0.3px solid #a5a3a3;
+    border-radius: 10px;
+    width: 220px;
+    height: 100px;
+    margin-top: 5px;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 .re_read {
@@ -167,95 +182,155 @@
     background-color: rgb(255, 255, 255);
     padding: 40px;
 }
-.re_down2{
-    
-    display: flex;
 
-    
+.re_down2{
+    display: flex;
 }
+
 .seat_box{
-    border: 1px solid gray;
-    border-radius: 10px;
-    width: 780px;
-    height: 420px;
+    border: 1px solid #d3cdcd;
+    border-radius: 0px 0px 10px 10px;
+    width: 820px;
+    height: 520px;
     background-color: white;
     text-align: center;
-    padding: 0 30px;
-    padding-bottom: 10px;
+    padding: 0 10px;
+    padding-bottom: 1px;
+    margin: 15px 0px;
 }
+
+
 .seat_span{
+    font-family: 'Noto Sans KR', sans-serif;
     margin-top: 13px;
-    margin-left: 5px;
-    width: 68px;
-    height: 20px;
+    margin-left: 9px;
+    height: 25px;
     float: left;
     font-size: 13px;
-    border: 1px solid black;
-    border-radius: 5px;
+    border: 1px solid rgb(127, 24, 197);
 }
-.seat_span:hover{
-    background-color: gray;
+
+.seat_span Button:hover{
+    background-color: rgb(127, 24, 197);
     cursor: pointer;
+    border-radius: 0px;
 }
-.seat_box_alpha{
-    float:left;
-    height:300px; 
-    padding: 10px 0px;
-    font-weight: 500;
-}
-.seat_box_alpha_detail{
-    margin-top: 15px;
-}
-.stage{
-    background-color: gray;
-    color: white;   
-    width: 100px;
-    margin-left: 340px;
-    border-radius: 10px;
-}
-.re_down3{
-    display: flex;
-    margin-top: 60px;
-}
-.select_bank{
-    border: 1px solid gray;
-    border-radius: 10px;
-    width: 550px;
-    height: 250px;
+
+.seat_box p{
+    font-size: 16px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 800;
     text-align: center;
 }
-.select_bank > p{
+
+.seat_box_alpha{
+    float: left;
+    padding-inline: inherit;
+}
+
+.seat_box_alpha_detail{
+    margin-top: 14.5px;
+    border: 3px solid rgb(127, 24, 197);
+    background-color: rgb(127, 24, 197);
+    border-radius: 100%;
+    color: white;
+}
+
+.seat_box .stage{
+    background-color: rgb(86, 86, 86);
+    color: white;   
+    width: 400px;
+    height: 35px;
+    border-radius: 20px;
+    margin: 10px auto 0px;
+    font-size: 20px;
+    font-family: 'Noto Sans KR', sans-serif;
+    text-align: center;
+}
+
+
+
+.re_down3{
+    display: flex;
+    border-radius: 0px 0px 10px 10px;
+    text-align: center;
+    height: 120px;
+}
+
+.select_bank{
+    border: 1px solid #d3cdcd;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.select_bank p{
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 600;
     font-size: 16px;
-    color: #171717;
+    color: #e31a1a;
 }
+
 .bank-box{
     display: flex;
+    width: 650px;
+    justify-content: center;
 }
+
 .bank-box label{
-    border: 1px solid gray;
-    border-radius: 10px;
-    margin-left: 45px;
-    margin-top: 20px;
-    padding: 10px;
+    display: flex;
+    margin: 0px 10px;
 }
+
+.bank-box label input{
+    margin: auto;
+    width: 20px;
+    height: 20px;
+}
+
 .bank-box img{
     width: 100px;
-    height: 50px;
+    height: 40px;
+    margin: auto;
 }
+
+.bank-box p{
+    margin: auto;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+
+
+.final-cost-button{
+    margin: 0px;
+    float: right;
+}
+
+
 .final-cost{
     text-align: center;
-    border: 0.3px solid #a5a3a3;
-    border-radius: 10px;
-    width: 220px;
-    height: 150px;
+    width: 180px;
+    height: 118px;
+    border: 1px solid #d3cdcd;
+    border-radius: 5px 5px 5px 5px;
+    margin-left: 7px;
 }
-.final-cost-button{
-    margin-top: 50px;
+
+
+.final-cost-button button{
+    background-color: #e31a1a;
+
+    height: 50px; 
+    margin: 10px 10px; 
 }
-.final-cost-button > button{
-    background-color: rgb(88, 0, 151);
-    width: 220px;
-    height: 50px;  
+
+.final-cost p{
+    justify-content: center;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    text-align: left;
+    margin: auato;
 }
+
