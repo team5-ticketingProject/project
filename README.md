@@ -1,70 +1,72 @@
-# Getting Started with Create React App
+# MultiCampus PROJECT(금융데이터 기반 티켓 할인 구매 시스템)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## PROJECT 소개
 
-In the project directory, you can run:
+![image](https://github.com/team5-ticketingProject/project/assets/139444462/caecc10b-acfe-4db4-98fa-8ffb2bf919bd)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+![image](https://github.com/team5-ticketingProject/project/assets/139444462/9f3aa17a-c59f-4156-92d4-dcc46c03b8a9)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+** 위 이미지는 이번 프로젝트에서 구현해야될 기능 목록
 
-### `npm test`
+PROJECT TEAM : 고승렬, 손승광, 장우영, 최예슬, 장해민
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+최종 프로젝트 기간 : 10/4 ~ 11/9
 
-### `npm run build`
+## PROJECT Guide
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Requirements
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+for building and running the application you need:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- <span style="color:blue">Node.js v18.17.1</span>
+- <span style="color:blue">Npm  9.6.7</span>
+- <span style="color:blue">Mysql 8.0.34.</span>
 
-### `npm run eject`
+## Stacks
+---
+Environment
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> <img src="https://img.shields.io/badge/VISUAL STUDIO CODE-1572B6?style=for-the-badge&logo=visualstudio&logoColor=white">
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Config
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+<img src="https://img.shields.io/badge/Npm-F05032?style=for-the-badge&logo=npm&logoColor=white">
 
-## Learn More
+Developement
+ 
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white"> <img src="https://img.shields.io/badge/MATERIAL UI-1572B6?style=for-the-badge&logo=mui&logoColor=white">
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 화면 구성
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 메인페이지
 
-### Code Splitting
+![image](https://github.com/team5-ticketingProject/project/assets/139444462/f5c4eb33-7153-456c-947d-18932e0dd735)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 로그인페이지
 
-### Analyzing the Bundle Size
+![image](https://github.com/team5-ticketingProject/project/assets/139444462/ac2c3284-6c42-4809-9b30-4d4c62971931)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### 마이페이지
 
-### Making a Progressive Web App
+![image](https://github.com/team5-ticketingProject/project/assets/139444462/6f4df6db-e5a7-4438-bd15-27d571fa1524)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+## 주요기능
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- 지역별로 예매 가능(지정한 지역으로 검색 가능)
+- 날짜별로 예매 가능
+- 결제시 기기인증 및 금융사별 할인 시스템
 
-### `npm run build` fails to minify
+## DATABASE
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![image](https://github.com/team5-ticketingProject/project/assets/139444462/77aa89c0-073a-45b4-961b-9cf4fa581be1)
+
+
+
+
