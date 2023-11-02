@@ -1,55 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap');
+
 .mainSlide{
-  width: 1500px;
-  height: 450px;
   display: inline-block;
+  margin-bottom: 30px;
 }
 
 .imgDiv{
   float:left;
-  width:90%;
-  border: 1px solid gray;
-  border-radius: 20px;
+  width:1300px;
   overflow: hidden;
- 
 }
+
 .imgDiv-sub{
-  float: left;
-  width: 400px;
-  margin-top: 100px;
-  margin-left: 50px;
-  position: absolute;
-  font-size: 20px;
+  display: flex;
+  margin: 0px 0px 0px 50px;
 }
+
 .mainSlide img{
-  width: 300px; 
+  width: 400px;
+  height: 500px;
 }
 
 .previousButton{
   float:left;
-  margin-top: 35%;
-  width:5%;
-  position: relative;
-  left: 50px;
-  top: -350px;
+  margin-top: 200px;
+
 }
 
 .nextButton{
-  margin-top: 35%;
-  float:left;
-  width:4%;
-  position: relative;
-  right:43px;
-  top: -350px;
+  display:flex;
+  margin-top: 200px;
 }
 
 .mainSlide button{
-  background-color: white;
+  color: rgb(98, 98, 98);
+  font-size: 30px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0;
   border: none;
-  color: gray;
-  border: 1px solid gray;
-  border-radius: 10px;
+  
+
 }
 .mainSlide button:hover{
+  background-color: rgb(208, 208, 208);
   cursor: pointer;
 }
 
@@ -80,7 +73,6 @@
 }
 
 .mapDiv{
-
   position: relative;
   width: 200px;
   height: 240px;
