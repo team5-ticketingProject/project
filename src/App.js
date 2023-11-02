@@ -11,6 +11,7 @@ import Notice from './admin/pages/Notice';
 import Faq from './admin/pages/Faq';
 import MypageFaq from './component/Faq';
 import DiscountAdjustment from './admin/pages/DiscountAdjustment';
+import SuccessPay from "./component/payment/SuccessPay";
 import MypageRemake from "./component/mypagereamke";
 import MypageNotice from "./component/MyPage_Notice";
 import UserInfo from "./component/Mypage_UserInfo";
@@ -36,6 +37,8 @@ const App = () => {
         <Route path="/Faq" element={<Faq />} />
         <Route path="/mypage/faq" element={<MypageFaq/>} />
         <Route path="/discount" element={<DiscountAdjustment />} />
+
+        <Route path="/successpay" element={<SuccessPay />} />
 
         
       </Routes>

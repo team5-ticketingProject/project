@@ -12,7 +12,7 @@ const SuccessPay = () => {
                 <Navigation />
             </div>
             <div className="pay_suc_con">
-                <img className="pay_suc_img" src="img/pay_success_img.png" alt='예매성공이미지'/>
+                <img className="pay_suc_img" src="img/pay_success.png" alt='예매성공이미지'/>
                 <p className="pay_suc_text">결제가 정상 승인되었습니다.</p>
                 <button className="pay_suc_but1" size="large" onClick={() => navigate("/")}>홈</button>
                 <button className="pay_suc_but2"size="large" onClick={() => navigate("/mypage")}>예매 확인</button>

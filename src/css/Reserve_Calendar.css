@@ -19,7 +19,7 @@
 .react-calendar {
     border: 1px solid #a0a096;
     border-radius: 10px;
-    height: 320px;
+    height: 300px;
     
 }
 .react-calendar__tile--now {

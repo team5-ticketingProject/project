@@ -6,10 +6,10 @@ import "react-calendar/dist/Calendar.css";
 import "../css/Reservation.css";
 import Navigation from "./Navigation";
 import moment from "moment";
-import Button from "@mui/material/Button";
 import Payment from "./payment/Payment";
 import PaymentModal from "./payment/PaymentModal";
 import ReservationTabs from "./ReservationTabs";
+import { Button, ButtonGroup } from "@mui/material";
 import Footer from "./Footer";
 
 const Reservation = () => {
@@ -36,6 +36,7 @@ const Reservation = () => {
   const [reservatedSeat, setReservatedSeat] = useState([]);
   const [mac, setMac] = useState("");
   const [userMac, setUserMac] = useState("");
+  const [showName, setShowName] = useState("");
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
@@ -52,6 +53,7 @@ const Reservation = () => {
       .get(`${process.env.REACT_APP_SERVER_URL}/getDetail/${id.show_ID}`)
       .then((response) => {
         SetInfo(response.data);
+        setShowName(response.data[0].show_name);
         let split_price = response.data[0].price.split(",");
         let temp_price = "";
         for (let i = 0; i < split_price[0].length; i++) {
@@ -300,6 +302,7 @@ const Reservation = () => {
         user={window.sessionStorage.getItem('id')}
         seatArr={seatArr}
         bank={selectedBank}
+        showName={showName}
       />
     );
     setShowModal(true);
@@ -341,39 +344,32 @@ const Reservation = () => {
 
   return (
     <div>
-      <div className="main">
-        <Navigation />
-      </div>
+      <Navigation />
       <div className="re_container">
         {info.map((datas, index) => (
           <div key={index} className="re_top">
-            <div className="re_showname">
-              <strong>{datas.show_name}</strong>
-            </div>
-            <div className="re_img">
-              <img src={datas.poster_url} alt="공연포스터" />
-            </div>
+            <img className="re_img" src={datas.poster_url} alt="공연포스터" />
+            <p className="re_title">{datas.show_name}</p>
             <div className="re_info">
-              <p>
-                <strong>기간 :</strong> {datas.start_date} ~ {datas.end_date}
-              </p>
-              <br />
-              <p>
-                <strong>공연시간 : </strong> {datas.show_time}
-              </p>
-              <br />
-              <p>
-                <strong>가격 : </strong> {datas.price}
-              </p>
-              <br />
-              <p>
-                <strong>장소 : </strong> {datas.show_location}
-              </p>
-              <br />
-              <p>
-                <strong>출연진 :</strong> {datas.actor}
-              </p>
+              <div className="re_info1">
+                <p>기간</p>
+                <p>장소</p>
+                <p>가격</p>
+                <p style={{height:"40px"}}>공연시간</p>
+                <br/>
+                <p style={{height:"40px"}}>출연진</p> 
+              </div>
+              <div className="re_info2">
+                <p></p>
+                <p>{datas.start_date} ~ {datas.end_date}</p>
+                <p>{datas.show_location}</p>
+                <p>{datas.price}</p>
+                <p style={{height:"40px"}}>{datas.show_time}</p>
+                <br/>
+                <p style={{height:"40px"}}>{datas.actor}</p>
+              </div>
             </div>
+
             <div className="re_down">
               <Calendar
                 className="re_calendar"
@@ -384,10 +380,9 @@ const Reservation = () => {
                 formatDay={(locale, date) =>
                   date.toLocaleString("en", { day: "numeric" })
                 }
-              />
-
+                />
               <div className="re_time">
-                <p>시간</p>
+                <p>시간선택</p>
                 <hr />
                 <Button
                   onClick={() => {
@@ -434,41 +429,43 @@ const Reservation = () => {
                 )}
               </div>
               <div className="re_select">
+                  <div className="re_number" >
+                  <p>인원선택</p>
+                  <hr />
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <button
+                      variant="outline"
+                      disableElevation
+                      onClick={() => number_button(1)}
+                    >
+                      -
+                    </button>
+                    <p className="re_number_p">{reNumber}명</p>
+                    <button
+                      variant="outline"
+                      disableElevation
+                      onClick={() => number_button(2)}
+                    >
+                      +
+                    </button>
+                    </div>
+                  </div>
+              </div>
                 <div className="re_sel_top">
                   <p>선택내역</p>
                   <hr />
                   <p>{date.toLocaleDateString("ko-KR")}</p>
                   <p>{selectedTime} </p>
+                  <p>{reNumber} 명</p>
                 </div>
-                <div>
-                  <div className="re_number">
-                    <Button
-                      variant="contained"
-                      disableElevation
-                      style={{ float: "left" }}
-                      onClick={() => number_button(1)}
-                    >
-                      -
-                    </Button>
-                    {reNumber}매
-                    <Button
-                      variant="contained"
-                      disableElevation
-                      style={{ float: "right" }}
-                      onClick={() => number_button(2)}
-                    >
-                      +
-                    </Button>
-                  </div>
-                  <p>금액: {totalPrice}원</p>
-                </div>
-              </div>
             </div>
             <div className="re_down2">
               <div className="seat_box">
-                <p className="stage">무대</p>
+                <p> 좌석선택</p>
+                  <hr />
+                <p className="stage">STAGE</p>
                 <div className="seat_box_alpha">
-                  <div>a열</div>
+                  <div className="seat_box_alpha_detail">a열</div>
                   <div className="seat_box_alpha_detail">b열</div>
                   <div className="seat_box_alpha_detail">c열</div>
                   <div className="seat_box_alpha_detail">d열</div>
@@ -509,70 +506,59 @@ const Reservation = () => {
             </div>
             <div className="re_down3">
               <div className="select_bank">
-                <p>결제사 선택</p>
+                <p style={{color:"black"}}>할인 선택</p>
                 <hr />
                 <div className="bank-box">
                   <label>
-                    <img src="/img/bank1.PNG" alt="bank"></img>
-                    <br />
-                    {bank.length > 0 && bank[0].discount_rate}% 할인
-                    <br />
                     <input
                       type="checkbox"
                       value="Hana"
                       checked={selectedOption === "Hana"}
                       onChange={handleOptionChange}
                     />
+                    <img src="/img/bank1.PNG" alt="bank"/>
+                    <p>{bank.length > 0 && bank[0].discount_rate}% 할인</p>
                   </label>
-                  <br />
                   <label>
-                    <img src="/img/bank2.PNG" alt="bank"></img>
-                    <br />
-                    {bank.length > 0 && bank[1].discount_rate}% 할인
-                    <br />
                     <input
                       type="checkbox"
                       value="KB"
                       checked={selectedOption === "KB"}
                       onChange={handleOptionChange}
                     />
+                    <img src="/img/bank2.PNG" alt="bank"/>
+                    <p>{bank.length > 0 && bank[1].discount_rate}% 할인</p>
                   </label>
-                  <br />
                   <label>
-                    <img src="/img/bank3.PNG" alt="bank"></img>
-                    <br />
-                    {bank.length > 0 && bank[2].discount_rate}% 할인
-                    <br />
                     <input
                       type="checkbox"
                       value="Sinhan"
                       checked={selectedOption === "Sinhan"}
                       onChange={handleOptionChange}
                     />
+                    <img src="/img/bank3.PNG" alt="bank"/>
+                    <p>{bank.length > 0 && bank[2].discount_rate}% 할인</p>
                   </label>
                 </div>
               </div>
-              <div style={{marginLeft:'65px'}}>
                 <div className="final-cost">
-                  <p>최종금액</p>
-                  <hr />
-                  { totalPrice * (100 - discount) / 100}원
-                </div>
-                <div className="final-cost-button">
-                  <Button
-                    variant="contained"
-                    disableElevation
-                    onClick={() => reservate()}
-                  >
-                    <p>결제하기</p>
-                  </Button>
-                  {showModal && (
-                    <PaymentModal content={modalContent} onClose={closeModal} />
-                  )}
-                </div>
+                  <p>금액&nbsp;&nbsp; {totalPrice}원</p>
+                  <p>할인금액&nbsp; { (totalPrice * (100 - discount) / 100) - totalPrice}원</p>
               </div>
             </div>
-            <ReservationTabs show_name={datas.show_name} />
+            <div className="final-cost-button">
+              <Button
+                variant="contained"
+                disableElevation
+                onClick={() => reservate()}
+              >
+                <p>{ totalPrice * (100 - discount) / 100}원 결제하기</p>
+              </Button>
+              {showModal && (
+                <PaymentModal content={modalContent} onClose={closeModal} />
+              )}
+            </div>
+        <ReservationTabs show_name={datas.show_name} />
           </div>
         ))}
       </div>
