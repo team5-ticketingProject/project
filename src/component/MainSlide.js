@@ -37,45 +37,51 @@ const SlideShow = ({ images }) => {
         style={{
           backgroundColor:
             currentImageIndex === 0
-              ? "rgb(174, 218, 191)"
+            ? "white"
               : currentImageIndex === 1
               ? "white"
               : currentImageIndex === 2
-              ? "rgb(233, 149, 189)"
+              ? "white"
               : "",
         }}
       >
         <div className="imgDiv-sub">
+        <img src={images[currentImageIndex]} alt="Slide" />
           {currentImageIndex === 0 && (
             <div>
-              <p>환장할 진심</p>
+              <img className="imgDiv-sub_index2" src="img/환장할진심2.png" alt="Slide" />
+              <img className="imgDiv-sub_index2" src="img/환장할진심3.png" alt="Slide" />
+              {/* <p>환장할 진심</p>
               <p>화요일 ~ 금요일(19:30), 토요일 ~ 일요일(15:00,18:00)</p>
-              <p>씨어터 쿰 (씨어터 쿰)</p>
+              <p>씨어터 쿰 (씨어터 쿰)</p> */}
             </div>
           )}
           {currentImageIndex === 1 && (
             <div>
-              <p>괴물 [대학로]</p>
+              <img className="imgDiv-sub_index2" src="img/괴물.png" alt="Slide" />
+              <img className="imgDiv-sub_index2" src="img/괴물2.png" alt="Slide" />
+              {/* <p>괴물 [대학로]</p>
               <p>화요일 ~ 금요일(20:00), 토요일(16:30), 일요일(15:00)</p>
-              <p>대학로단막극장 (대학로단막극장)</p>
+              <p>대학로단막극장 (대학로단막극장)</p> */}
             </div>
           )}
           {currentImageIndex === 2 && (
-            <div>
-              <p>인사이드미</p>
+            <div className="imgDiv-sub2">
+              <img className="imgDiv-sub_index2" src="img/인사이드미.png" alt="Slide" />
+              <img className="imgDiv-sub_index2" src="img/인사이드미2.png" alt="Slide" />
+              {/* <p>인사이드미</p>
               <p>화요일 ~ 금요일(19:30), 토요일(15:00,19:00), 일요일(15:00)</p>
-              <p>JTN 아트홀(구. 대학로예술마당) (2관)</p>
+              <p>JTN 아트홀(구. 대학로예술마당) (2관)</p> */}
             </div>
           )}
         </div>
-        <img src={images[currentImageIndex]} alt="Slide" />
       </div>
-
       <div className="nextButton">
         <button onClick={handleNextClick}>
           {" "}
           <h3>&gt;</h3>{" "}
         </button>
+
       </div>
     </div>
   );
@@ -232,14 +238,14 @@ const SlideShowContainer = ({
               >
                 {index + 1}
               </div>
-              <div className="rank-detail-name">
+              <div>
                 <Link
                   to={
                     window.sessionStorage.getItem("id")
                       ? `/reservation/${data.show_ID}/${data.show_time}`
                       : "/login"
                   }
-                  className="rank-link"
+                  style={{ textDecoration: "none", color: "black" }}
                 >
                   {data.show_name}
                 </Link>
@@ -264,7 +270,7 @@ const SlideShowContainer = ({
           .map((datas, index) => (
             <div className="notice-box">
               <div className="notice-box-left">           
-                <Link to = "/mypageremake/mypagenotice" className="notice-link">{datas.title}</Link>
+                <Link to = "/mypage" style={{textDecoration:'none', color:'black'}}>{datas.title}</Link>
               </div>
               <div className="notice-box-right">
               {new Date(new Date(datas.date).getTime() + 9 * 60 * 60 * 1000)
@@ -276,7 +282,7 @@ const SlideShowContainer = ({
           .map((datas, index) => (
             <div className="notice-box">
               <div className="notice-box-left">           
-                <Link to = "/mypageremake/Faq" className="notice-link">{datas.question}</Link>
+                <Link to = "/mypage" style={{textDecoration:'none', color:'black'}}>{datas.question}</Link>
               </div>
               <div className="notice-box-right">
               {datas.answer}
