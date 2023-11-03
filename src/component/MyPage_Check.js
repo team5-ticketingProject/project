@@ -330,6 +330,7 @@ useEffect(() => {
                 <tr key={index}>
                   <td>
                     <button
+                    className="hover_underline"
                       style={{ backgroundColor: "white", border: "none", cursor: "pointer" }}
                       onClick={() => handleReservationInfoClick(item)}
                     >

@@ -332,3 +332,8 @@ caption {
   font-weight: bold;
   font-size: 30px;
 }
+.hover_underline:hover {
+  text-decoration: underline; /* 마우스 호버 시 텍스트에 언더라인을 추가합니다. */
+  text-decoration-thickness: 2px; /* 원하는 두께로 조정하세요 */
+  text-underline-offset: 2px; 
+}

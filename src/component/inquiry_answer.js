@@ -1,8 +1,10 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
+
 
 function InquiryAnswer() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { id } = useParams();
   const selectedInquiry = location.state?.selectedInquiry || null;
 
 

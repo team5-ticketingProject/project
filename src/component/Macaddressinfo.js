@@ -5,14 +5,12 @@ import axios from "axios";
 
 function MacInfo() {
   const [userInfo, setUserInfo] = useState(null);
+  const [userMacAddress, setUserMacAddress] = useState(null); // 로그인된 사용자의 맥 주소
 
-  // userId 상태를 추가하여 의존성 배열에 넣어 데이터 로딩을 최적화
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    // window.sessionStorage에서 userId를 가져오는 작업을 최적화
     const storedUserId = window.sessionStorage.getItem("id");
-
     if (storedUserId !== userId) {
       setUserId(storedUserId);
     }
@@ -20,29 +18,50 @@ function MacInfo() {
 
   useEffect(() => {
     async function fetchUser() {
-      // userId가 변경될 때만 사용자 정보를 다시 불러옴
       if (userId) {
         const user = await fetchUserInfo(userId);
         setUserInfo(user);
+
+        if (user && user.mac_address) {
+          setUserMacAddress(user.mac_address); // 로그인된 사용자의 맥 주소 설정
+        }
       }
     }
 
     fetchUser();
   }, [userId]);
 
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/api/getmacaddress`, {
+        params: { userConsent: 'true' }
+      })
+      .then((response) => {
+        setUserMacAddress(response.data.mac);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []); // 컴포넌트가 처음 렌더링될 때 맥 주소를 가져옴
+
   const handleDeleteMac = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
-      axios
-        .put(`${process.env.REACT_APP_SERVER_URL}/deleteMac/${userId}`, {
-          headers: { "Content-Type": "application/json" },
-        })
-        .then(() => {
-          // 삭제 후 바로 화면을 업데이트
-          setUserInfo({ ...userInfo, mac_address: null });
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      // 사용자의 맥 주소와 DB에서 가져온 맥 주소 비교
+      if (userInfo && userMacAddress && userInfo.mac_address && userMacAddress === userInfo.mac_address) {
+        axios
+          .put(`${process.env.REACT_APP_SERVER_URL}/deleteMac/${userId}`, {
+            headers: { "Content-Type": "application/json" },
+          })
+          .then(() => {
+            // 삭제 후 바로 화면을 업데이트
+            setUserInfo({ ...userInfo, mac_address: null });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else {
+        alert("맥 주소가 일치하지 않습니다.");
+      }
     }
   };
 
@@ -60,7 +79,7 @@ function MacInfo() {
             }}
           >
             <p>아이디: {userInfo.ID}</p>
-            <p>인증기기정보: {userInfo.mac_address || "없음"}</p>
+            <p>인증기기정보: {userInfo.mac_address ? userInfo.mac_address.replace(/(\w{2}:\w{2}:\w{2}).*/, '$1:**:**') : "없음"}</p>
             {userInfo.mac_address && (
               <Button
                 onClick={handleDeleteMac}
