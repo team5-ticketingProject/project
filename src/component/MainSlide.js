@@ -242,7 +242,7 @@ const SlideShowContainer = ({
               >
                 {index + 1}
               </div>
-              <div>
+              <div className="rank-detail-name">
                 <Link
                   to={
                     window.sessionStorage.getItem("id")
