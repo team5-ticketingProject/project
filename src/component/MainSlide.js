@@ -274,7 +274,7 @@ const SlideShowContainer = ({
           .map((datas, index) => (
             <div className="notice-box">
               <div className="notice-box-left">           
-                <Link to = "/mypage" style={{textDecoration:'none', color:'black'}}>{datas.title}</Link>
+                <Link to = "/mypageremake/mypagenotice" style={{textDecoration:'none', color:'black'}}>{datas.title}</Link>
               </div>
               <div className="notice-box-right">
               {new Date(new Date(datas.date).getTime() + 9 * 60 * 60 * 1000)
@@ -286,7 +286,7 @@ const SlideShowContainer = ({
           .map((datas, index) => (
             <div className="notice-box">
               <div className="notice-box-left">           
-                <Link to = "/mypage" style={{textDecoration:'none', color:'black'}}>{datas.question}</Link>
+                <Link to = "/mypageremake/Faq" style={{textDecoration:'none', color:'black'}}>{datas.question}</Link>
               </div>
               <div className="notice-box-right">
               {datas.answer}
