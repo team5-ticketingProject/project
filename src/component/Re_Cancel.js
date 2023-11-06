@@ -86,30 +86,24 @@ function ReCancel({ selectedReservationInfo, closePopupWindow }) {
             </td>
           </tr>
           <tr>
-            <th style={thStyle}>관람일시</th>
+            <th style={thStyle}>관람일</th>
             <td style={tdStyle}>
               {selectedReservationInfo
-                ? new Date(selectedReservationInfo.DATE)
-                    .toISOString()
-                    .slice(0, 16)
-                    .replace("T", " ")
+                ? selectedReservationInfo.DATE
                 : "여기에 관람일시를 추가하세요"}
             </td>
           </tr>
           <tr>
             <th style={thStyle}>좌석</th>
             <td style={tdStyle}> {selectedReservationInfo
-                ? selectedReservationInfo.seat_num
+                ? selectedReservationInfo.seat_num 
                 : "여기에 티켓명을 추가하세요"}</td>
           </tr>
           <tr>
             <th style={thStyle}>예매일</th>
             <td style={tdStyle}>
               {selectedReservationInfo
-                ? new Date(selectedReservationInfo.re_date)
-                    .toISOString()
-                    .slice(0, 16)
-                    .replace("T", " ")
+                ? selectedReservationInfo.re_date
                 : "여기에 관람일시를 추가하세요"}
             </td>
           </tr>

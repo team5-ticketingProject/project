@@ -80,73 +80,116 @@ app.get('/api/getmacaddress', (req, res) => {
 });
 
 
-app.post("/Cancelreservation", async (req, res) => {
+app.post("/cancelreservation", async (req, res) => {
   const { reservationId } = req.body;
 
-  // Get a connection from the pool
+  // 현재 날짜 가져오기
+  const currentDate = new Date();
+  
+  // 데이터베이스 연결 풀에서 연결 가져오기
   db.getConnection(function (err, connection) {
     if (err) {
-      console.error("Error getting connection:", err);
-      return res.status(500).send("Internal server error");
+      console.error("연결 가져오기 오류:", err);
+      return res.status(500).send("내부 서버 오류");
     }
 
     connection.beginTransaction(function (err) {
       if (err) {
-        connection.release(); // Release the connection if there's an error
-        console.error("Error beginning transaction:", err);
-        return res.status(500).send("Internal server error");
+        connection.release(); // 오류 발생 시 연결 해제
+        console.error("트랜잭션 시작 오류:", err);
+        return res.status(500).send("내부 서버 오류");
       }
 
-      const deleteReservationSql = "DELETE FROM reservation WHERE show_number = ?;";
-      const TransreservationQuery = `
-      INSERT INTO cancelreservation (show_number, show_ID, bank, re_number, cancel_date, re_date, user_ID,  DATE,  TIME, seat_num, price ) 
-      SELECT show_number, show_ID, bank, re_number, cancel_date, re_date, user_ID,  DATE,  TIME, seat_num, price
-      FROM reservation WHERE show_number = ?;
-      
-    `;
-    connection.query(TransreservationQuery, [reservationId], function (err, insertResult) {
-      if (err) {
-        connection.rollback(function () {
-          connection.release();
-          console.error("Error rolling back transaction (insertion):", err);
-          return res.status(500).send("Internal server error");
-        });
-      }
-
-      console.log("Inserted into reservation", insertResult);
-
-      connection.query(deleteReservationSql, [reservationId], function (err, deleteResult) {
+      const selectReservationSql = "SELECT cancel_date, show_ID FROM reservation WHERE show_number = ?";
+      connection.query(selectReservationSql, [reservationId], function (err, selectResult) {
         if (err) {
           connection.rollback(function () {
             connection.release();
-            console.error("Error rolling back transaction (deletion):", err);
-            return res.status(500).send("Internal server error");
+            console.error("트랜잭션 롤백 오류 (선택):", err);
+            return res.status(500).send("내부 서버 오류");
           });
         }
 
-        console.log("Deleted reservation", deleteResult);
-        
-       
-        
-         
-          connection.commit(function (err) {
+        // 선택된 예약의 취소 날짜 가져오기
+        const cancelDate = selectResult[0] ? selectResult[0].cancel_date : null;
+        const showId = selectResult[0] ? selectResult[0].show_ID : null;
+
+        // 예약 정보가 없거나 이미 취소된 경우
+        if (!cancelDate || currentDate > cancelDate) {
+          connection.rollback(function () {
+            connection.release();
+            console.error("취소 실패: 예약 정보가 없거나 이미 취소되었습니다.");
+            return res.status(400).send("취소 실패: 예약 정보가 없거나 이미 취소되었습니다.");
+          });
+        } else {
+          const insertCancelSql = `
+            INSERT INTO cancelreservation (show_number, show_ID, bank, re_number, cancel_date, re_date, user_ID, DATE, TIME, seat_num, price) 
+            SELECT show_number, ?, bank, re_number, ?, re_date, user_ID, DATE, TIME, seat_num, price
+            FROM reservation WHERE show_number = ?;
+          `;
+  
+          const deleteReservationSql = "DELETE FROM reservation WHERE show_number = ?";
+          
+          connection.query(insertCancelSql, [showId, currentDate, reservationId], function (err, insertResult) {
             if (err) {
               connection.rollback(function () {
                 connection.release();
-                console.error("Error committing transaction:", err);
-                return res.status(500).send("Error committing transaction");
+                console.error("트랜잭션 롤백 오류 (삽입):", err);
+                return res.status(500).send("내부 서버 오류");
+              });
+            } else {
+              console.log("예약이 취소되고 취소 정보로 이동:", insertResult);
+  
+              connection.query(deleteReservationSql, [reservationId], function (err, deleteResult) {
+                if (err) {
+                  connection.rollback(function () {
+                    connection.release();
+                    console.error("트랜잭션 롤백 오류 (삭제):", err);
+                    return res.status(500).send("내부 서버 오류");
+                  });
+                } else {
+                  console.log("예약 삭제:", deleteResult);
+  
+                  // 여기서 `currentDate`를 `cancelday_date` 열에 삽입
+                  const updateCancelDateSql = "UPDATE cancelreservation SET cancelday_date = ? WHERE show_number = ?";
+                  connection.query(updateCancelDateSql, [currentDate, reservationId], function (err, updateResult) {
+                    if (err) {
+                      connection.rollback(function () {
+                        connection.release();
+                        console.error("트랜잭션 롤백 오류 (cancelday_date 업데이트):", err);
+                        return res.status(500).send("내부 서버 오류");
+                      });
+                    } else {
+                      console.log("cancelday_date 업데이트 완료:", updateResult);
+                      // 트랜잭션 성공 시 커밋
+                      connection.commit(function (err) {
+                        if (err) {
+                          connection.rollback(function () {
+                            connection.release();
+                            console.error("트랜잭션 롤백 오류 (커밋):", err);
+                            return res.status(500).send("내부 서버 오류");
+                          });
+                        } else {
+                          res.status(200).send("예약 정보가 성공적으로 삭제 및 취소 정보로 이동되었으며, cancelday_date 열이 업데이트되었습니다.");
+                          connection.release(); // 트랜잭션이 완료되면 연결을 해제합니다.
+                        }
+                      });
+                    }
+                  });
+                }
               });
             }
-
-            console.log("예매 정보가 성공적으로 삭제 및 취소 정보로 이동되었습니다.");
-            res.status(200).send("예매 정보가 성공적으로 삭제 및 취소 정보로 이동되었습니다.");
-            connection.release(); // Release the connection when the transaction is complete
           });
-        });
+        }
       });
     });
   });
 });
+
+
+
+
+
 
 app.post("/changePassword", (req, res) => {
   
