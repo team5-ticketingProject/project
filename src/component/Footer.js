@@ -16,7 +16,7 @@ const Footer = () => {
                     <p>튜토리얼</p>
                     <p>CODE</p>
                 </div>
-                <div style={{paddingLeft:'50px'}}>
+                <div style={{paddingLeft:'40px'}}>
                     <p>이용약관</p>
                     <p>개인정보처리방침</p>
                     <p>1:1문의</p>

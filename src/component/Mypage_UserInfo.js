@@ -131,8 +131,8 @@ function UserInfo() {
           <>
             <div className="h4div">
               <h4>
-                회원님은 <span style={{ color: "red" }}>"{userInfo.rank}"</span>
-                이십니다.
+                회원님의 등급은 <span style={{ color: "red" }}>"{userInfo.rank}"</span> 
+                 입니다.
               </h4>
             </div>
             <div>

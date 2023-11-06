@@ -39,7 +39,7 @@ function FaqInfo() {
         style={{
           position: "absolute",
           bottom: "100px",
-          right: "300px",
+          right: "500px",
           fontWeight:"bold",
           fontSize:"16px"
         }}
