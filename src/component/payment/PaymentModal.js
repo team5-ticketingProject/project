@@ -7,7 +7,7 @@ const PaymentModal = ({ content, onClose }) => {
     <div className="pay_modal">
       <div className="pay_modal_con">
         <div>     
-          <button className="pay_modal_but" onClick={onClose}><CloseIcon/></button>
+          <button className="pay_modal_but" style={{height:"30px"}} onClick={onClose}><CloseIcon/></button>
         </div>
         <div className="pay_modal_content">
           {content}

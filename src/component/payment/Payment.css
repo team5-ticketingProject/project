@@ -22,9 +22,10 @@
     margin: 10px 0px;
   }
   .pay_modal_but:hover {
+    cursor: pointer;
     border-radius: 1px;
-    background-color: rgba(0, 0, 0, 0.1);
-    color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
   }
   
 /* Payment.js */

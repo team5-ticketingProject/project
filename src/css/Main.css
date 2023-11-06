@@ -4,17 +4,20 @@
     margin: auto;
 }
 .mainMenu {
-    margin-top: 10px;
-    border-bottom: 1px solid gray;
     position: absolute;
     width: 1920px;
-    color: gray;
+    height: 50px;
+    color: rgb(0, 0, 0);
+    border-bottom: 1px solid rgb(199, 199, 199);
+
 }
 
 .mainMenu ul {
     list-style: none;
-    padding-bottom: 20px;
-    margin-left: 250px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    margin: 15px 250px;
 }
 
 .mainMenu ul li {
