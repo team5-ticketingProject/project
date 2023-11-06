@@ -646,11 +646,13 @@ app.post("/reservation", (req, res) => {
   var name = req.body.name;
   const d = new Date();
   var today = d.toLocaleDateString("ko-KR");
-  var cancel_date = new Date(
-    d.getFullYear(),
-    d.getMonth(),
-    d.getDate() - 7
-  ).toLocaleDateString("ko-KR");
+  var parts = date.split('.');
+  var formattedDate = new Date(parts[0], parts[1]-1, parts[2]); 
+  formattedDate.setDate(formattedDate.getDate() - 7);
+  var year = formattedDate.getFullYear();
+  var month = (formattedDate.getMonth() + 1).toString().padStart(2, '0');
+  var day = formattedDate.getDate().toString().padStart(2, '0');
+  var cancel_date = year + '. ' + month + '. ' + day;
 
   var sql =
     "SELECT SUM(re_number) as NUM FROM reservation WHERE show_ID = ? AND DATE = ? AND TIME = ?";
