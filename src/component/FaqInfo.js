@@ -17,7 +17,7 @@ function FaqInfo() {
     <div className="FAQ">
       <div style={{ borderBottom: "2px solid #ccc" }}>
         <h1
-          style={{ fontSize: "30px", fontWeight: "bold", marginBottom: "20px" }}
+          style={{ fontSize: "25px", fontWeight: "bold", marginBottom: "20px" }}
         >
           {selectedFaq ? selectedFaq.question : "No FAQ selected"}
         </h1>
@@ -26,8 +26,9 @@ function FaqInfo() {
         <h4
           style={{
             overflowWrap: "break-word",
-            padding: "60px",
+            padding: "20px",
             margin: "auto",
+            marginTop:"40px",
             fontSize: "17px",
           }}
         >
@@ -38,7 +39,7 @@ function FaqInfo() {
         style={{
           position: "absolute",
           bottom: "100px",
-          right: "500px",
+          right: "300px",
           fontWeight:"bold",
           fontSize:"16px"
         }}

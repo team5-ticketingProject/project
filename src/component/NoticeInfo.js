@@ -17,7 +17,7 @@ function NoticeInfo(notice) {
     <div className="Notice">
       <div style={{ borderBottom: "2px solid #ccc" }}>
         <h1
-          style={{ fontSize: "30px", fontWeight: "bold", marginBottom: "20px" }}
+          style={{ fontSize: "25px", fontWeight: "bold", marginBottom: "20px" }}
         >
           {selectedNotice ? selectedNotice.title : "No notice selected"}
         </h1>
@@ -37,7 +37,8 @@ function NoticeInfo(notice) {
             overflowWrap: "break-word",
             padding: "20px",
             margin: "auto",
-            fontSize:"17px"
+            fontSize:"17px",
+            marginTop:"20px"
           }}
         >
           {selectedNotice ? selectedNotice.content : "No notice selected"}
@@ -48,7 +49,7 @@ function NoticeInfo(notice) {
         style={{
           position: "absolute",
           bottom: "100px",
-          right: "500px",
+          right: "300px",
           fontWeight: "bold",
           fontSize: "16px",
         }}

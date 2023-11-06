@@ -82,7 +82,8 @@ function PwChange( {onClose} ) {
       <div>
         <label htmlFor="newPassword">새로운 비밀번호:</label>
         <input
-          placeholder="비밀번호는 숫자와 영어 대문자를 포함한 최소 8자리입니다."
+          
+          placeholder="최소 8글자 영어 대문자 포함"
           type="password"
           id="newPassword"
           name="newPassword"

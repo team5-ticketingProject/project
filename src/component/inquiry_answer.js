@@ -25,7 +25,7 @@ function InquiryAnswer() {
       </div>
 
       <div className="text-container">
-        <p style={{ fontWeight: "bold", color: "gray", padding: "20px" }}>
+        <p style={{ fontWeight: "bold", color: "#f123a2", padding: "20px" }}>
          
           문의 내용 :
         </p>
@@ -41,7 +41,7 @@ function InquiryAnswer() {
             ? selectedInquiry.inquiry_content
             : "No notice selected"}
         </h4>
-        <p style={{ fontWeight: "bold", color: "gray", padding: "20px" }}>
+        <p style={{ fontWeight: "bold", color: "#f123a2", padding: "20px" }}>
           문의 답변 : 
         </p>
         <h4
@@ -53,15 +53,15 @@ function InquiryAnswer() {
           }}
         >
           {selectedInquiry
-            ? selectedInquiry.answer
-            : "Not answer "}
+            ? selectedInquiry.answer || "답변을 작성 중입니다."
+            : "Not answer"}
         </h4>
         <button
           onClick={goBackToInquiry}
           style={{
             position: "absolute",
             bottom: "100px",
-            right: "500px",
+            right: "300px",
             fontWeight: "bold",
             fontSize: "16px",
           }}
