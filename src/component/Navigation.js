@@ -94,7 +94,7 @@ const Navigation = () => {
                         <div className="output-detail-image-explain">
                           {searchList[posterIndex].show_name}
                           <br />
-                          <div style={{ color: "gray", fontSize: "12px" }}>
+                          <div style={{ color: "gray", fontSize: "16px" }}>
                             {searchList[posterIndex].start_date}~
                             {searchList[posterIndex].end_date}
                             <br />

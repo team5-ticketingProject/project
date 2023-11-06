@@ -99,8 +99,10 @@ const SignUp = () => {
         <div>
             <Navigation />
             <div class='container'>
-                <h2>정보입력</h2>
-                <table>
+              <div className="signup_title">
+                <img src="img/logo_white.png"/>
+              </div>
+                <table className="signup_content">
                     <tr>
                         <td>아이디</td>
                         <td>
@@ -110,16 +112,16 @@ const SignUp = () => {
                     </tr>
                     <tr>
                         <td>비밀번호</td>
-                        <td><input type="password" size={50} ref={pwRef} placeholder="8~16자리 영문, 숫자, 특수문자"/></td>
+                        <td><input type="password" size={50} ref={pwRef} placeholder="&nbsp;&nbsp;8~16자리 영문, 숫자, 특수문자"/></td>
                     </tr>
                     <tr>
-                        <td valign="top">비밀번호 확인</td>
+                        <td >비밀번호 확인</td>
                         <td>
                         <input type="password" size={50} ref={repwRef}/>
                         </td>
                     </tr>
                     <tr>
-                        <td valign="top">전화번호</td>
+                        <td class="custom-align">전화번호</td>
                         <td>
                             <input type="text" size={50} ref={telRef}/>
                             <p class='line'>&#10056; <span class="red">(-)기호</span>를 포함하여 입력해주세요.</p>
@@ -127,12 +129,13 @@ const SignUp = () => {
                     </tr>
                     <tr>
                         <td>이메일</td>
-                        <td><input type="text" size={26} ref={fmailRef}/>&nbsp;@&nbsp;<input type="text" size={15} ref={bmailRef}/></td>
+                        <td><input type="text" size={15} ref={fmailRef}/>&nbsp;@&nbsp;<input type="text" size={26} ref={bmailRef}/></td>
+                    </tr>
+                    <tr>
+                    <td></td>
+                    <td><button className="last_btn" onClick={submitUser}>가입완료</button></td>
                     </tr>
                 </table>
-                <div class='mid'>
-                    <button onClick={submitUser}>가입완료</button>
-                </div>
             </div>
         </div>
     );

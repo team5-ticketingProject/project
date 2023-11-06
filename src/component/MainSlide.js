@@ -163,12 +163,9 @@ const SlideShowContainer = ({
         <div className="main-box">
           <div className="select-classify">
             <span>
-              <strong style={{ color: "gray" }}>연극</strong>
+              <strong>연극</strong>
             </span>
-            <span
-              className="select-classify-right-span"
-              style={{ color: "gray" }}
-            >
+            <span className="select-classify-right-span">
               {showData.length}개 상영중
             </span>
             <hr />
@@ -267,8 +264,8 @@ const SlideShowContainer = ({
         </div>
 
         <div className="mainslide-notice">
-          <span style={{padding:'0 30px'}} onClick={() => handleNoticeOption(0)}>공지사항</span>
-          <span style={{padding:'0 40px'}} onClick={() => handleNoticeOption(1)}>FAQ</span>
+          <span onClick={() => handleNoticeOption(0)}>공지사항</span>
+          <span style={{padding:'0 0 0 100px'}} onClick={() => handleNoticeOption(1)}>FAQ</span>
           <hr />
           {noticeOption===0 && notices.slice(0,7)
           .map((datas, index) => (
@@ -320,12 +317,12 @@ const SlideShowContainer = ({
                 <div className="info-title">
                   <strong>{datas.show_name}</strong>
                 </div>
-                <div className="info-location">
+                {/* <div className="info-location">
                   <strong>{datas.show_location}</strong>
                 </div>
                 <div className="info-time">
                   <strong>{datas.show_time}</strong>
-                </div>
+                </div> */}
               </div>
               <hr className="hr" />
             </div>

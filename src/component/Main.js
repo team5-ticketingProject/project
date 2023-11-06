@@ -25,8 +25,8 @@ const Main = () => {
 
         <div className="mainMenu">
           <ul>
-            <li onClick={handleMenu} value="0">
-              메인
+            <li style={{color:"red"}} onClick={handleMenu} value="0">
+              홈
             </li>
             <li onClick={handleMenu} value="1">
               지역별

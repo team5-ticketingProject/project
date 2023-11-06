@@ -317,9 +317,10 @@
 }
 
 
-.final-cost-button button{
+.final-cost-button Button{
     background-color: #e31a1a;
-
+    font-size: 18px;
+    font-family: 'Noto Sans KR', sans-serif;
     height: 50px; 
     margin: 10px 10px; 
 }

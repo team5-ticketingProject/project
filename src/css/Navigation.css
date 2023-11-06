@@ -1,45 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap');
+
 .navigation{
   height: 100px;
   background-color: white;
   text-align: center;
   top:-16px;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid rgb(199, 199, 199);
   line-height: 100px;
-  padding: 0 140px ;
-  width: 100%;
+  width: 1920px;
+  margin: auto;
+}
+
+.inside {
+  margin: 0px 280px;
 }
 .logo{
-
 float: left;
-margin-left: 160px;
 }
+
 .logo a{
   text-decoration: none;
 }
+
 .logo h2{
-display: inline;
-color: black;
+  color: black;
 }
 
 .search{
-float: left;
-margin-left: 100px;
-padding: 25px 0;
-
+  float: left;
+  margin: 35px 0px 0px 150px;
 }
 
 .searchDiv{
 width: 350px;
 height: 50px;
 line-height: 50px;
-border: 1px solid gray;
-background-color: white;;
+border: 1px solid rgb(199, 199, 199);
+background-color: white;
+border-radius: 30px;
+font-family: 'Noto Sans KR', sans-serif;
+font-weight: 400;
+font-size: 16px;
 }
+
 .search input{
 width: 270px;
 height: 20px;
 margin-left: 5px;
 border: none;
+font-family: 'Noto Sans KR', sans-serif;
+font-weight: 400;
+font-size: 16px;
 }
 
 .search input:focus{
@@ -52,31 +63,37 @@ border: none;
 }
 
 .menu{
-float: right;
-margin-right: 490px;
+  float: right;
+  margin: 0px 0px 0px 100px;
 }
+
 .menu span{
-margin-left: 40px;
+  margin-left: 40px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
 }
 
 .menu a{
-text-decoration: none;
-color: gray;
+  text-decoration: none;
+  color: gray;
 }
 .menu a:hover{
-color: black;
-cursor: pointer;
+  color: black;
+  cursor: pointer;
 }
 .output-detail{
   height: 30px;
   line-height: 40px;
-  border-bottom: 1px solid black;
+  text-align: left;
+  margin: 10px 0px 0px 10px; 
   overflow: hidden;
-  
 }
+
+
 .search-output{
   width: 350px;
-  height: 309px;
+  height: 500px;
   border-left: 1px solid black;
   border-right: 1px solid gray;
   border-bottom: 1px solid black;
@@ -84,11 +101,12 @@ cursor: pointer;
   position: absolute;
   z-index: 9;
 }
+
 .output-detail-image{
   background-color: white;
- width: 248px;
+ width: 400px;
  float: right;
- height: 309px;
+ height: 500px;
  border: 1px solid black;
  border-left: none;
  position: absolute;
@@ -97,9 +115,9 @@ cursor: pointer;
  overflow: hidden;
 }
 .output-detail-image img{
-  width: 170px;
-  height: 200px;
-  margin-top: 10px;
+  width: 330px;
+  height: 370px;
+  margin-top: 15px;
 }
 .output-detail-image-explain{
   margin-top: -30px;

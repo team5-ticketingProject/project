@@ -1,60 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap');
+
 .container {
     position: relative;
-    border: 1px solid #ccc9c9;
-    width: 700px;
-    margin: 0 auto;
-    margin-top: 4%;
-}
-
-button {
-    border: 1px solid #6b6969;
-    background-color: #f1efef;
+    width: 1000px;
+    margin: 50px auto;
+    height: 900px;
+    background-color: rgba(76, 18, 100, 0.5);
     border-radius: 10px;
 }
 
-button:hover {
-    cursor: pointer;
-}
-
-h2 {
+.signup_title{
+    margin: auto;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    width: 800px;
     text-align: center;
 }
 
-table {
+.signup_title img{
+    padding: 30px 0px; 
     margin: auto;
-    width: 550px;
 }
 
-tr {
-    width: 550px;
+.signup_content{
+    background-color: white;
+    width: 800px;
+    height: 600px;
+    margin: auto;
+    padding: 0px 0px 0px 50px;
+    border-radius: 10px;
+}
+
+.signup_content td{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    width: 800px;
+}
+
+.signup_content input{
     height: 40px;
+    border-radius: 3px;
+    border: 1px solid black;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
 }
 
-td .line {
-    font-size: 11px;
+.btn {
+    border-radius: 3px;
+    border: 1px solid rgb(54, 54, 54);
+    background-color: rgb(73, 73, 73);
+    color: white;
+    height: 40px;
+    width: 100px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.btn:hover {
+    cursor: pointer;
+    background-color: gray;
+    color: rgb(255, 255, 255);
+    border: 1px solid gray;
+    border-radius: 3px;
+}
+
+.line {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 16px;
 }
 
 .line span {
     color: red;
 }
 
-input {
-    border: 0;
-    border-bottom: 1px solid black;
-    height: 20px;
+.custom-align {
+    vertical-align: middle;
+    transform: translateY(-13%);
 }
 
-input:focus {
-    outline: none;
-}
-
-.mid {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-.mid button {
-    width: 100px;
+.last_btn {
+    width: 160px;
     height: 50px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    background-color: rgba(255, 0, 0, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 3px;
+    color: white;
+    margin-left: 90px;
+}
+
+.last_btn:hover{
+    cursor: pointer;
+    background-color: rgb(27, 0, 162, 0.7);
+    color: rgb(255, 255, 255);
+    border: 1px solid rgb(27, 0, 162, 0.7);
+    border-radius: 3px;
 }
