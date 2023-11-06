@@ -6,6 +6,7 @@ import axios from "axios";
 function MacInfo() {
   const [userInfo, setUserInfo] = useState(null);
   const [userMacAddress, setUserMacAddress] = useState(null); // 로그인된 사용자의 맥 주소
+  const [currentuserMacAddress, setCurrentUserMacAddress] = useState(null);
 
   const [userId, setUserId] = useState(null);
 
@@ -37,17 +38,19 @@ function MacInfo() {
         params: { userConsent: 'true' }
       })
       .then((response) => {
-        setUserMacAddress(response.data.mac);
+        setCurrentUserMacAddress(response.data.mac);
+        console.log(currentuserMacAddress)
       })
       .catch((error) => {
         console.error(error);
       });
-  }, []); // 컴포넌트가 처음 렌더링될 때 맥 주소를 가져옴
+  }, [currentuserMacAddress]); // 컴포넌트가 처음 렌더링될 때 맥 주소를 가져옴
 
   const handleDeleteMac = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       // 사용자의 맥 주소와 DB에서 가져온 맥 주소 비교
-      if (userInfo && userMacAddress && userInfo.mac_address && userMacAddress === userInfo.mac_address) {
+      if (userInfo && currentuserMacAddress && userInfo.mac_address && currentuserMacAddress === userInfo.mac_address) {
+        console.log(userInfo.mac_address)
         axios
           .put(`${process.env.REACT_APP_SERVER_URL}/deleteMac/${userId}`, {
             headers: { "Content-Type": "application/json" },

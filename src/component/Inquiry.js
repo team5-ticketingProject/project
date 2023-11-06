@@ -173,6 +173,7 @@ function InquiryContactUs() {
             문의하기
           </Button>
         </Stack>
+        <h5>문의 답변의 기간은 1~2일정도 소요될 수 있습니다. </h5>
       </div>
       ) : (
         <p>로그인이 필요합니다</p>

@@ -339,16 +339,13 @@ useEffect(() => {
                   </td>
                   <td>{item.show_name}</td>
                   <td>
-                  {new Date(new Date(item.DATE).getTime() + 9 * 60 * 60 * 1000)
-                      .toISOString().split("T")[0]} {item.TIME}
+                  {item.DATE} {item.TIME}
                   </td>
                   <td>{item.re_number}</td>
                   <td>
-                    {
-                      new Date(new Date(item.DATE) - 15 * 60 * 60 * 1000)
-                      .toISOString().split("T")[0]} {item.TIME}
+                    {item.cancel_date} {item.TIME}
                   </td>
-                  <td>{new Date(new Date(item.re_date).getTime() + 9 * 60 * 60 * 1000).toISOString().split("T")[0]}</td>
+                  <td>{item.re_date}</td>
                 </tr>
               ))
             )}
@@ -376,11 +373,12 @@ useEffect(() => {
           </li>
           <li>
             티켓이 배송된 이후에는 인터넷이나 고객센터를 통한 취소가 불가하며,
+            <br />
             받으신 티켓을 취소일 전까지 NHN LINK 본사로 반송을 해주셔야 취소
             가능합니다. (등기우편을 이용해주세요!)
           </li>
           <li>
-            예매 당일 자정까지 취소하실 경우는 예매수수료도 환불되며,
+            온라인 및 고객센터를 통한 예매취소는 공연관람일날로부터 일주일전까지만 가능하며 예매수수료도 환불되며,
             취소수수료가 부과되지 않습니다. 그 이후에 취소하실 경우는
             예매수수료가 환불되지 않으며, 취소수수료는 정책에 따라 부과됩니다.
           </li>
