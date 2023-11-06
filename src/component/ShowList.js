@@ -122,9 +122,7 @@ const GetShowData = ({clicked, setClicked, setLocation, location}) => {
                   <div className="info-title">
                     <strong>{datas.show_name}</strong>
                   </div>           
-                  <div className="info-location">
-                    <strong>{datas.show_location}</strong>
-                  </div>
+                  
                   <div className="info-time">
                     <strong>{datas.show_time}</strong>
                   </div>
