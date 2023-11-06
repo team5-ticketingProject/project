@@ -1,14 +1,14 @@
 .footer{
     background-color: rgb(248, 246, 246);
     position: relative;
-    width: 1350px;
+    padding: 0 300px;
     height: 180px;
     border-top: solid rgb(201, 201, 201) 1px;
     transform: translateY(-100%);
     display: flex;
     bottom: -180px;
     margin: auto;
-
+    margin-top: 50px;
   }
   .footer-left{
     width: 600px;
