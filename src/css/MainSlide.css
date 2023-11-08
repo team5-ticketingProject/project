@@ -204,6 +204,7 @@
 
 .main-list {
   width: 20%; /* 각 항목이 7개씩 나열되도록 너비 조정 */
+  height: 380px;
 }
 
 .mainslide-show-info{
@@ -216,17 +217,19 @@
   background-color: rgb(255, 198, 198);
   color: rgb(75, 75, 75);
   font-size: 14px;
-  height: 380px;
+  width: 250px;
+  height: 370px;
   overflow: hidden;
-  border-radius: 5px;
+  border-radius: 5px; 
+  position: absolute; 
+  z-index: 9;
 }
 .mainslide-show-info:hover img{
   width: 220px;
   height: 270px;
 }
 .mainslide-show-info:hover + hr{
-  position: relative;
-  bottom: -2px;
+  visibility: hidden;
 }
 .mainslide-show-info img{
   width: 200px;
@@ -245,6 +248,8 @@
 }
 .info-time{
   overflow: hidden;
+  height: 30px;
+  width: 100%;
 }
 .hr{
   position: relative;
