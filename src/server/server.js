@@ -565,10 +565,15 @@ app.get("/getDetail/:ID", async (req, res) => {
 
 app.get("/getShowInfo/:ID", async (req, res) => {
   const location = req.params.ID;
+  const today = new Date();
+  const today2 = new Date();
+  today2.setDate(today2.getDate() + 60);
+
+  //(“0” + (this.getMonth() + 1)).slice(-2);
   try {
     const serviceKey = "8cd44b00e6b7438ebee27dfb9f4cdf16";
     const response = await axios.get(
-      `http://www.kopis.or.kr/openApi/restful/pblprfr?service=${serviceKey}&stdate=20230901&eddate=20231230&cpage=1&rows=5&prfstate=02&signgucode=${location}&signgucodesub=&kidstate=N`
+      `http://www.kopis.or.kr/openApi/restful/pblprfr?service=${serviceKey}&stdate=${today.getFullYear()}${("0"+(today.getMonth() + 1)).slice(-2)}${("0"+ today.getDate()).slice(-2)}&eddate=${today2.getFullYear()}${("0"+(today2.getMonth() + 1)).slice(-2)}${("0"+ today2.getDate()).slice(-2)}&cpage=1&rows=5&prfstate=02&signgucode=${location}&signgucodesub=&kidstate=N`
     );
     res.json(response.data);
   } catch (error) {
